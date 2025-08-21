@@ -437,7 +437,8 @@ static void cetl_scan_conn_config_set(void)
     cetl_client_scan_cfg.scan_auto_do = 1;
     cetl_client_scan_cfg.creat_auto_do = 1;
     cetl_client_scan_cfg.scan_type = SET_SCAN_TYPE;
-    cetl_client_scan_cfg.scan_filter = 1;
+    // cetl_client_scan_cfg.scan_filter = 1;
+    cetl_client_scan_cfg.scan_filter = 0;
     cetl_client_scan_cfg.scan_interval = SET_SCAN_INTERVAL;
     cetl_client_scan_cfg.scan_window = SET_SCAN_WINDOW;
 

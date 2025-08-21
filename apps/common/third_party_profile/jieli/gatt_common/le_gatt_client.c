@@ -1057,9 +1057,10 @@ static bool __resolve_adv_report(adv_report_t *report_pt, u16 len)
         // printf_buf(adv_data_pt,length);
         // printf("===============^");
 
-        #if TCFG_RF24GKEY_ENABLE
+#if TCFG_RF24GKEY_ENABLE
+        extern void rf24g_scan(u8 *pBuf);
         rf24g_scan(adv_data_pt);
-        #endif 
+#endif 
         switch (ad_type) {
         case HCI_EIR_DATATYPE_FLAGS:
             /* log_info("flags:%02x\n",adv_data_pt[0]); */

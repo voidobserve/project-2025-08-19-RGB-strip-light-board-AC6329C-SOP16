@@ -131,7 +131,7 @@ typedef struct Segment_runtime { // 16 bytes
   unsigned long next_time;
   uint32_t counter_mode_step;
   uint32_t counter_mode_call;
-  uint8_t aux_param;   // auxilary param (usually stores a color_wheel index)
+  uint8_t aux_param;   // auxilary param (usually stores a color_wheel index) 辅助参数
   uint8_t aux_param2;  // auxilary param (usually stores bitwise options)
   uint16_t aux_param3; // auxilary param (usually stores a segment index)
 } Segment_runtime;

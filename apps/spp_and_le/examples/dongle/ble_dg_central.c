@@ -1066,7 +1066,8 @@ static void dg_scan_conn_config_set(struct ctl_pair_info_t *pair_info)
 #endif
     dg_central_scan_cfg.creat_auto_do = 1;
     dg_central_scan_cfg.scan_type = SET_SCAN_TYPE;
-    dg_central_scan_cfg.scan_filter = 1;
+    // dg_central_scan_cfg.scan_filter = 1;
+    dg_central_scan_cfg.scan_filter = 0;
     dg_central_scan_cfg.scan_interval = SET_SCAN_INTERVAL;
     dg_central_scan_cfg.scan_window = SET_SCAN_WINDOW;
 

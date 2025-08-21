@@ -32,6 +32,8 @@
 #include "hardware.h"
 
 #include "../../apps/user_app/led_strip/led_strand_effect.h"
+#include "../../apps/user_app/ws2812-fx-lib/WS2812FX_C/ws2812fx_effect.h"
+#include "../../apps/user_app/lighting_animation/lighting_animation.h"
 
 OS_SEM LED_TASK_SEM;
 
@@ -386,17 +388,20 @@ void main_while(void)
 extern fc_effect_t fc_effect; // 幻彩灯串效果数据
 extern const u8 size_type[4];
 extern uint16_t SM_mode_comet_1(void);
+
+// u32 color_buff[] = {RED, GREEN, BLUE};
 void test_task(void)
 {
     // os_time_dly(100);
     fc_effect.on_off_flag == DEVICE_ON;
 
+#if 0 // 流星灯动画
     // fc_effect.star_speed = 180; // 变化速度(0~65535，值越小，速度越快) 动画时间约 4 s
     // fc_effect.star_speed = 135;// 变化速度(0~65535，值越小，速度越快) 动画时间约 3 s
     fc_effect.star_speed = 90; // 变化速度(0~65535，值越小，速度越快) 动画时间约 2 s
     // fc_effect.star_speed = 45; // 变化速度(0~65535，值越小，速度越快) 动画时间约 1 s
 
-    // fc_effect.period_cnt =
+ 
 
     // fc_effect.meteor_period = 4 + 1; // 时间周期，包括执行动画的时间
     fc_effect.meteor_period = 8 + 2; // 时间周期，包括执行动画的时间
@@ -416,15 +421,60 @@ void test_task(void)
         fc_effect.star_speed,                   // 速度
         B00000101 /* 6个灯为一组 */ | REVERSE); // 选项
     WS2812FX_start();
+#endif
+
+    
+
+    // fc_effect.star_speed = 180; // 变化速度(0~65535，值越小，速度越快) 动画时间约 4 s
+    // fc_effect.star_speed = 135;// 变化速度(0~65535，值越小，速度越快) 动画时间约 3 s
+    fc_effect.star_speed = 90; // 变化速度(0~65535，值越小，速度越快) 动画时间约 2 s
+    // fc_effect.star_speed = 45; // 变化速度(0~65535，值越小，速度越快) 动画时间约 1 s
+
+    // fc_effect.meteor_period = 4 + 1; // 时间周期，包括执行动画的时间
+    fc_effect.meteor_period = 8 + 2; // 时间周期，包括执行动画的时间
+    // fc_effect.meteor_period = 10 + 3; // 时间周期，包括执行动画的时间
+    // fc_effect.meteor_period = 15 + 4; // 时间周期，包括执行动画的时间
+
+    Adafruit_NeoPixel_clear(); // 清空缓存残留
+    WS2812FX_show();
+
+    WS2812FX_stop();
+    WS2812FX_setSegment_colorsOptions(
+        0,                            // 第0段
+        0, fc_effect.led_num,         // 起始位置，结束位置
+        &WS2812FX_sample_9,           // 效果
+        color_buff,                   // 颜色，WS2812FX_setColors设置
+        fc_effect.star_speed,         // 速度
+        B00000101 /* 6个灯为一组 */); // 选项
+    WS2812FX_start();
+
+#if 0 // 流水灯动画
+
+    // 这里的速度和时间间隔跟流星灯的不一样
+    fc_effect.star_speed = 1000;      // 变化速度(0~65535，值越小，速度越快)
+    fc_effect.meteor_period = 15 + 4; // 时间周期，包括执行动画的时间
+
+    Adafruit_NeoPixel_clear(); // 清空缓存残留
+    WS2812FX_show();
+
+    WS2812FX_stop();
+    WS2812FX_setSegment_colorOptions(
+        0,                         // 第0段
+        0, fc_effect.led_num,      // 起始位置，结束位置
+        &WS2812FX_mode_color_wipe, // 效果
+        RED,                       // 颜色，WS2812FX_setColors设置
+        fc_effect.star_speed,      // 速度
+        NO_OPTIONS);               // 选项
+    WS2812FX_start();
+
+#endif
 
     while (1)
     {
+        rf24_key_handle();
         os_time_dly(1);
     }
 }
-
-
-
 
 void my_main(void)
 {

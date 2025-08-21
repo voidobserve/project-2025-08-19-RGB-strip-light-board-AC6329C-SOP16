@@ -5,87 +5,123 @@
 
 #if TCFG_RF24GKEY_ENABLE
 
-#pragma pack (1)
-//遥控配�??
-typedef struct
+enum
 {
-    u8 pair[3];
-    u8 flag;    //0:表示该数组没使用�?0xAA：表示改数组已配对使�?
-}rf24g_pair_t;
+    RF24G_KEY_ON_OFF = 0x01,
 
-//2.4G遥控 不同的遥控，该结构体不一�?
+    RF24G_KEY_MODE_ADD = 0x05,
+    RF24G_KEY_MODE_SUB = 0X0B,
+
+    RF24G_KEY_SPEED_SUB = 0x07,
+    RF24G_KEY_SPEED_ADD = 0x09,
+
+    RF24G_KEY_DEMO = 0x08,
+
+    RF24G_KEY_COLOR_ADD = 0x0A,
+    RF24G_KEY_COLOR_SUB = 0x0D,
+
+    RF24G_KEY_BRIGHT_ADD = 0x0C,
+    RF24G_KEY_BRIGHT_SUB = 0x0F,
+
+    RF24G_KEY_A = 0x0E,
+    RF24G_KEY_B = 0x10,
+    RF24G_KEY_C = 0x11,
+    RF24G_KEY_D = 0x12,
+    RF24G_KEY_E = 0x13,
+    RF24G_KEY_F = 0x14,
+    RF24G_KEY_G = 0x15,
+
+    // RF24G_KEY_NONE, // 无按键
+};
+
+// 定义按键事件
+enum
+{
+    RF24G_KEY_EVENT_NONE = 0x00,
+
+    RF24G_KEY_EVENT_ON_OFF_CLICK,
+    RF24G_KEY_EVENT_ON_OFF_HOLD,
+    RF24G_KEY_EVENT_ON_OFF_LOOSE,
+
+    RF24G_KEY_EVENT_MODE_ADD_CLICK,
+    RF24G_KEY_EVENT_MODE_ADD_HOLD,
+    RF24G_KEY_EVENT_MODE_ADD_LOOSE,
+
+    RF24G_KEY_EVENT_MODE_SUB_CLICK,
+    RF24G_KEY_EVENT_MODE_SUB_HOLD,
+    RF24G_KEY_EVENT_MODE_SUB_LOOSE,
+
+    RF24G_KEY_EVENT_SPEED_ADD_CLICK,
+    RF24G_KEY_EVENT_SPEED_ADD_HOLD,
+    RF24G_KEY_EVENT_SPEED_ADD_LOOSE,
+
+    RF24G_KEY_EVENT_SPEED_SUB_CLICK,
+    RF24G_KEY_EVENT_SPEED_SUB_HOLD,
+    RF24G_KEY_EVENT_SPEED_SUB_LOOSE,
+
+    RF24G_KEY_EVENT_DEMO_CLICK,
+    RF24G_KEY_EVENT_DEMO_HOLD,
+    RF24G_KEY_EVENT_DEMO_LOOSE,
+
+    RF24G_KEY_EVENT_COLOR_ADD_CLICK,
+    RF24G_KEY_EVENT_COLOR_ADD_HOLD,
+    RF24G_KEY_EVENT_COLOR_ADD_LOOSE,
+
+    RF24G_KEY_EVENT_COLOR_SUB_CLICK,
+    RF24G_KEY_EVENT_COLOR_SUB_HOLD,
+    RF24G_KEY_EVENT_COLOR_SUB_LOOSE,
+
+    RF24G_KEY_EVENT_BRIGHT_ADD_CLICK,
+    RF24G_KEY_EVENT_BRIGHT_ADD_HOLD,
+    RF24G_KEY_EVENT_BRIGHT_ADD_LOOSE,
+
+    RF24G_KEY_EVENT_BRIGHT_SUB_CLICK,
+    RF24G_KEY_EVENT_BRIGHT_SUB_HOLD,
+    RF24G_KEY_EVENT_BRIGHT_SUB_LOOSE,
+
+    // 字母B
+    RF24G_KEY_EVENT_B_CLICK,
+    RF24G_KEY_EVENT_B_HOLD,
+    RF24G_KEY_EVENT_B_LOOSE,
+
+    // 字母F
+    RF24G_KEY_EVENT_F_CLICK,
+    RF24G_KEY_EVENT_F_HOLD,
+    RF24G_KEY_EVENT_F_LOOSE,
+    // 字母G
+    RF24G_KEY_EVENT_G_CLICK,
+    RF24G_KEY_EVENT_G_HOLD,
+    RF24G_KEY_EVENT_G_LOOSE,
+};
+#define RF34G_KEY_EVENT_MAX (3) // 按键事件种类个数， 短按、持续hold、松开
+
+#define RF24G_KEY_SCAN_TIME_MS (10) // 2.4G遥控器按键扫描频率，单位：ms
+#define RF24G_KEY_LONG_TIME_MS (1500)
+#define RF24G_KEY_HOLD_TIME_MS (500)
+#define RF24G_KEY_SCAN_CLICK_DELAY_TIME_MS (0) // 2.4G遥控器按键被抬起后等待连击延时数量
+#define RF24G_KEY_SCAN_FILTER_TIME_MS (0)      // 2.4G遥控器按键消抖延时
+
+#define HEADER1_1 0XCC
+#define HEADER2_1 0X02
+
+#pragma pack(1)
 typedef struct
 {
     u8 header1;
     u8 header2;
+
+    u8 pair[3]; // 客户码
     u8 key_v;
-    u8 pair[3];         //客户码
-    u8 dynamic_code;    //  动态码
-}rf24g_ins_t;   //指令数据
+    u8 dynamic_code; //  动态码
 
+} rf24g_ins_t; // 指令数据
+#pragma pack()
 
-struct RF24G_PARA{
+extern struct key_driver_para rf24g_scan_para;
 
+void rf24g_scan(unsigned char *pBuf);
+void rf24g_long_timer(void);
+u8 get_rf24g_long_state(void);
 
-    u8 rf24g_rx_flag ;
-    u8 last_dynamic_code;   
-    u8 last_key_v;
-    u8 rf24g_key_state;   
-    u8 clink_delay_up;
-    u8 long_press_cnt;
-    u16 hold_pess_cnt;
-    const u16 is_long_time;
-    const u8 is_click;
-    const u8 is_long;
-    const u8 _sacn_t;
-};
-
-#pragma pack ()
-
-
-
-#define RF24_K01 0x11	
-#define RF24_K02 0x12	
-#define RF24_K03 0x13	
-#define RF24_K04 0x14	
-
-#define RF24_K05 0x21  
-#define RF24_K06 0x22	
-#define RF24_K07 0x23	
-#define RF24_K08 0x24	
-
-#define RF24_K09 0x31	
-#define RF24_K10 0x32	
-#define RF24_K11 0x33	
-#define RF24_K12 0x34
-
-#define RF24_K13 0x41	
-#define RF24_K14 0x42	
-#define RF24_K15 0x43	
-#define RF24_K16 0x44	
-
-#define RF24_K17 0x51	
-#define RF24_K18 0x52	
-#define RF24_K19 0x53	
-#define RF24_K20 0x54
-
-#define RF24_K21 0x61	
-#define RF24_K22 0x62	
-#define RF24_K23 0x63	
-#define RF24_K24 0x64
-
-#define RF24_K25 0x01	
-#define RF24_K26 0x02	
-#define RF24_K27 0x03	
-#define RF24_K28 0x04	
-
-extern rf24g_pair_t rf24g_pair[];        //需要写flash
-extern rf24g_ins_t rf24g_ins;
-
-
-void RF24G_Key_Handle(void);
-
-
-#endif
-#endif
-
+#endif // #if TCFG_RF24GKEY_ENABLE
+#endif // end of file

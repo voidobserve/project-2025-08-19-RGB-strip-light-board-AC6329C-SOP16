@@ -47,7 +47,9 @@
 //搜索类型
 #define SET_SCAN_TYPE       SCAN_ACTIVE
 //搜索 周期大小
-#define SET_SCAN_INTERVAL   ADV_SCAN_MS(24) // unit: 0.625ms
+// #define SET_SCAN_INTERVAL   ADV_SCAN_MS(24) // unit: 0.625ms
+#define SET_SCAN_INTERVAL   ADV_SCAN_MS(16) // unit: 0.625ms
+// #define SET_SCAN_INTERVAL   ADV_SCAN_MS(10) // unit: 0.625ms
 //搜索 窗口大小
 #define SET_SCAN_WINDOW     ADV_SCAN_MS(8)  // unit: 0.625ms, <= SET_SCAN_INTERVAL
 
@@ -530,7 +532,8 @@ static void multi_scan_conn_config_set(struct ctl_pair_info_t *pair_info)
     multi_client_scan_cfg.scan_auto_do = 1;
     multi_client_scan_cfg.creat_auto_do = 1;
     multi_client_scan_cfg.scan_type = SET_SCAN_TYPE;
-    multi_client_scan_cfg.scan_filter = 1;
+    // multi_client_scan_cfg.scan_filter = 1;
+    multi_client_scan_cfg.scan_filter = 0;
     multi_client_scan_cfg.scan_interval = SET_SCAN_INTERVAL;
     multi_client_scan_cfg.scan_window = SET_SCAN_WINDOW;
 

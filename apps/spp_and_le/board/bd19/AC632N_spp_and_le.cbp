@@ -768,13 +768,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../../common/third_party_profile/tuya_protocol/app/demo/tuya_ota.h" />
-		<Unit filename="../../../common/third_party_profile/tuya_protocol/app/product_test/tuya_ble_app_production_test.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="../../../common/third_party_profile/tuya_protocol/app/product_test/tuya_ble_app_production_test.h" />
-		<Unit filename="../../../common/third_party_profile/tuya_protocol/app/uart_common/tuya_ble_app_uart_common_handler.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="../../../common/third_party_profile/tuya_protocol/app/uart_common/tuya_ble_app_uart_common_handler.h" />
 		<Unit filename="../../../common/third_party_profile/tuya_protocol/extern_components/mbedtls/aes.c">
 			<Option compilerVar="CC" />

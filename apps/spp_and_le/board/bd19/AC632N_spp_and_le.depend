@@ -57200,7 +57200,7 @@
 	"board_ac6329f_demo_cfg.h"
 	"board_ac6323a_fmy_cfg.h"
 
-1722473659 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\board\bd19\board_ac632n_demo_cfg.h
+1755756639 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\board\bd19\board_ac632n_demo_cfg.h
 	"board_ac632n_demo_global_build_cfg.h"
 	"usb_std_class_def.h"
 
@@ -58180,7 +58180,7 @@
 	"asm/irflt.h"
 	"app_config.h"
 
-1722413423 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\common\device\key\key_driver.c
+1755759408 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\common\device\key\key_driver.c
 	"device/key_driver.h"
 	"system/event.h"
 	"system/init.h"
@@ -58204,7 +58204,7 @@
 	"typedef.h"
 	"asm/adc_api.h"
 
-1722417421 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\rf24g_key\rf24g_app.h
+1755763542 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\rf24g_key\rf24g_app.h
 	"board_ac632n_demo_cfg.h"
 
 1719187031 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\include_lib\driver\cpu\bd19\asm\ctmu.h
@@ -59293,7 +59293,7 @@
 	"mbedtls/platform.h"
 	<stdlib.h>
 
-1721885777 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\common\third_party_profile\jieli\gatt_common\le_gatt_client.c
+1755740777 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\common\third_party_profile\jieli\gatt_common\le_gatt_client.c
 	"system/app_core.h"
 	"system/includes.h"
 	"app_config.h"
@@ -60279,7 +60279,7 @@
 
 1719196543 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\hardware\hardware.h
 
-1722493271 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strand_effect.h
+1755767435 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strand_effect.h
 	"cpu.h"
 	"led_strip_sys.h"
 	"WS2812FX.H"
@@ -60289,7 +60289,7 @@
 1722481781 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strip_sys.h
 	"cpu.h"
 
-1755683209 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\ws2812-fx-lib\ws2812fx_c\ws2812fx.h
+1755768052 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\ws2812-fx-lib\ws2812fx_c\ws2812fx.h
 	"adafruit_typedef.h"
 	<stdint.h>
 	"ws2812_bsp.h"
@@ -60382,7 +60382,7 @@
 	<stdint.h>
 	"app_config.h"
 
-1722566176 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\rf24g_key\rf24g_app.c
+1755763173 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\rf24g_key\rf24g_app.c
 	"system/includes.h"
 	"task.h"
 	"event.h"
@@ -60430,7 +60430,7 @@
 	<string.h>
 	"led_strip_sys.h"
 
-1755679667 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\ws2812-fx-lib\ws2812fx_c\ws2812fx_effect.c
+1755766096 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\ws2812-fx-lib\ws2812fx_c\ws2812fx_effect.c
 	"WS2812FX.h"
 	"ws2812fx_tool.h"
 	"Adafruit_NeoPixel.h"
@@ -60440,13 +60440,13 @@
 
 1719186948 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\ws2812-fx-lib\ws2812fx_c\ws2812fx_tool.h
 
-1755683326 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\ws2812-fx-lib\ws2812fx_c\ws2812fx_tool.c
+1755683429 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\ws2812-fx-lib\ws2812fx_c\ws2812fx_tool.c
 	"WS2812FX.h"
 	"Adafruit_NeoPixel.h"
 	<stdlib.h>
 	<string.h>
 
-1755683154 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\app_main.c
+1755769972 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\app_main.c
 	"system/includes.h"
 	"app_config.h"
 	"app_action.h"
@@ -60462,6 +60462,8 @@
 	"led_strip_drive.h"
 	"hardware.h"
 	"../../apps/user_app/led_strip/led_strand_effect.h"
+	"../../apps/user_app/ws2812-fx-lib/WS2812FX_C/ws2812fx_effect.h"
+	"../../apps/user_app/lighting_animation/lighting_animation.h"
 
 1719186884 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\common\jl_kws\jl_kws_api.h
 
@@ -60848,7 +60850,7 @@
 	"app_comm_bt.h"
 	"debug.h"
 
-1719186940 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\examples\ble_central\ble_central.c
+1755757229 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\examples\ble_central\ble_central.c
 	"system/app_core.h"
 	"system/includes.h"
 	"app_config.h"
@@ -60927,7 +60929,7 @@
 	<stdint.h>
 	"app_config.h"
 
-1719186940 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\examples\conn_24g\ble_24g_client.c
+1755757237 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\examples\conn_24g\ble_24g_client.c
 	"system/app_core.h"
 	"system/includes.h"
 	"app_config.h"
@@ -60990,7 +60992,7 @@
 	"app_comm_bt.h"
 	"debug.h"
 
-1719186940 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\examples\dongle\ble_dg_central.c
+1755757246 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\examples\dongle\ble_dg_central.c
 	"system/app_core.h"
 	"system/includes.h"
 	"app_config.h"
@@ -61361,7 +61363,7 @@
 	<stdint.h>
 	"app_config.h"
 
-1719186942 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\examples\multi_conn\ble_multi_central.c
+1755758484 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\examples\multi_conn\ble_multi_central.c
 	"system/app_core.h"
 	"system/includes.h"
 	"app_config.h"
@@ -61886,4 +61888,12 @@
 	"norflash.h"
 	"debug.h"
 	"uart_update.h"
+
+1755770654 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\lighting_animation\lighting_animation.h
+	"includes.h"
+
+1755770625 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\lighting_animation\lighting_animation.c
+	"lighting_animation.h"
+	"led_strand_effect.h"
+	"../../apps/user_app/ws2812-fx-lib/WS2812FX_C/WS2812FX.h"
 
