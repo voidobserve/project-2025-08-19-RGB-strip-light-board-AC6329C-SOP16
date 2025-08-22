@@ -911,6 +911,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../../user_app/led_strip/paint_tool.h" />
+		<Unit filename="../../../user_app/lighting_animation/lighting_animation.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../user_app/lighting_animation/lighting_animation.h" />
 		<Unit filename="../../../user_app/one_wire/one_wire.c">
 			<Option compilerVar="CC" />
 		</Unit>

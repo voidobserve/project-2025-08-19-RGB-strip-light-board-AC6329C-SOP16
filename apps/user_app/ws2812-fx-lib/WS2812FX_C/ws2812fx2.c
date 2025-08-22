@@ -58,7 +58,7 @@ static uint8_t _segments_len = 0;          // size of _segments array
 static uint8_t _active_segments_len = 0;   // size of _segments_runtime and _active_segments arrays
 static uint8_t _num_segments = 0;          // number of configured segments in the _segments array
  Segment* _seg;                      // currently active segment (20 bytes)
- Segment_runtime* _seg_rt;           // currently active segment runtime (16 bytes)
+volatile Segment_runtime* _seg_rt;           // currently active segment runtime (16 bytes)
  uint16_t _seg_len;                  // num LEDs in the currently active segment
 
 

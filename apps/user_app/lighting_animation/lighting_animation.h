@@ -7,6 +7,10 @@ extern const u32 color_buff[];
 
 u16 WS2812FX_sample_8(void);
 u16 WS2812FX_sample_9(void);
+u16 WS2812FX_sample_12(void);
+u16 WS2812FX_sample_14(void);
+u16 WS2812FX_sample_16(void);
+u16 WS2812FX_sample_18(void);
 
 #endif
 
