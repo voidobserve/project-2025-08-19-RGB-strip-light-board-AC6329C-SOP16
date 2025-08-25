@@ -11,6 +11,11 @@ u16 WS2812FX_sample_12(void);
 u16 WS2812FX_sample_14(void);
 u16 WS2812FX_sample_16(void);
 u16 WS2812FX_sample_18(void);
+u16 WS2812FX_sample_19(void);
+u16 WS2812FX_sample_20(void);
+
+u16 WS2812FX_sample_10(void);
+u16 WS2812FX_sample_11(void);
 
 #endif
 

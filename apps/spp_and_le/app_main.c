@@ -452,26 +452,28 @@ void test_task(void)
 
     // 这里的速度和时间间隔跟流星灯的不一样
     // fc_effect.star_speed = 2000 / (fc_effect.led_num); // 变化速度(0~65535，值越小，速度越快)
-    fc_effect.star_speed = 2000 ; // 变化速度(0~65535，值越小，速度越快)
-    fc_effect.meteor_period = 15 + 4;                // 时间周期，包括执行动画的时间
+    fc_effect.star_speed = 4000;      // 变化速度(0~65535，值越小，速度越快)
+    // fc_effect.star_speed = 3000;      // 变化速度(0~65535，值越小，速度越快)
+    // fc_effect.star_speed = 2000;      // 变化速度(0~65535，值越小，速度越快)
+    // fc_effect.star_speed = 1000;      // 变化速度(0~65535，值越小，速度越快)
+    fc_effect.meteor_period = 15 + 4; // 时间周期，包括执行动画的时间
 
     fc_effect.b = 100;
     WS2812FX_setBrightness(fc_effect.b);
-
 
     Adafruit_NeoPixel_clear(); // 清空缓存残留
     WS2812FX_show();
 
     WS2812FX_stop();
     WS2812FX_setSegment_colorsOptions(
-        0,                        // 第0段
-        0, // 起始位置
+        0,                     // 第0段
+        0,                     // 起始位置
         fc_effect.led_num - 1, // 结束位置（函数内部传参会给这个参数加一，所以填传参要减去1）
-        &WS2812FX_sample_9,       // 效果
-        color_buff,               // 颜色，WS2812FX_setColors设置
-        fc_effect.star_speed,     // 速度
-        // NO_OPTIONS);              // 选项
-        REVERSE);              // 选项
+        &WS2812FX_sample_11,   // 效果
+        color_buff,            // 颜色，WS2812FX_setColors设置
+        fc_effect.star_speed,  // 速度
+        NO_OPTIONS);              // 选项
+        // REVERSE); // 选项
     WS2812FX_start();
 
 #endif
