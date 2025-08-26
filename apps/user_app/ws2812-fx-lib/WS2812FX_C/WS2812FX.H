@@ -52,7 +52,7 @@ typedef char __FlashStringHelper;
 #define MAX_NUM_SEGMENTS         10
 #define MAX_NUM_ACTIVE_SEGMENTS  10
 #define INACTIVE_SEGMENT        255 /* max uint_8 */
-#define MAX_NUM_COLORS            8 /* number of colors per segment */
+#define MAX_NUM_COLORS           20 /* number of colors per segment */
 #define MAX_CUSTOM_MODES          8
 
 // some common colors

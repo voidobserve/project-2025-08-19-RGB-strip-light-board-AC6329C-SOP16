@@ -60289,7 +60289,7 @@
 1722481781 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strip_sys.h
 	"cpu.h"
 
-1755768052 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\ws2812-fx-lib\ws2812fx_c\ws2812fx.h
+1756191670 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\ws2812-fx-lib\ws2812fx_c\ws2812fx.h
 	"adafruit_typedef.h"
 	<stdint.h>
 	"ws2812_bsp.h"
@@ -60446,7 +60446,7 @@
 	<stdlib.h>
 	<string.h>
 
-1756112638 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\app_main.c
+1756202004 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\app_main.c
 	"system/includes.h"
 	"app_config.h"
 	"app_action.h"
@@ -61889,10 +61889,10 @@
 	"debug.h"
 	"uart_update.h"
 
-1756115641 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\lighting_animation\lighting_animation.h
+1756201951 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\lighting_animation\lighting_animation.h
 	"includes.h"
 
-1756115703 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\lighting_animation\lighting_animation.c
+1756201997 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\lighting_animation\lighting_animation.c
 	"lighting_animation.h"
 	"led_strand_effect.h"
 	"../../apps/user_app/ws2812-fx-lib/WS2812FX_C/WS2812FX.h"

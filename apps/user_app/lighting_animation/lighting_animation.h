@@ -3,7 +3,8 @@
 
 #include "includes.h"
 
-extern const u32 color_buff[];
+extern const u32 color_buff[7];
+extern const u32 color_buff_mode13[14];
 
 u16 WS2812FX_sample_8(void);
 u16 WS2812FX_sample_9(void);
@@ -16,6 +17,8 @@ u16 WS2812FX_sample_20(void);
 
 u16 WS2812FX_sample_10(void);
 u16 WS2812FX_sample_11(void);
+u16 WS2812FX_sample_13(void);
+u16 WS2812FX_sample_15(void);
 
 #endif
 

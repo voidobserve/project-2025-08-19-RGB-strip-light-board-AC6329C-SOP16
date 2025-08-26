@@ -2313,7 +2313,10 @@ obj/Release/apps/user_app/lighting_animation/lighting_animation.o
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,WS2812FX_sample_20,pl
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,WS2812FX_sample_10,pl
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,WS2812FX_sample_11,pl
+-r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,WS2812FX_sample_13,pl
+-r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,WS2812FX_sample_15,pl
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,color_buff,pl
+-r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,color_buff_mode13,pl
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,_seg,l
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,_seg_rt,l
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,_seg_len,l
@@ -2820,7 +2823,7 @@ obj/Release/apps/spp_and_le/app_main.o
 -r=obj/Release/apps/spp_and_le/app_main.o,WS2812FX_show,l
 -r=obj/Release/apps/spp_and_le/app_main.o,WS2812FX_stop,l
 -r=obj/Release/apps/spp_and_le/app_main.o,WS2812FX_setSegment_colorsOptions,l
--r=obj/Release/apps/spp_and_le/app_main.o,WS2812FX_sample_11,l
+-r=obj/Release/apps/spp_and_le/app_main.o,WS2812FX_sample_15,l
 -r=obj/Release/apps/spp_and_le/app_main.o,WS2812FX_start,l
 -r=obj/Release/apps/spp_and_le/app_main.o,rf24_key_handle,l
 -r=obj/Release/apps/spp_and_le/app_main.o,os_time_dly,

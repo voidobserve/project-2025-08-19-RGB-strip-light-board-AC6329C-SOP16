@@ -8,6 +8,8 @@ extern Segment_runtime *_seg_rt; // currently active segment runtime (16 bytes)
 extern uint16_t _seg_len;        // num LEDs in the currently active segment
 
 const u32 color_buff[] = {RED, GREEN, BLUE, YELLOW, PINK, CYAN, WHITE};
+// size 14 :
+const u32 color_buff_mode13[] = {RED, RED, GREEN, GREEN, BLUE, BLUE, YELLOW, YELLOW, PINK, PINK, CYAN, CYAN, WHITE, WHITE};
 
 void WS2812FX_fade_out_targetColor_in_offset(u16 offset, uint32_t targetColor)
 {
@@ -979,7 +981,7 @@ u16 WS2812FX_sample_10(void)
 }
 
 u16 WS2812FX_sample_11(void)
-{  
+{
     /*
         动画长度
         1个灯 + 5个灯作为流星灯尾焰 + 一帧熄灯，动画从0开始，这里要加6
@@ -1149,4 +1151,264 @@ u16 WS2812FX_sample_11(void)
     }
 
     return (_seg->speed / ((fc_effect.led_num + 6) * 2)); // 相当于从第1个灯流水到 第 WS2812_LED_NUM_MAX + 5个灯 + 1帧全部熄灭
+}
+
+/*
+    动画模式13，对应样机的模式13
+
+    所有灯都点亮，颜色顺序：红 绿 蓝 黄 粉 cyan 白，每个颜色用(以)两个灯为一组点亮，
+    逆序流水，头尾闭合相连
+
+    注意：
+    传入的速度值 == 一轮动画的运行时间
+    要使用 模式13 对应的颜色数组
+    _seg->colors的空间 要大于等于 模式13 对应的颜色数组，否则需要修改对应的宏
+
+*/
+u16 WS2812FX_sample_13(void)
+{
+    if (_seg_rt->counter_mode_step < _seg_len)
+    {
+        if (IS_REVERSE)
+        {
+            for (u16 i = 0; i < _seg_len; i++) // 灯珠的位置
+            {
+                u16 color_index = _seg_rt->aux_param; // 存放颜色数组的下标
+                for (u16 j = 0; j < i; j++)
+                {
+                    color_index++;
+                    if (color_index >= 14)
+                    {
+                        color_index = 0;
+                    }
+                }
+
+                WS2812FX_setPixelColor(_seg->start + i, _seg->colors[color_index]);
+            }
+
+            if (_seg_rt->aux_param > 0)
+            {
+                _seg_rt->aux_param--;
+            }
+            else
+            {
+                _seg_rt->aux_param = 13;
+            }
+        }
+        else
+        {
+            for (u16 i = 0; i < _seg_len; i++) // 灯珠的位置
+            {
+                u16 color_index = _seg_rt->aux_param; // 存放颜色数组的下标
+                for (u16 j = 0; j < i; j++)
+                {
+                    color_index++;
+                    if (color_index >= 14)
+                    {
+                        color_index = 0;
+                    }
+                }
+
+                WS2812FX_setPixelColor(_seg->start + i, _seg->colors[color_index]);
+            }
+
+            _seg_rt->aux_param++; // 切换颜色
+            if (_seg_rt->aux_param >= 14)
+            {
+                _seg_rt->aux_param = 0;
+            }
+        }
+    }
+
+    _seg_rt->counter_mode_step = (_seg_rt->counter_mode_step + 1) % (_seg_len);
+
+    if (_seg_rt->counter_mode_step == 0)
+    {
+        SET_CYCLE;
+        // fc_effect.mode_cycle = 1; // 表示模式完成一个循环
+    }
+
+    return (_seg->speed / fc_effect.led_num);
+}
+
+/*
+    动画效果，对应样机模式15
+    一开始是单个灯的红色流水，到了第8个灯开始，增加尾部，继续流水。
+    一轮动画结束，所有灯光会熄灭，然后很快开始下一轮
+
+    例如：
+    从第8个灯开始，动画依次是：
+    红  
+    绿 红
+    蓝 绿 红
+    黄 蓝 绿 红
+    粉 黄 蓝 绿 红
+    灯熄灭 粉 黄 蓝 绿 
+    灯熄灭 灯熄灭 粉 黄 蓝 
+    ...
+
+    注意：
+    传入的速度值 == 一轮动画的运行时间
+ 
+*/
+u16 WS2812FX_sample_15(void)
+{
+    // 单个灯流水
+    if (_seg_rt->counter_mode_step < _seg_len - 5) // 后面5个灯是多种颜色流水，这里要减5
+    {
+        uint32_t led_offset = _seg_rt->counter_mode_step;
+        u32 black_offset = 0;
+        if (led_offset == 0)
+        {
+            black_offset = _seg->stop;
+        }
+        else
+        {
+            black_offset = led_offset - 1;
+        }
+
+        if (IS_REVERSE)
+        {
+            WS2812FX_setPixelColor(_seg->stop - black_offset, BLACK);
+            WS2812FX_setPixelColor(_seg->stop - led_offset, _seg->colors[_seg_rt->aux_param]);
+        }
+        else
+        {
+            WS2812FX_setPixelColor(_seg->start + black_offset, BLACK);
+            WS2812FX_setPixelColor(_seg->start + led_offset, _seg->colors[_seg_rt->aux_param]);
+        }
+    }
+    else
+    {
+        // 多种颜色组合的流水灯动画
+        Adafruit_NeoPixel_clear();
+
+        if (IS_REVERSE)
+        {
+            if (_seg_rt->counter_mode_step <= _seg_len - 1) // 从 0 到 _seg_len - 1，对应 _seg_len 个灯珠
+            {
+                // 多种颜色组合的流水灯，前半段动画，有效显示的灯珠数量越来越多
+
+                WS2812FX_setPixelColor(_seg->stop - _seg_rt->counter_mode_step, _seg->colors[_seg_rt->aux_param]);
+
+                for (u16 i = 0; i < _seg_rt->aux_param3; i++) // 尾部数量
+                {
+                    WS2812FX_setPixelColor(_seg->stop - _seg_rt->counter_mode_step + (1 + i), _seg->colors[_seg_rt->aux_param + i + 1]);
+                }
+
+                if (_seg_rt->aux_param3 < 5)
+                    _seg_rt->aux_param3++;
+            }
+            else
+            {
+                // 多种颜色组合的流水灯，后半段动画，有效显示的灯珠数量会越来越少
+
+                // printf("_seg_rt->aux_param3 %lu\n", _seg_rt->aux_param3);
+
+                // 优化后的程序：
+                for (u16 i = 0; i < (_seg_len + 5 - _seg_rt->counter_mode_step - 1); i++)
+                {
+                    // WS2812FX_setPixelColor(_seg_len - 1 - (_seg_len + 5 - _seg_rt->counter_mode_step - 1 - 1) + i, _seg->colors[4 - i]);
+                    WS2812FX_setPixelColor((_seg_len + 5 - _seg_rt->counter_mode_step - 2) - i, _seg->colors[4 - i]);
+                }
+
+                // 未优化的程序：
+                // if (5 == (_seg_len + 5 - _seg_rt->counter_mode_step))
+                // {
+                //     WS2812FX_setPixelColor(3, _seg->colors[4]);
+                //     WS2812FX_setPixelColor(2, _seg->colors[3]);
+                //     WS2812FX_setPixelColor(1, _seg->colors[2]);
+                //     WS2812FX_setPixelColor(0, _seg->colors[1]);
+                // }
+                // else if (4 == (_seg_len + 5 - _seg_rt->counter_mode_step))
+                // {
+                //     WS2812FX_setPixelColor(2, _seg->colors[4]);
+                //     WS2812FX_setPixelColor(1, _seg->colors[3]);
+                //     WS2812FX_setPixelColor(0, _seg->colors[2]);
+                // }
+                // else if (3 == (_seg_len + 5 - _seg_rt->counter_mode_step))
+                // {
+                //     WS2812FX_setPixelColor(1, _seg->colors[4]);
+                //     WS2812FX_setPixelColor(0, _seg->colors[3]);
+                // }
+                // else if (2 == (_seg_len + 5 - _seg_rt->counter_mode_step))
+                // {
+                //     WS2812FX_setPixelColor(0, _seg->colors[4]);
+                // }
+            }
+        }
+        else
+        {
+            if (_seg_rt->counter_mode_step <= _seg_len - 1) // 从 0 到 _seg_len - 1，对应 _seg_len 个灯珠
+            {
+                // 多种颜色组合的流水灯，前半段动画，有效显示的灯珠数量越来越多
+
+                WS2812FX_setPixelColor(_seg->start + _seg_rt->counter_mode_step, _seg->colors[_seg_rt->aux_param]);
+
+                for (u16 i = 0; i < _seg_rt->aux_param3; i++) // 尾部数量
+                {
+                    WS2812FX_setPixelColor(_seg->start + _seg_rt->counter_mode_step - (1 + i), _seg->colors[_seg_rt->aux_param + i + 1]);
+                }
+
+                if (_seg_rt->aux_param3 < 5)
+                    _seg_rt->aux_param3++;
+            }
+            else
+            {
+                // 多种颜色组合的流水灯，后半段动画，有效显示的灯珠数量会越来越少
+
+                // printf("_seg_rt->aux_param3 %lu\n", _seg_rt->aux_param3);
+
+                // 优化后的程序：
+                for (u16 i = 0; i < (_seg_len + 5 - _seg_rt->counter_mode_step - 1); i++)
+                {
+                    WS2812FX_setPixelColor(_seg_len - 1 - (_seg_len + 5 - _seg_rt->counter_mode_step - 1 - 1) + i, _seg->colors[4 - i]);
+                }
+
+                // 未优化的程序：
+                // if (5 == (_seg_len + 5 - _seg_rt->counter_mode_step))
+                // {
+                //     WS2812FX_setPixelColor(_seg_len - 1 - 3, _seg->colors[4]);
+                //     WS2812FX_setPixelColor(_seg_len - 1 - 2, _seg->colors[3]);
+                //     WS2812FX_setPixelColor(_seg_len - 1 - 1, _seg->colors[2]);
+                //     WS2812FX_setPixelColor(_seg_len - 1 - 0, _seg->colors[1]);
+                // }
+                // else if (4 == (_seg_len + 5 - _seg_rt->counter_mode_step))
+                // {
+                //     WS2812FX_setPixelColor(_seg_len - 1 - 2, _seg->colors[4]);
+                //     WS2812FX_setPixelColor(_seg_len - 1 - 1, _seg->colors[3]);
+                //     WS2812FX_setPixelColor(_seg_len - 1 - 0, _seg->colors[2]);
+                // }
+                // else if (3 == (_seg_len + 5 - _seg_rt->counter_mode_step))
+                // {
+                //     WS2812FX_setPixelColor(_seg_len - 1 - 1, _seg->colors[4]);
+                //     WS2812FX_setPixelColor(_seg_len - 1 - 0, _seg->colors[3]);
+                // }
+                // else if (2 == (_seg_len + 5 - _seg_rt->counter_mode_step))
+                // {
+                //     WS2812FX_setPixelColor(_seg_len - 1 - 0, _seg->colors[4]);
+                // }
+            }
+        }
+    }
+
+    /*
+        整个动画分为： 0 ~ _seg_len + 4个步骤
+        0 ~ _seg_len - 5 是单个灯流水
+        _seg_len - 4 ~ _seg_len + 5 是多个灯流水
+            _seg_len - 4 -> _seg_len 是前半段
+            _seg_len -> _seg_len + 5 是后半段
+    */ 
+    _seg_rt->counter_mode_step = (_seg_rt->counter_mode_step + 1) % (_seg_len + 5); 
+
+    if (_seg_rt->counter_mode_step == 0)
+    {
+        SET_CYCLE;
+        // fc_effect.mode_cycle = 1; // 表示模式完成一个循环
+
+        _seg_rt->aux_param = 0;
+        _seg_rt->aux_param3 = 0;
+    }
+
+    return (_seg->speed / (fc_effect.led_num + 5)); // 动画的步骤 0 ~ _seg_len + 4
 }
