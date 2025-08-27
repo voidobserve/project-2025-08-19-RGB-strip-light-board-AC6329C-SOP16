@@ -2,7 +2,8 @@
 #include "led_strand_effect.h"
 #include "../../apps/user_app/ws2812-fx-lib/WS2812FX_C/WS2812FX.h"
 
-extern fc_effect_t fc_effect;    // 幻彩灯串效果数据
+#include "../../../apps/user_app/led_strip/led_strand_effect.h" // fc_effect 变量定义
+
 extern Segment *_seg;            // currently active segment (20 bytes)
 extern Segment_runtime *_seg_rt; // currently active segment runtime (16 bytes)
 extern uint16_t _seg_len;        // num LEDs in the currently active segment
@@ -1238,18 +1239,18 @@ u16 WS2812FX_sample_13(void)
 
     例如：
     从第8个灯开始，动画依次是：
-    红  
+    红
     绿 红
     蓝 绿 红
     黄 蓝 绿 红
     粉 黄 蓝 绿 红
-    灯熄灭 粉 黄 蓝 绿 
-    灯熄灭 灯熄灭 粉 黄 蓝 
+    灯熄灭 粉 黄 蓝 绿
+    灯熄灭 灯熄灭 粉 黄 蓝
     ...
 
     注意：
     传入的速度值 == 一轮动画的运行时间
- 
+
 */
 u16 WS2812FX_sample_15(void)
 {
@@ -1398,8 +1399,8 @@ u16 WS2812FX_sample_15(void)
         _seg_len - 4 ~ _seg_len + 5 是多个灯流水
             _seg_len - 4 -> _seg_len 是前半段
             _seg_len -> _seg_len + 5 是后半段
-    */ 
-    _seg_rt->counter_mode_step = (_seg_rt->counter_mode_step + 1) % (_seg_len + 5); 
+    */
+    _seg_rt->counter_mode_step = (_seg_rt->counter_mode_step + 1) % (_seg_len + 5);
 
     if (_seg_rt->counter_mode_step == 0)
     {
@@ -1411,4 +1412,127 @@ u16 WS2812FX_sample_15(void)
     }
 
     return (_seg->speed / (fc_effect.led_num + 5)); // 动画的步骤 0 ~ _seg_len + 4
+}
+
+/*
+    动画效果，对应样机模式17
+    所有灯颜色跳变
+    顺序：红 绿 蓝 黄 粉 cyan 白
+    执行一次顺序所需的时间与速度值有关
+
+    注意：
+    传入的速度值 == 一轮动画的运行时间
+*/
+u16 WS2812FX_sample_17(void)
+{
+    for (u16 i = 0; i < _seg_len; i++)
+    {
+        WS2812FX_setPixelColor(i, _seg->colors[_seg_rt->aux_param]);
+    }
+
+    _seg_rt->counter_mode_step = (_seg_rt->counter_mode_step + 1) % (_seg_len);
+
+    if (IS_REVERSE)
+    {
+        if (_seg_rt->aux_param > 0)
+        {
+            _seg_rt->aux_param--;
+        }
+        else
+        {
+            _seg_rt->aux_param = 6;
+        }
+    }
+    else
+    {
+        _seg_rt->aux_param++;
+        if (_seg_rt->aux_param >= 7)
+        {
+            _seg_rt->aux_param = 0;
+        }
+    }
+
+    if (_seg_rt->counter_mode_step == 0)
+    {
+        SET_CYCLE;
+        // fc_effect.mode_cycle = 1; // 表示模式完成一个循环
+
+        _seg_rt->aux_param = 0;
+    }
+
+    return (_seg->speed / (fc_effect.led_num));
+}
+
+void lighting_animation_switch_mode(void)
+{
+    mode_ptr *light_mode_ptr = NULL;
+    void *color_ptr = NULL;
+
+    u32 color = BLACK;
+    u8 is_reverse = NO_OPTIONS;
+
+    if (fc_effect.is_reverse)
+    {
+        is_reverse = REVERSE;
+    }
+
+    // mode 1 ~ 7，单色流星灯
+    if (fc_effect.cur_mode >= 1 && fc_effect.cur_mode <= 7)
+    {
+        // color = color_buff[fc_effect.cur_mode - 1];
+        switch (fc_effect.cur_mode)
+        {
+        case 1:
+            color = RED;
+            break;
+        case 2:
+            color = GREEN;
+            break;
+        case 3:
+            color = BLUE;
+            break;
+        case 4:
+            color = WHITE;
+            break;
+        case 5:
+            color = YELLOW;
+            break;
+        case 6:
+            color = PINK;
+            break;
+        case 7:
+            color = CYAN;
+            break;
+        }
+  
+        extern void WS2812FX_mode_comet_1(void);
+        Adafruit_NeoPixel_clear(); // 清空缓存残留
+        WS2812FX_show();
+
+        WS2812FX_stop();
+        WS2812FX_setSegment_colorOptions(
+            0,                                         // 第0段
+            0,                                         // 起始位置
+            fc_effect.led_num,                         // 结束位置
+            &WS2812FX_mode_comet_1,                    // 效果
+            color,                                     // 颜色，WS2812FX_setColors设置
+            fc_effect.star_speed,                      // 速度
+            B00000101 /* 6个灯为一组 */ | is_reverse); // 选项
+        WS2812FX_start();
+    }
+
+#if 0
+    WS2812FX_stop();
+    WS2812FX_setSegment_colorsOptions(
+        0,                     // 第0段
+        0,                     // 起始位置
+        fc_effect.led_num - 1, // 结束位置（函数内部传参会给这个参数加一，所以填传参要减去1）
+                               // &WS2812FX_sample_17,   // 效果
+        light_mode_ptr,              // 效果
+        color_buff,            // 颜色，WS2812FX_setColors设置
+        fc_effect.star_speed,  // 速度
+        NO_OPTIONS);           // 选项
+    // REVERSE); // 选项
+    WS2812FX_start();
+#endif
 }

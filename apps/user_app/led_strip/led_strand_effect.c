@@ -7,7 +7,7 @@
 #include "app_main.h"
 #include "asm/mcpwm.h"
 
-fc_effect_t fc_effect;//幻彩灯串效果数据
+volatile fc_effect_t fc_effect;//幻彩灯串效果数据
 void set_fc_effect(void);
 
 

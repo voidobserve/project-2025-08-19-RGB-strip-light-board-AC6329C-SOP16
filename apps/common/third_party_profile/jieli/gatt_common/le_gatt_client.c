@@ -61,7 +61,7 @@ static u8 search_ram_buffer[SEARCH_PROFILE_BUFSIZE] __attribute__((aligned(4)));
 #define BASE_INTERVAL_VALUE       (BASE_INTERVAL_MIN)
 #endif
 //---------------
-//定时器类�?
+//定时器类�?
 enum {
     TO_TYPE_CREAT_CONN = 0,
 };
@@ -70,24 +70,24 @@ enum {
 
 //---------------
 typedef struct {
-    scan_conn_cfg_t *scan_conn_config; //�?描配�?�?
-    gatt_client_cfg_t *client_config;//client配置�?
-    gatt_search_cfg_t *gatt_search_config;//搜索profile配置�?
-    u8  client_work_state;   //�?连接状�?
-    u8  scan_ctrl_en;        //控制开�?
-    u16 client_timeout_id; //定时�?
+    scan_conn_cfg_t *scan_conn_config; //�?描配�?�?
+    gatt_client_cfg_t *client_config;//client配置�?
+    gatt_search_cfg_t *gatt_search_config;//搜索profile配置�?
+    u8  client_work_state;   //�?连接状�?
+    u8  scan_ctrl_en;        //控制开�?
+    u16 client_timeout_id; //定时�?
     u16 client_operation_handle; //操作流程中con_handle
-    u16 client_encrypt_process; //配�?�加密流�?
+    u16 client_encrypt_process; //配�?�加密流�?
     u16 client_search_handle; //搜索的con_handle
     opt_handle_t operate_handle_table[SUPPORT_OPT_HANDLE_MAX];//记录需要read,write,notify,indicate的ATT handle
-    u8 opt_handle_used_cnt; //记录�?�?
+    u8 opt_handle_used_cnt; //记录�?�?
     u8 res_byes; //
-    u16 just_search_handle; //操作模式:�?搜索profile,不建立链�?连接
+    u16 just_search_handle; //操作模式:�?搜索profile,不建立链�?连接
 } client_ctl_t;
 
 static client_ctl_t client_s_hdl;
 #define __this    (&client_s_hdl)
-static u8 disconn_auto_scan_do = 1;//默�?��?�置�?1
+static u8 disconn_auto_scan_do = 1;//默�?��?�置�?1
 extern const int config_btctler_coded_type;
 //----------------------------------------------------------------------------
 //---------------------------------------------------------------------------
@@ -166,11 +166,11 @@ struct __ext_init {
 
 /*************************************************************************************************/
 /*!
- *  \brief      解析scan到的ext_adv&rsp包数�?
+ *  \brief      解析scan到的ext_adv&rsp包数�?
  *
  *  \param      [in]
  *
- *  \return     �?否有匹配的�?��??, true or false
+ *  \return     �?否有匹配的�?��??, true or false
  *
  *  \note
  */
@@ -343,7 +343,7 @@ static int __gatt_client_event_callback_handler(int event, u8 *packet, u16 size,
 
 /*************************************************************************************************/
 /*!
- *  \brief      设置 连接�? �?连接状�?
+ *  \brief      设置 连接�? �?连接状�?
  *
  *  \param      [in]
  *
@@ -356,7 +356,7 @@ static void __gatt_client_set_work_state(u16 conn_handle, ble_state_e state, u8 
 {
     u8 packet_buf[4];
 
-    //区分连接和未连接的两�?状态维�?
+    //区分连接和未连接的两�?状态维�?
     if (conn_handle != INVAIL_CONN_HANDLE) {
         ;
     } else if (state != __this->client_work_state) {
@@ -434,13 +434,13 @@ static void __gatt_client_timeout_add(int type_id, u32 set_ms)
 
 /*************************************************************************************************/
 /*!
- *  \brief      协�??栈发包完成事�?
+ *  \brief      协�??栈发包完成事�?
  *
  *  \param      [in]
  *
  *  \return
  *
- *  \note      �?用于触发上层往协�??栈发送数�?
+ *  \note      �?用于触发上层往协�??栈发送数�?
  */
 /*************************************************************************************************/
 static void __gatt_client_can_send_now_wakeup(void)
@@ -451,7 +451,7 @@ static void __gatt_client_can_send_now_wakeup(void)
 
 /*************************************************************************************************/
 /*!
- *  \brief      获取�?连接状�?
+ *  \brief      获取�?连接状�?
  *
  *  \param      [in]
  *
@@ -467,7 +467,7 @@ ble_state_e ble_gatt_client_get_work_state(void)
 
 /*************************************************************************************************/
 /*!
- *  \brief      获取已建立链�?状�?
+ *  \brief      获取已建立链�?状�?
  *
  *  \param      [in]   conn_handle
  *
@@ -486,16 +486,16 @@ ble_state_e ble_gatt_client_get_connect_state(u16 conn_handle)
 
 /*************************************************************************************************/
 /*!
- *  \brief      处理从机连接参数的情况，�?以拒绝或接受
+ *  \brief      处理从机连接参数的情况，�?以拒绝或接受
  *
  *  \param      [in]
  *
  *  \return    0--accept,1--reject
  *
- *  \note      �?以指定接受后使用的参�?
+ *  \note      �?以指定接受后使用的参�?
  */
 /*************************************************************************************************/
-//协�??栈内部调�?
+//协�??栈内部调�?
 int l2cap_connection_update_request_just(u8 *packet, hci_con_handle_t handle)
 {
     log_info("slave request conn_update:\n-conn_handle= %04x\n-interval_min= %d,\n-interval_max= %d,\n-latency= %d,\n-timeout= %d\n",
@@ -542,7 +542,7 @@ int l2cap_connection_update_request_just(u8 *packet, hci_con_handle_t handle)
 
 /*************************************************************************************************/
 /*!
- *  \brief      接收server段的数据发�?
+ *  \brief      接收server段的数据发�?
  *
  *  \param      [in]
  *
@@ -551,7 +551,7 @@ int l2cap_connection_update_request_just(u8 *packet, hci_con_handle_t handle)
  *  \note      read动作返回数据、notify 或indicate 通知数据
  */
 /*************************************************************************************************/
-//协�??栈内部调�?
+//协�??栈内部调�?
 void user_client_report_data_callback(att_data_report_t *report_data)
 {
     if (report_data->conn_handle != __this->just_search_handle) {
@@ -567,13 +567,13 @@ void user_client_report_data_callback(att_data_report_t *report_data)
 
 /*************************************************************************************************/
 /*!
- *  \brief      搜索完profile，跟进配�?处理搜索到的handle，使能通知等操�?
+ *  \brief      搜索完profile，跟进配�?处理搜索到的handle，使能通知等操�?
  *
  *  \param      [in]
  *
  *  \return
  *
- *  \note       操作handle，完�? write ccc
+ *  \note       操作handle，完�? write ccc
  */
 /*************************************************************************************************/
 static void __do_operate_search_handle(void)
@@ -720,7 +720,7 @@ static void __check_target_uuid_match(search_result_t *result_info)
 
 /*************************************************************************************************/
 /*!
- *  \brief      协�??栈回调搜�?descriptor结果
+ *  \brief      协�??栈回调搜�?descriptor结果
  *
  *  \param      [in]    搜索结果
  *
@@ -742,16 +742,16 @@ void user_client_report_descriptor_result(charact_descriptor_t *result_descripto
 
 /*************************************************************************************************/
 /*!
- *  \brief      协�??栈回调搜�? service & charactc的结�?
+ *  \brief      协�??栈回调搜�? service & charactc的结�?
  *
  *  \param      [in]    搜索结果
  *
  *  \return
  *
- *  \note      每搜索到一个server �? charactc uuid 都会调用,直到搜索结束
+ *  \note      每搜索到一个server �? charactc uuid 都会调用,直到搜索结束
  */
 /*************************************************************************************************/
-//协�??栈内部调�?
+//协�??栈内部调�?
 void user_client_report_search_result(search_result_t *result_info)
 {
     if (result_info == (void *) - 1) {
@@ -763,7 +763,7 @@ void user_client_report_search_result(search_result_t *result_info)
 
         __this->client_search_handle = 0;//clear handle
 
-        //搜索完profile,多机应用会触发尝试开新�?��?�scan
+        //搜索完profile,多机应用会触发尝试开新�?��?�scan
         if (SUPPORT_MAX_GATT_CLIENT > 1) {
             __gatt_client_check_auto_scan();
         }
@@ -792,7 +792,7 @@ void user_client_report_search_result(search_result_t *result_info)
 
 /*************************************************************************************************/
 /*!
- *  \brief      �?动profile搜索
+ *  \brief      �?动profile搜索
  *
  *  \param      [in]
  *
@@ -824,7 +824,7 @@ static void __gatt_client_search_profile_start(void)
 
 /*************************************************************************************************/
 /*!
- *  \brief      检查是否配�?�?动开启scan
+ *  \brief      检查是否配�?�?动开启scan
  *
  *  \param      [in]
  *
@@ -842,7 +842,7 @@ static void __gatt_client_check_auto_scan(void)
 
 /*************************************************************************************************/
 /*!
- *  \brief       检查是否支持新设�?�open scan
+ *  \brief       检查是否支持新设�?�open scan
  *
  *  \param      [in]
  *
@@ -881,7 +881,7 @@ static bool __gatt_client_just_new_dev_scan(void)
 
 /*************************************************************************************************/
 /*!
- *  \brief      打开设�?�scan
+ *  \brief      打开设�?�scan
  *
  *  \param      [in]
  *
@@ -957,7 +957,7 @@ int ble_gatt_client_scan_enable(u32 en)
 
 /*************************************************************************************************/
 /*!
- *  \brief      检查是否有匹配scan配置的�?��??
+ *  \brief      检查是否有匹配scan配置的�?��??
  *
  *  \param      [in]
  *
@@ -1009,11 +1009,11 @@ static bool __check_device_is_match(u8 event_type, u8 info_type, u8 *data, int s
 
 /*************************************************************************************************/
 /*!
- *  \brief      解析scan到的adv&rsp包数�?
+ *  \brief      解析scan到的adv&rsp包数�?
  *
  *  \param      [in]
  *
- *  \return     �?否有匹配的�?��??, true or false
+ *  \return     �?否有匹配的�?��??, true or false
  *
  *  \note
  */
@@ -1147,7 +1147,7 @@ just_creat:
 
 /*************************************************************************************************/
 /*!
- *  \brief      建立指定设�?�连接创�?
+ *  \brief      建立指定设�?�连接创�?
  *
  *  \param      [in]
  *
@@ -1242,7 +1242,7 @@ int ble_gatt_client_create_connection_request(u8 *address, u8 addr_type, int mod
     //printf("laowang3");
     ret = ble_op_ext_create_conn(create_conn_par, sizeof(*create_conn_par));
 #else
-    /*全参数格�?*/
+    /*全参数格�?*/
     struct create_conn_param_ext_t *create_conn_par = scan_buffer;
     memcpy(create_conn_par, &create_default_param_table, sizeof(struct create_conn_param_ext_t));
 
@@ -1289,7 +1289,7 @@ int ble_gatt_client_create_connection_cannel(void)
 
 /*************************************************************************************************/
 /*!
- *  \brief      解析协�??栈回调的scan到的adv&rsp �?
+ *  \brief      解析协�??栈回调的scan到的adv&rsp �?
  *
  *  \param      [in]
  *
@@ -1315,7 +1315,7 @@ static void __gatt_client_report_adv_data(adv_report_t *report_pt, u16 len)
 #else
 
     if (!__this->gatt_search_config || !__this->gatt_search_config->match_devices_count) {
-        /*没有加指定搜�?,直接输出adv report*/
+        /*没有加指定搜�?,直接输出adv report*/
         putchar('~');
         __gatt_client_event_callback_handler(GATT_COMM_EVENT_SCAN_ADV_REPORT, report_pt, len, 0);
         return;
@@ -1326,7 +1326,7 @@ static void __gatt_client_report_adv_data(adv_report_t *report_pt, u16 len)
 #endif
 
 #if PERIODIC_ADV_MODE_EN
-    /*周期广播，不�?持连�?*/
+    /*周期广播，不�?持连�?*/
     u8 adv_sid = evt->RSSI;
     u8 *address = evt->Address;
     u8 address_type = evt->Address_Type;
@@ -1371,7 +1371,7 @@ static void __gatt_client_report_adv_data(adv_report_t *report_pt, u16 len)
 
 /*************************************************************************************************/
 /*!
- *  \brief      配�?�加密key输入控制
+ *  \brief      配�?�加密key输入控制
  *
  *  \param      [in]
  *
@@ -1392,7 +1392,7 @@ void ble_gatt_client_passkey_input(u32 *key, u16 conn_handle)
 
 /*************************************************************************************************/
 /*!
- *  \brief      sm 配�?�事件�?�理
+ *  \brief      sm 配�?�事件�?�理
  *
  *  \param      [in]
  *
@@ -1409,7 +1409,7 @@ void ble_gatt_client_sm_packet(uint8_t packet_type, uint16_t channel, uint8_t *p
     case HCI_EVENT_PACKET:
         switch (hci_event_packet_get_type(packet)) {
         case SM_EVENT_JUST_WORKS_REQUEST:
-            //发送接受配对命�?sm_just_works_confirm,否则不发
+            //发送接受配对命�?sm_just_works_confirm,否则不发
             sm_just_works_confirm(sm_event_just_works_request_get_handle(packet));
             log_info("first pair, %04x->Just Works Confirmed.\n", event->con_handle);
             __this->client_encrypt_process = LINK_ENCRYPTION_PAIR_JUST_WORKS;
@@ -1772,7 +1772,7 @@ int ble_gatt_client_connetion_update_set(u16 conn_handle, const struct conn_upda
 
 /*************************************************************************************************/
 /*!
- *  \brief      模块开关使�?
+ *  \brief      模块开关使�?
  *
  *  \param      [in]
  *
@@ -1797,7 +1797,7 @@ void ble_gatt_client_module_enable(u8 en)
 
 /*************************************************************************************************/
 /*!
- *  \brief      �?开所有的链路
+ *  \brief      �?开所有的链路
  *
  *  \param      [in]
  *
@@ -1821,13 +1821,13 @@ void ble_gatt_client_disconnect_all(void)
 
 /*************************************************************************************************/
 /*!
- *  \brief      配置scan，conn的参�?
+ *  \brief      配置scan，conn的参�?
  *
  *  \param      [in]
  *
  *  \return
  *
- *  \note      没开启scan前，都可以配�?
+ *  \note      没开启scan前，都可以配�?
  */
 /*************************************************************************************************/
 void ble_gatt_client_set_scan_config(scan_conn_cfg_t *scan_conn_cfg)
@@ -1837,13 +1837,13 @@ void ble_gatt_client_set_scan_config(scan_conn_cfg_t *scan_conn_cfg)
 
 /*************************************************************************************************/
 /*!
- *  \brief      配置scan匹配的�?��?? �? 连接后搜索的profile
+ *  \brief      配置scan匹配的�?��?? �? 连接后搜索的profile
  *
  *  \param      [in]
  *
  *  \return
  *
- *  \note      没开启scan前，都可以配�?
+ *  \note      没开启scan前，都可以配�?
  */
 /*************************************************************************************************/
 void ble_gatt_client_set_search_config(gatt_search_cfg_t *gatt_search_cfg)
@@ -1853,7 +1853,7 @@ void ble_gatt_client_set_search_config(gatt_search_cfg_t *gatt_search_cfg)
 
 /*************************************************************************************************/
 /*!
- *  \brief      在已存在的从机链�?�?,发起搜索对方的的profile
+ *  \brief      在已存在的从机链�?�?,发起搜索对方的的profile
  *
  *  \param      [in]
  *
@@ -1871,7 +1871,7 @@ void ble_gatt_just_search_profile_start(u16 conn_handle)
 
 /*************************************************************************************************/
 /*!
- *  \brief      �?搜索链路已�??释放，断开
+ *  \brief      �?搜索链路已�??释放，断开
  *
  *  \param      [in]
  *
@@ -1891,7 +1891,7 @@ void ble_gatt_just_search_profile_stop(u16 conn_handle)
 
 /*************************************************************************************************/
 /*!
- *  \brief      gatt_client 协�??栈初始化调用
+ *  \brief      gatt_client 协�??栈初始化调用
  *
  *  \param      [in]
  *
@@ -1911,7 +1911,7 @@ void ble_gatt_client_profile_init(void)
 
 /*************************************************************************************************/
 /*!
- *  \brief      蓝牙协�??栈初始化前调�?
+ *  \brief      蓝牙协�??栈初始化前调�?
  *
  *  \param      [in]
  *
@@ -1929,7 +1929,7 @@ void ble_gatt_client_init(gatt_client_cfg_t *client_cfg)
 
 /*************************************************************************************************/
 /*!
- *  \brief      gatt_client 模块退�?
+ *  \brief      gatt_client 模块退�?
  *
  *  \param      [in]
  *

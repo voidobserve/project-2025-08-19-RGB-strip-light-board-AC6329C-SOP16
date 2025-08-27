@@ -14,6 +14,8 @@
         "led_strip_sys.h": "c",
         "random": "c",
         "clock_hw.h": "c",
-        "board_config.h": "c"
+        "board_config.h": "c",
+        "lighting_animation.h": "c",
+        "ws2812fx_effect.h": "c"
     }
 }

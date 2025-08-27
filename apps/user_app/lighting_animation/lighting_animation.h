@@ -19,6 +19,7 @@ u16 WS2812FX_sample_10(void);
 u16 WS2812FX_sample_11(void);
 u16 WS2812FX_sample_13(void);
 u16 WS2812FX_sample_15(void);
+u16 WS2812FX_sample_17(void);
 
 #endif
 

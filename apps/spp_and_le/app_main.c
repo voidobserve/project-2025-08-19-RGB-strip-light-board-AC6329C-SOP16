@@ -35,6 +35,8 @@
 #include "../../apps/user_app/ws2812-fx-lib/WS2812FX_C/ws2812fx_effect.h"
 #include "../../apps/user_app/lighting_animation/lighting_animation.h"
 
+#include "../../../apps/user_app/led_strip/led_strand_effect.h" // fc_effect 变量定义
+
 OS_SEM LED_TASK_SEM;
 
 /*任务列表   */
@@ -385,7 +387,7 @@ void main_while(void)
     // }
 }
 
-extern fc_effect_t fc_effect; // 幻彩灯串效果数据
+// extern fc_effect_t fc_effect; // 幻彩灯串效果数据
 extern const u8 size_type[4];
 extern uint16_t SM_mode_comet_1(void);
 
@@ -452,9 +454,9 @@ void test_task(void)
 
     // 这里的速度和时间间隔跟流星灯的不一样
     // fc_effect.star_speed = 2000 / (fc_effect.led_num); // 变化速度(0~65535，值越小，速度越快)
-    // fc_effect.star_speed = 4000; // 变化速度(0~65535，值越小，速度越快)
+    fc_effect.star_speed = 4000; // 变化速度(0~65535，值越小，速度越快)
     // fc_effect.star_speed = 3000;      // 变化速度(0~65535，值越小，速度越快)
-    fc_effect.star_speed = 2000;      // 变化速度(0~65535，值越小，速度越快)
+    // fc_effect.star_speed = 2000;      // 变化速度(0~65535，值越小，速度越快)
     // fc_effect.star_speed = 1000;      // 变化速度(0~65535，值越小，速度越快)
     fc_effect.meteor_period = 15 + 4; // 时间周期，包括执行动画的时间
 
@@ -469,11 +471,11 @@ void test_task(void)
         0,                     // 第0段
         0,                     // 起始位置
         fc_effect.led_num - 1, // 结束位置（函数内部传参会给这个参数加一，所以填传参要减去1）
-        &WS2812FX_sample_15,   // 效果
+        &WS2812FX_sample_17,   // 效果
         color_buff,            // 颜色，WS2812FX_setColors设置
         fc_effect.star_speed,  // 速度
-        // NO_OPTIONS);              // 选项
-        REVERSE); // 选项
+        NO_OPTIONS);              // 选项
+        // REVERSE); // 选项
     WS2812FX_start();
 
     /* 对应样机的模式13： */
