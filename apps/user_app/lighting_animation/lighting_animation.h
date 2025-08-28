@@ -21,5 +21,13 @@ u16 WS2812FX_sample_13(void);
 u16 WS2812FX_sample_15(void);
 u16 WS2812FX_sample_17(void);
 
+
+u16 WS2812FX_sample_single_color_meteor_light(void);
+
+void lighting_animation_mode_change(void);
+
+void lighting_animation_mode_add(void);
+void lighting_animation_mode_sub(void);
+
 #endif
 

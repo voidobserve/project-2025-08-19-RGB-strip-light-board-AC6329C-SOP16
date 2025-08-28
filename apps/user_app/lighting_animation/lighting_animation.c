@@ -12,12 +12,19 @@ const u32 color_buff[] = {RED, GREEN, BLUE, YELLOW, PINK, CYAN, WHITE};
 // size 14 :
 const u32 color_buff_mode13[] = {RED, RED, GREEN, GREEN, BLUE, BLUE, YELLOW, YELLOW, PINK, PINK, CYAN, CYAN, WHITE, WHITE};
 
-void WS2812FX_fade_out_targetColor_in_offset(u16 offset, uint32_t targetColor)
+/**
+ * @brief
+ *
+ * @param offset 灯光位置
+ * @param targetColor 颜色
+ * @param rate 亮度，范围：0~7，值越小，流星灯尾焰的层次越明显（实际测试好像没有效果）
+ */
+void WS2812FX_fade_out_targetColor_in_offset(uint8_t offset, uint32_t targetColor, uint8_t rate)
 {
     static const uint8_t rateMapH[] = {0, 1, 1, 1, 2, 3, 4, 6};
     static const uint8_t rateMapL[] = {0, 2, 3, 8, 8, 8, 8, 8};
 
-    uint8_t rate = 7; // 值越小，层次越明显
+    // uint8_t rate = 7; // 值越小，层次越明显
     uint8_t rateH = rateMapH[rate];
     uint8_t rateL = rateMapL[rate];
 
@@ -55,6 +62,70 @@ void WS2812FX_fade_out_targetColor_in_offset(u16 offset, uint32_t targetColor)
 
         WS2812FX_setPixelColor_rgbw(offset, r1 + rdelta, g1 + gdelta, b1 + bdelta, w1 + wdelta);
     }
+}
+
+/*
+    单色流星灯动画，对应样机的模式1~7
+    颜色根据colors[0]来决定
+
+    注意：
+    速度值 == 单个动画时间
+    函数内部增加了动画之间的时间间隔，与速度值有关
+*/
+u16 WS2812FX_sample_single_color_meteor_light(void)
+{
+    WS2812FX_fade_out();
+
+    if (IS_REVERSE)
+    {
+        if ((_seg->stop - _seg->start) >= _seg_rt->counter_mode_step)
+        {
+            WS2812FX_setPixelColor(_seg->stop - _seg_rt->counter_mode_step, _seg->colors[0]);
+        }
+    }
+    else
+    {
+        if (_seg_rt->counter_mode_step < _seg->stop + 1)
+        {
+            WS2812FX_setPixelColor(_seg->start + _seg_rt->counter_mode_step, _seg->colors[0]);
+        }
+    }
+
+    /*
+        执行一次 0->_seg_len的动画所需时间由 _seg->speed 决定
+        interval 控制每轮动画的时间，
+        每轮动画的时间 == 执行一次 0->_seg_len的动画所需时间 + 动画之间的时间间隔
+    */
+    u16 interval = 0;
+    if (_seg->speed == 1000) // 速度值对应 1s，从0到_seg_len的动画时间为1s
+    {
+        interval = _seg_len * (4 + 1); //
+    }
+    else if (_seg->speed == 2000) // 速度值对应 2s，从0到_seg_len的动画时间为2s
+    {
+        interval = _seg_len * ((8 + 2) / 2);
+    }
+    else if (_seg->speed == 3000)
+    {
+        // interval = _seg_len * ((10 + 3) *10 / 3) / 10; // 这一句会丢失部分时间精度
+        interval = _seg_len * (((double)10 + 3) / 3);
+    }
+    else if (_seg->speed == 4000)
+    {
+        interval = _seg_len * (((double)15 + 4) / 4);
+    }
+    interval = _seg_len; // 测试去掉动画时间间隔，动画本身所需的时间
+
+    _seg_rt->counter_mode_step = (_seg_rt->counter_mode_step + 1) % (interval);
+
+    if (_seg_rt->counter_mode_step == 0)
+    {
+        SET_CYCLE;
+        // fc_effect.mode_cycle = 1;
+    }
+
+    // return (_seg->speed / (fc_effect.led_num + 11));
+    return (_seg->speed / (fc_effect.led_num + 12));
 }
 
 /*
@@ -892,27 +963,27 @@ u16 WS2812FX_sample_10(void)
 
             if (_seg_rt->counter_mode_step >= 1)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - led_offset + 1, GREEN);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - led_offset + 1, GREEN, 7);
             }
 
             if (_seg_rt->counter_mode_step >= 2)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - led_offset + 2, BLUE);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - led_offset + 2, BLUE, 7);
             }
 
             if (_seg_rt->counter_mode_step >= 3)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - led_offset + 3, RED);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - led_offset + 3, RED, 7);
             }
 
             if (_seg_rt->counter_mode_step >= 4)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - led_offset + 4, GREEN);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - led_offset + 4, GREEN, 7);
             }
 
             if (_seg_rt->counter_mode_step >= 5)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - led_offset + 5, BLUE);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - led_offset + 5, BLUE, 7);
             }
         }
         else
@@ -921,27 +992,27 @@ u16 WS2812FX_sample_10(void)
 
             if (_seg_rt->counter_mode_step >= 1)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->start + led_offset - 1, GREEN);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->start + led_offset - 1, GREEN, 7);
             }
 
             if (_seg_rt->counter_mode_step >= 2)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->start + led_offset - 2, BLUE);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->start + led_offset - 2, BLUE, 7);
             }
 
             if (_seg_rt->counter_mode_step >= 3)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->start + led_offset - 3, RED);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->start + led_offset - 3, RED, 7);
             }
 
             if (_seg_rt->counter_mode_step >= 4)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->start + led_offset - 4, GREEN);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->start + led_offset - 4, GREEN, 7);
             }
 
             if (_seg_rt->counter_mode_step >= 5)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->start + led_offset - 5, BLUE);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->start + led_offset - 5, BLUE, 7);
             }
         }
     }
@@ -1001,27 +1072,27 @@ u16 WS2812FX_sample_11(void)
 
             if (_seg_rt->counter_mode_step >= 1)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - _seg_rt->counter_mode_step + 1, GREEN);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - _seg_rt->counter_mode_step + 1, GREEN, 7);
             }
 
             if (_seg_rt->counter_mode_step >= 2)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - _seg_rt->counter_mode_step + 2, BLUE);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - _seg_rt->counter_mode_step + 2, BLUE, 7);
             }
 
             if (_seg_rt->counter_mode_step >= 3)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - _seg_rt->counter_mode_step + 3, YELLOW);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - _seg_rt->counter_mode_step + 3, YELLOW, 7);
             }
 
             if (_seg_rt->counter_mode_step >= 4)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - _seg_rt->counter_mode_step + 4, PINK);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - _seg_rt->counter_mode_step + 4, PINK, 7);
             }
 
             if (_seg_rt->counter_mode_step >= 5)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - _seg_rt->counter_mode_step + 5, CYAN);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - _seg_rt->counter_mode_step + 5, CYAN, 7);
             }
         }
         else
@@ -1030,27 +1101,27 @@ u16 WS2812FX_sample_11(void)
 
             if (_seg_rt->counter_mode_step >= 1)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->start + _seg_rt->counter_mode_step - 1, GREEN);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->start + _seg_rt->counter_mode_step - 1, GREEN, 7);
             }
 
             if (_seg_rt->counter_mode_step >= 2)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->start + _seg_rt->counter_mode_step - 2, BLUE);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->start + _seg_rt->counter_mode_step - 2, BLUE, 7);
             }
 
             if (_seg_rt->counter_mode_step >= 3)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->start + _seg_rt->counter_mode_step - 3, YELLOW);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->start + _seg_rt->counter_mode_step - 3, YELLOW, 7);
             }
 
             if (_seg_rt->counter_mode_step >= 4)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->start + _seg_rt->counter_mode_step - 4, PINK);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->start + _seg_rt->counter_mode_step - 4, PINK, 7);
             }
 
             if (_seg_rt->counter_mode_step >= 5)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->start + _seg_rt->counter_mode_step - 5, CYAN);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->start + _seg_rt->counter_mode_step - 5, CYAN, 7);
             }
         }
     }
@@ -1065,27 +1136,27 @@ u16 WS2812FX_sample_11(void)
 
             if (offset >= 1)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - offset + 1, PINK);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - offset + 1, PINK, 7);
             }
 
             if (offset >= 2)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - offset + 2, YELLOW);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - offset + 2, YELLOW, 7);
             }
 
             if (offset >= 3)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - offset + 3, BLUE);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - offset + 3, BLUE, 7);
             }
 
             if (offset >= 4)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - offset + 4, GREEN);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - offset + 4, GREEN, 7);
             }
 
             if (offset >= 5)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - offset + 5, RED);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->stop - offset + 5, RED, 7);
             }
         }
         else
@@ -1094,27 +1165,27 @@ u16 WS2812FX_sample_11(void)
 
             if (offset >= 1)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->start + offset - 1, PINK);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->start + offset - 1, PINK, 7);
             }
 
             if (offset >= 2)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->start + offset - 2, YELLOW);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->start + offset - 2, YELLOW, 7);
             }
 
             if (offset >= 3)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->start + offset - 3, BLUE);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->start + offset - 3, BLUE, 7);
             }
 
             if (offset >= 4)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->start + offset - 4, GREEN);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->start + offset - 4, GREEN, 7);
             }
 
             if (offset >= 5)
             {
-                WS2812FX_fade_out_targetColor_in_offset(_seg->start + offset - 5, RED);
+                WS2812FX_fade_out_targetColor_in_offset(_seg->start + offset - 5, RED, 7);
             }
         }
     }
@@ -1463,23 +1534,20 @@ u16 WS2812FX_sample_17(void)
     return (_seg->speed / (fc_effect.led_num));
 }
 
-void lighting_animation_switch_mode(void)
+/*
+    根据模式切换灯光动画
+    根据 fc_effect.cur_mode，切换到对应的动画
+
+
+*/
+static volatile u32 color = BLACK;
+void lighting_animation_mode_change(void)
 {
-    mode_ptr *light_mode_ptr = NULL;
-    void *color_ptr = NULL;
-
-    u32 color = BLACK;
-    u8 is_reverse = NO_OPTIONS;
-
-    if (fc_effect.is_reverse)
-    {
-        is_reverse = REVERSE;
-    }
+    // u32 color = BLACK;
 
     // mode 1 ~ 7，单色流星灯
     if (fc_effect.cur_mode >= 1 && fc_effect.cur_mode <= 7)
     {
-        // color = color_buff[fc_effect.cur_mode - 1];
         switch (fc_effect.cur_mode)
         {
         case 1:
@@ -1504,35 +1572,63 @@ void lighting_animation_switch_mode(void)
             color = CYAN;
             break;
         }
-  
-        extern void WS2812FX_mode_comet_1(void);
+
         Adafruit_NeoPixel_clear(); // 清空缓存残留
         WS2812FX_show();
 
-        WS2812FX_stop();
-        WS2812FX_setSegment_colorOptions(
-            0,                                         // 第0段
-            0,                                         // 起始位置
-            fc_effect.led_num,                         // 结束位置
-            &WS2812FX_mode_comet_1,                    // 效果
-            color,                                     // 颜色，WS2812FX_setColors设置
-            fc_effect.star_speed,                      // 速度
-            B00000101 /* 6个灯为一组 */ | is_reverse); // 选项
-        WS2812FX_start();
+        // extern void WS2812FX_mode_comet_1(void);
+        // WS2812FX_stop();
+        // WS2812FX_setSegment_colorOptions(
+        //     0,                                          // 第0段
+        //     0,                                          // 起始位置
+        //     fc_effect.led_num - 1,                      // 结束位置
+        //     &WS2812FX_sample_single_color_meteor_light, // 效果
+        //     PINK,                                      // 颜色，WS2812FX_setColors设置
+        //     fc_effect.star_speed,                       // 速度
+        //     // B00000101 /* 6个灯为一组，好像没有效果 */ | REVERSE); // 选项
+        //     B00000101 /* 6个灯为一组，好像没有效果 */ | NO_OPTIONS); // 选项
+        // WS2812FX_start();
+
+        /* 对应样机的模式13： */
+        // WS2812FX_stop();
+        // WS2812FX_setSegment_colorsOptions(
+        //     0,                     // 第0段
+        //     0,                     // 起始位置
+        //     fc_effect.led_num - 1, // 结束位置（函数内部传参会给这个参数加一，所以填传参要减去1）
+        //     &WS2812FX_sample_13,   // 效果
+        //     color_buff_mode13,     // 颜色，WS2812FX_setColors设置
+        //     fc_effect.star_speed,  // 速度
+        //     NO_OPTIONS);           // 选项
+        //     // REVERSE); // 选项
+        // WS2812FX_start();
+    }
+    else if (8 == fc_effect.cur_mode)
+    {
+    }
+}
+
+void lighting_animation_mode_add(void)
+{
+    if (fc_effect.cur_mode < 20)
+    {
+        fc_effect.cur_mode++;
     }
 
-#if 0
-    WS2812FX_stop();
-    WS2812FX_setSegment_colorsOptions(
-        0,                     // 第0段
-        0,                     // 起始位置
-        fc_effect.led_num - 1, // 结束位置（函数内部传参会给这个参数加一，所以填传参要减去1）
-                               // &WS2812FX_sample_17,   // 效果
-        light_mode_ptr,              // 效果
-        color_buff,            // 颜色，WS2812FX_setColors设置
-        fc_effect.star_speed,  // 速度
-        NO_OPTIONS);           // 选项
-    // REVERSE); // 选项
-    WS2812FX_start();
-#endif
+    // 保存信息：
+    // xxxx
+
+    lighting_animation_mode_change();
+}
+
+void lighting_animation_mode_sub(void)
+{
+    if (fc_effect.cur_mode > 1)
+    {
+        fc_effect.cur_mode--;
+    }
+
+    // 保存信息：
+    // xxxx
+
+    lighting_animation_mode_change();
 }

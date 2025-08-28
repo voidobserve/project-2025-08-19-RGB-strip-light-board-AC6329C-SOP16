@@ -9,11 +9,9 @@
 #include "led_strip_sys.h"
 
 #include "../../../apps/user_app/lighting_animation/lighting_animation.h" // 灯光动画
-#include "../../../apps/user_app/led_strip/led_strand_effect.h" // fc_effect 变量定义
-
+#include "../../../apps/user_app/led_strip/led_strand_effect.h"           // fc_effect 变量定义
 
 #if (TCFG_RF24GKEY_ENABLE)
- 
 
 const u8 rf24g_key_event_table[][RF34G_KEY_EVENT_MAX + 1] = {
     {RF24G_KEY_ON_OFF, RF24G_KEY_EVENT_ON_OFF_CLICK, RF24G_KEY_EVENT_ON_OFF_HOLD, RF24G_KEY_EVENT_ON_OFF_LOOSE},
@@ -166,6 +164,7 @@ void rf24_key_handle(void)
         {
             fc_effect.on_off_flag = DEVICE_ON;
 
+#if 0
             WS2812FX_stop();
             WS2812FX_setSegment_colorsOptions(
                 0,                     // 第0段
@@ -177,6 +176,9 @@ void rf24_key_handle(void)
                 NO_OPTIONS);           // 选项
             // REVERSE); // 选项
             WS2812FX_start();
+#endif
+
+            lighting_animation_mode_change();
 
             // set_fc_effect();
 
@@ -355,7 +357,7 @@ void rf24_key_handle(void)
     }
 
     // 每次按下按键，将当前灯光对应的配置写回flash
-    save_user_data_area3();
+    // save_user_data_area3();
 }
 
 #endif // #if (TCFG_RF24GKEY_ENABLE)

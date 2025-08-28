@@ -396,6 +396,9 @@ void test_task(void)
 {
     // os_time_dly(100);
     fc_effect.on_off_flag == DEVICE_ON;
+    fc_effect.cur_mode = 2;
+    fc_effect.star_speed = 2000;
+    fc_effect.cur_options = NO_OPTIONS;
 
 #if 0 // 流星灯动画
     // fc_effect.star_speed = 180; // 变化速度(0~65535，值越小，速度越快) 动画时间约 4 s
@@ -450,7 +453,7 @@ void test_task(void)
     WS2812FX_start();
 #endif // 多种颜色依次进行的流星灯动画
 
-#if 1 // 流水灯动画
+#if 0 // 流水灯动画
 
     // 这里的速度和时间间隔跟流星灯的不一样
     // fc_effect.star_speed = 2000 / (fc_effect.led_num); // 变化速度(0~65535，值越小，速度越快)
@@ -493,6 +496,22 @@ void test_task(void)
 
 #endif
 
+    Adafruit_NeoPixel_clear(); // 清空缓存残留
+    WS2812FX_show();
+    WS2812FX_stop();
+    WS2812FX_setSegment_colorsOptions(
+        0,                                          // 第0段
+        0,                                          // 起始位置
+        fc_effect.led_num - 1,                      // 结束位置
+        &WS2812FX_sample_single_color_meteor_light, // 效果
+        &color_buff[1],                                 // 颜色，WS2812FX_setColors设置
+        4000,                                       // 速度
+        // B00000101 /* 6个灯为一组 */ | REVERSE); // 选项
+        B00000101 /* 6个灯为一组 */ | NO_OPTIONS); // 选项
+    WS2812FX_start();
+
+    // lighting_animation_mode_change();
+
     while (1)
     {
         rf24_key_handle();
@@ -516,7 +535,7 @@ void my_main(void)
     // sys_s_hi_timer_add(NULL, count_down_run, 10); //注册定时关机定时器
     // sys_s_hi_timer_add(NULL, time_clock_handler, 10); //注册定时做的时间计时定时器
     // sys_s_hi_timer_add(NULL, ir_timer_handler, 10); //注册红外定时器
-    sys_s_hi_timer_add(NULL, meteor_period_sub, 10); // 注册流星周期定时器
+    // sys_s_hi_timer_add(NULL, meteor_period_sub, 10); // 注册流星周期定时器
     // sys_s_hi_timer_add(NULL, rf433_handle, 10);      // 注册433遥控功能定时器
 
     sys_timer_add(NULL, main_while, 10);
