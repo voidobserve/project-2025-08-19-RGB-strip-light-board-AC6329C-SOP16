@@ -136,12 +136,12 @@ typedef struct
     unsigned char b;           // 本地亮度
     unsigned char app_b;       // 反馈给APP亮度
     unsigned char app_speed;   // 反馈给APP速度
-    unsigned char ls_b;        // 遥控调亮度
-    unsigned char ls_speed;    // 遥控调速度
+    // unsigned char ls_b;        // 遥控调亮度
+    // unsigned char ls_speed;    // 遥控调速度
 
     color_t rgb; // 静态模式颜色
 
-    unsigned char meteor_period; // 周期值，单位秒  /* 只在单色的流星灯动画起作用 */
+    // unsigned char meteor_period; // 周期值，单位秒  /* 只在单色的流星灯动画起作用 */
     unsigned char mode_cycle;    // 1:模式完成一个循环。0：正在跑，和meteor_period搭配用
     u16 period_cnt;              // ms,运行时的计数器
     Now_state_e Now_state;       // 当前运行模式
@@ -160,9 +160,8 @@ typedef struct
     unsigned char star_speed_index;
 
     // ==============================================================
-    u8 cur_mode; // 当前灯光模式 1~20
-    // u8 is_reverse; // 是否要反转灯光动画
-    u8 cur_options; // 当前配置
+    // u8 cur_mode; // 当前灯光模式 1~20 
+    // u8 cur_options; // 当前配置
     // ===============================================================
 } fc_effect_t;
 

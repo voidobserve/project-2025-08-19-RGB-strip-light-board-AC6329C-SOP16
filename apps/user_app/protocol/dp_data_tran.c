@@ -320,7 +320,7 @@ void fd_meteor_cycle(void)
     uint8_t tp_buffer[6];
     tp_buffer[0] = 0x2F;
     tp_buffer[1] = 0x03;
-    tp_buffer[2] = fc_effect.meteor_period;
+    // tp_buffer[2] = fc_effect.meteor_period;
 
     zd_fb_2_app(tp_buffer, 3);
 }
@@ -577,7 +577,7 @@ void parse_zd_data(unsigned char *LedCommand)
         //-------------------流星周期--------------------------
         Send_buffer[6] = 0x2F;
         Send_buffer[7] = 0x03;
-        Send_buffer[8] = fc_effect.meteor_period;
+        // Send_buffer[8] = fc_effect.meteor_period;
         ble_comm_att_send_data(ZD_HCI_handle, ATT_CHARACTERISTIC_fff1_01_VALUE_HANDLE, Send_buffer, 9, ATT_OP_AUTO_READ_CCC);
         os_time_dly(1);
         //-------------------发送灵敏度---------------------------
@@ -793,7 +793,7 @@ void parse_zd_data(unsigned char *LedCommand)
             if(LedCommand[0]==0x2F && LedCommand[1]==0x05 )
             {
 
-                app_set_sensitive(100 - LedCommand[2]);
+                // app_set_sensitive(100 - LedCommand[2]);
                 fb_sensitive();
 
             }
@@ -827,7 +827,7 @@ void parse_zd_data(unsigned char *LedCommand)
             if(LedCommand[0]==0x2F && LedCommand[1]==0x03 && fc_effect.star_on_off == DEVICE_ON)
             {
 
-                app_set_meteor_pro(LedCommand[2]);
+                // app_set_meteor_pro(LedCommand[2]);
                 fd_meteor_cycle();
             }
 #if 0

@@ -78,9 +78,9 @@ const struct task_info task_info_table[] = {
     {"hilink_task", 2, 0, 1024, 0}, // 定义线程 hilink任务调度
 #endif
 
-    {"led_task", 2, 0, 512, 512}, // 灯光
+    // {"led_task", 2, 0, 512, 512}, // 灯光
 
-    {"test_task", 2, 0, 512, 512}, // 定义线程 main 任务调度
+    {"test_task", 3, 0, 512, 512}, // 定义线程   任务调度
     {0, 0},
 };
 
@@ -395,121 +395,15 @@ extern uint16_t SM_mode_comet_1(void);
 void test_task(void)
 {
     // os_time_dly(100);
-    fc_effect.on_off_flag == DEVICE_ON;
-    fc_effect.cur_mode = 2;
-    fc_effect.star_speed = 2000;
-    fc_effect.cur_options = NO_OPTIONS;
+    // fc_effect.on_off_flag == DEVICE_ON;
+    // fc_effect.cur_mode = 2;
+    // fc_effect.star_speed = 1000;
+    // // fc_effect.star_speed = 2000;
+    // fc_effect.cur_options = NO_OPTIONS;
 
-#if 0 // 流星灯动画
-    // fc_effect.star_speed = 180; // 变化速度(0~65535，值越小，速度越快) 动画时间约 4 s
-    // fc_effect.star_speed = 135;// 变化速度(0~65535，值越小，速度越快) 动画时间约 3 s
-    fc_effect.star_speed = 90; // 变化速度(0~65535，值越小，速度越快) 动画时间约 2 s
-    // fc_effect.star_speed = 45; // 变化速度(0~65535，值越小，速度越快) 动画时间约 1 s
-
- 
-
-    // fc_effect.meteor_period = 4 + 1; // 时间周期，包括执行动画的时间
-    fc_effect.meteor_period = 8 + 2; // 时间周期，包括执行动画的时间
-    // fc_effect.meteor_period = 10 + 3; // 时间周期，包括执行动画的时间
-    // fc_effect.meteor_period = 15 + 4; // 时间周期，包括执行动画的时间
-
-    Adafruit_NeoPixel_clear(); // 清空缓存残留
-    WS2812FX_show();
-
-    extern void WS2812FX_mode_comet_1(void);
-    WS2812FX_stop();
-    WS2812FX_setSegment_colorOptions(
-        0,                                      // 第0段
-        0, fc_effect.led_num,                   // 起始位置，结束位置
-        &WS2812FX_mode_comet_1,                 // 效果
-        PINK,                                   // 颜色，WS2812FX_setColors设置
-        fc_effect.star_speed,                   // 速度
-        B00000101 /* 6个灯为一组 */ | REVERSE); // 选项
-    WS2812FX_start();
-#endif
-
-#if 0  // 多种颜色依次进行的流星灯动画
-    // fc_effect.star_speed = 180; // 变化速度(0~65535，值越小，速度越快) 动画时间约 4 s
-    // fc_effect.star_speed = 135;// 变化速度(0~65535，值越小，速度越快) 动画时间约 3 s
-    // fc_effect.star_speed = 90; // 变化速度(0~65535，值越小，速度越快) 动画时间约 2 s
-    fc_effect.star_speed = 45; // 变化速度(0~65535，值越小，速度越快) 动画时间约 1 s
-
-    fc_effect.meteor_period = 4 + 1; // 时间周期，包括执行动画的时间
-    // fc_effect.meteor_period = 8 + 2; // 时间周期，包括执行动画的时间
-    // fc_effect.meteor_period = 10 + 3; // 时间周期，包括执行动画的时间
-    // fc_effect.meteor_period = 15 + 4; // 时间周期，包括执行动画的时间
-
-    Adafruit_NeoPixel_clear(); // 清空缓存残留
-    WS2812FX_show();
-
-    WS2812FX_stop();
-    WS2812FX_setSegment_colorsOptions(
-        0,                            // 第0段
-        0, fc_effect.led_num,         // 起始位置，结束位置
-        &WS2812FX_sample_9,           // 效果
-        color_buff,                   // 颜色，WS2812FX_setColors设置
-        fc_effect.star_speed,         // 速度
-        B00000101 /* 6个灯为一组 */); // 选项
-    WS2812FX_start();
-#endif // 多种颜色依次进行的流星灯动画
-
-#if 0 // 流水灯动画
-
-    // 这里的速度和时间间隔跟流星灯的不一样
-    // fc_effect.star_speed = 2000 / (fc_effect.led_num); // 变化速度(0~65535，值越小，速度越快)
-    fc_effect.star_speed = 4000; // 变化速度(0~65535，值越小，速度越快)
-    // fc_effect.star_speed = 3000;      // 变化速度(0~65535，值越小，速度越快)
-    // fc_effect.star_speed = 2000;      // 变化速度(0~65535，值越小，速度越快)
-    // fc_effect.star_speed = 1000;      // 变化速度(0~65535，值越小，速度越快)
-    fc_effect.meteor_period = 15 + 4; // 时间周期，包括执行动画的时间
-
-    fc_effect.b = 100;
-    WS2812FX_setBrightness(fc_effect.b);
-
-    Adafruit_NeoPixel_clear(); // 清空缓存残留
-    WS2812FX_show();
-
-    WS2812FX_stop();
-    WS2812FX_setSegment_colorsOptions(
-        0,                     // 第0段
-        0,                     // 起始位置
-        fc_effect.led_num - 1, // 结束位置（函数内部传参会给这个参数加一，所以填传参要减去1）
-        &WS2812FX_sample_17,   // 效果
-        color_buff,            // 颜色，WS2812FX_setColors设置
-        fc_effect.star_speed,  // 速度
-        NO_OPTIONS);              // 选项
-        // REVERSE); // 选项
-    WS2812FX_start();
-
-    /* 对应样机的模式13： */
-    // WS2812FX_stop();
-    // WS2812FX_setSegment_colorsOptions(
-    //     0,                     // 第0段
-    //     0,                     // 起始位置
-    //     fc_effect.led_num - 1, // 结束位置（函数内部传参会给这个参数加一，所以填传参要减去1）
-    //     &WS2812FX_sample_13,   // 效果
-    //     color_buff_mode13,     // 颜色，WS2812FX_setColors设置
-    //     fc_effect.star_speed,  // 速度
-    //     NO_OPTIONS);           // 选项
-    //     // REVERSE); // 选项
-    // WS2812FX_start();
-
-#endif
-
-    Adafruit_NeoPixel_clear(); // 清空缓存残留
-    WS2812FX_show();
-    WS2812FX_stop();
-    WS2812FX_setSegment_colorsOptions(
-        0,                                          // 第0段
-        0,                                          // 起始位置
-        fc_effect.led_num - 1,                      // 结束位置
-        &WS2812FX_sample_single_color_meteor_light, // 效果
-        &color_buff[1],                                 // 颜色，WS2812FX_setColors设置
-        4000,                                       // 速度
-        // B00000101 /* 6个灯为一组 */ | REVERSE); // 选项
-        B00000101 /* 6个灯为一组 */ | NO_OPTIONS); // 选项
-    WS2812FX_start();
-
+    // fc_effect.b = 100;
+    // WS2812FX_setBrightness(fc_effect.b);
+  
     // lighting_animation_mode_change();
 
     while (1)
@@ -529,8 +423,12 @@ void my_main(void)
     // rf433_gpio_init();
 #endif
 
-    read_flash_device_status_init();
-    full_color_init();
+    read_flash_device_status_init(); // 读取数据，进行初始化
+    // full_color_init();
+
+    WS2812FX_init(fc_effect.led_num, fc_effect.sequence); // 初始化ws2811
+    WS2812FX_setBrightness(fc_effect.b); 
+    // set_on_off_led(fc_effect.on_off_flag); 
 
     // sys_s_hi_timer_add(NULL, count_down_run, 10); //注册定时关机定时器
     // sys_s_hi_timer_add(NULL, time_clock_handler, 10); //注册定时做的时间计时定时器

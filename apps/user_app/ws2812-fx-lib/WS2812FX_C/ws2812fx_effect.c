@@ -17,7 +17,7 @@ uint8_t music_step = 0;
 uint8_t step2_flag, music_dly, change_mode, cycle_t;
 
 u8 ws2811fx_set_cycle; // 1：效果跑完一轮
-
+ 
 //-----------------------------------天奕流星效果 -----------------------------------
 #pragma region
 /**
@@ -1860,7 +1860,7 @@ uint16_t WS2812FX_mode_mutil_twihkle(void)
     _seg_rt->aux_param3 = !_seg_rt->aux_param3;
 
     return _seg->speed;
-}
+} 
 
 /* -------------------------------ws2812fx自带效果----------------------------------- */
 

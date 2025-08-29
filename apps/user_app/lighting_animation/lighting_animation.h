@@ -3,6 +3,7 @@
 
 #include "includes.h"
 
+
 extern const u32 color_buff[7];
 extern const u32 color_buff_mode13[14];
 
@@ -21,7 +22,6 @@ u16 WS2812FX_sample_13(void);
 u16 WS2812FX_sample_15(void);
 u16 WS2812FX_sample_17(void);
 
-
 u16 WS2812FX_sample_single_color_meteor_light(void);
 
 void lighting_animation_mode_change(void);
@@ -29,5 +29,16 @@ void lighting_animation_mode_change(void);
 void lighting_animation_mode_add(void);
 void lighting_animation_mode_sub(void);
 
-#endif
+void lighting_animation_speed_add(void);
+void lighting_animation_speed_sub(void);
 
+void lighting_animation_dir_switch(void); // 切换方向
+void lighting_animation_speed_max(void);   // 动画设置为最快速度
+void lighting_animation_speed_min(void);   // 动画设置为最慢速度
+void lighting_animation_speed_mid(void);   // 动画设置为中速
+
+void lighting_animation_bright_add(void); // 亮度加
+
+// 初始化（恢复出厂设置）
+void lighting_animation_init(void);
+#endif

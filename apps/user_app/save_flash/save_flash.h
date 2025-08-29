@@ -13,15 +13,16 @@ typedef enum
 #pragma pack(1)
 typedef struct
 {
-    unsigned char header; // 头部
+    unsigned char header; // 头部 ，用于检测存放的数据是否有效
     fc_effect_t fc_save;
-    unsigned char sa_ble_state;
-    u16 sa_rf433_code;
+    unsigned char sa_ble_state; // ble模块状态
+    // u16 sa_rf433_code; 
 
 } save_flash_t;
 
 #pragma pack()
 
+void read_flash_device_status_init(void);
 void save_user_data_area3(void);
 
 #endif

@@ -19,12 +19,11 @@
 // 效果数据初始化
 void fc_data_init(void)
 {
-
     // 灯具
     fc_effect.on_off_flag = DEVICE_ON; // 灯为开启状态
     // fc_effect.led_num = 14;        //灯带的总灯珠数量   森木流星灯的效果有些bug，未知道哪里出问题呢，10颗流星需要配置12
     fc_effect.led_num = 12;           // 灯带的总灯珠数量
-    fc_effect.Now_state = ACT_CUSTOM; // 当前运行状态 静态
+    fc_effect.Now_state = ACT_CUSTOM; // 当前运行状态 静态 （修改这里会影响流星灯尾焰长度）
 
     fc_effect.rgb.r = 255;
     fc_effect.rgb.g = 255;
@@ -35,12 +34,12 @@ void fc_data_init(void)
 
 #endif
     fc_effect.dream_scene.c_n = 1; // 颜色数量为1
-    fc_effect.b = 255;
+    fc_effect.b = 255; // 本地亮度
     fc_effect.app_b = 100;
-    fc_effect.ls_b = (MAX_BRIGHT_RANK - 1);
+    // fc_effect.ls_b = (MAX_BRIGHT_RANK - 1);
     fc_effect.app_speed = 80;
     fc_effect.dream_scene.speed = 100;
-    fc_effect.ls_speed = 3;
+    // fc_effect.ls_speed = 3;
 
     // fc_effect.sequence = NEO_BGR;
     fc_effect.sequence = NEO_RGB; // RGB 顺序 R->G->B
@@ -55,11 +54,12 @@ void fc_data_init(void)
     // 流星
     fc_effect.star_on_off = DEVICE_ON;
     fc_effect.star_index = 1;
-    fc_effect.star_speed = 90; // 变化速度
+    // fc_effect.star_speed = 90; // 变化速度
+    fc_effect.star_speed = 3000; // 变化速度
     fc_effect.app_star_speed = 80;
-    fc_effect.meteor_period = 10;                          // 默认8秒  周期值
-    fc_effect.period_cnt = fc_effect.meteor_period * 1000; // ms,运行时的计数器
-    fc_effect.mode_cycle = 0;                              // 模式完成一个循环的标志
+    // fc_effect.meteor_period = 10;                          // 默认8秒  周期值
+    // fc_effect.period_cnt = fc_effect.meteor_period * 1000; // ms,运行时的计数器
+    // fc_effect.mode_cycle = 0;                              // 模式完成一个循环的标志
     fc_effect.star_speed_index = 0;
 
     // //电机
@@ -68,6 +68,15 @@ void fc_data_init(void)
     //     fc_effect.base_ins.dir = 0 ;  // 0: 正转  1：
     //     fc_effect.base_ins.music_mode = 0;
     //     fc_effect.motor_on_off = DEVICE_ON;
+
+    // ================================================================ //
+    // fc_effect.cur_mode = 1;
+    // fc_effect.star_speed = 3000;
+    // fc_effect.b = 255;
+    // // fc_effect.b = 10; // 实际观察不到亮度有变化
+    // fc_effect.on_off_flag == DEVICE_ON;
+    // fc_effect.cur_options = NO_OPTIONS;
+    // fc_effect.sequence = NEO_RGB; // RGB 顺序 R->G->B
 }
 
 /*********************************************************
@@ -162,88 +171,88 @@ void app_set_speed(u8 tp_speed)
     }
 }
 
-/**
- * @brief 遥控加亮度
- *
- * @param b
- */
-void ls_add_bright(void)
-{
+// /**
+//  * @brief 遥控加亮度
+//  *
+//  * @param b
+//  */
+// void ls_add_bright(void)
+// {
 
-    if (fc_effect.Now_state == IS_STATIC)
-    {
-        if (fc_effect.ls_b < (MAX_BRIGHT_RANK - 1))
-            fc_effect.ls_b++;
-        fc_effect.app_b = (fc_effect.ls_b + 1) * 10;
-        fc_effect.b = led_b_array[fc_effect.ls_b];
-        fb_bright();
-        WS2812FX_setBrightness(fc_effect.b);
-    }
+//     if (fc_effect.Now_state == IS_STATIC)
+//     {
+//         if (fc_effect.ls_b < (MAX_BRIGHT_RANK - 1))
+//             fc_effect.ls_b++;
+//         fc_effect.app_b = (fc_effect.ls_b + 1) * 10;
+//         fc_effect.b = led_b_array[fc_effect.ls_b];
+//         fb_bright();
+//         WS2812FX_setBrightness(fc_effect.b);
+//     }
 
-    printf(" fc_effect.b = %d", fc_effect.b);
-}
+//     printf(" fc_effect.b = %d", fc_effect.b);
+// }
 
-/**
- * @brief 遥控减亮度
- *
- * @param b
- */
-void ls_sub_bright(void)
-{
-    if (fc_effect.Now_state == IS_STATIC)
-    {
-        if (fc_effect.ls_b > 0)
-            fc_effect.ls_b--;
+// /**
+//  * @brief 遥控减亮度
+//  *
+//  * @param b
+//  */
+// void ls_sub_bright(void)
+// {
+//     if (fc_effect.Now_state == IS_STATIC)
+//     {
+//         if (fc_effect.ls_b > 0)
+//             fc_effect.ls_b--;
 
-        fc_effect.app_b = (fc_effect.ls_b + 1) * 10;
-        fc_effect.b = led_b_array[fc_effect.ls_b];
-        fb_bright();
-        WS2812FX_setBrightness(fc_effect.b);
-    }
+//         fc_effect.app_b = (fc_effect.ls_b + 1) * 10;
+//         fc_effect.b = led_b_array[fc_effect.ls_b];
+//         fb_bright();
+//         WS2812FX_setBrightness(fc_effect.b);
+//     }
 
-    printf(" fc_effect.b = %d", fc_effect.b);
-}
+//     printf(" fc_effect.b = %d", fc_effect.b);
+// }
 
-/**
- * @brief 遥控加速度
- *
- */
-void ls_add_speed(void)
-{
+// /**
+//  * @brief 遥控加速度
+//  *
+//  */
+// void ls_add_speed(void)
+// {
 
-    if (fc_effect.Now_state == IS_light_scene)
-    {
+//     if (fc_effect.Now_state == IS_light_scene)
+//     {
 
-        if (fc_effect.ls_speed < (MAX_SPEED_RANK - 1))
-            fc_effect.ls_speed++;
-        fc_effect.app_speed = 100 - (fc_effect.ls_speed) * 10;
-        fc_effect.dream_scene.speed = led_speed_array[fc_effect.ls_speed];
-        fb_speed();
-        set_fc_effect();
-    }
-    printf("  fc_effect.dream_scene.speed = %d", fc_effect.dream_scene.speed);
-}
+//         if (fc_effect.ls_speed < (MAX_SPEED_RANK - 1))
+//             fc_effect.ls_speed++;
+//         fc_effect.app_speed = 100 - (fc_effect.ls_speed) * 10;
+//         fc_effect.dream_scene.speed = led_speed_array[fc_effect.ls_speed];
+//         fb_speed();
+//         set_fc_effect();
+//     }
+//     printf("  fc_effect.dream_scene.speed = %d", fc_effect.dream_scene.speed);
+// }
 
-/**
- * @brief 遥控减速度
- *
- */
-void ls_sub_speed(void)
-{
+// /**
+//  * @brief 遥控减速度
+//  *
+//  */
+// void ls_sub_speed(void)
+// {
 
-    if (fc_effect.Now_state == IS_light_scene)
-    {
+//     if (fc_effect.Now_state == IS_light_scene)
+//     {
 
-        if (fc_effect.ls_speed > 0)
-            fc_effect.ls_speed--;
-        fc_effect.app_speed = 100 - (fc_effect.ls_speed) * 10;
-        fc_effect.dream_scene.speed = led_speed_array[fc_effect.ls_speed];
-        fb_speed();
-        set_fc_effect();
-    }
+//         if (fc_effect.ls_speed > 0)
+//             fc_effect.ls_speed--;
+//         fc_effect.app_speed = 100 - (fc_effect.ls_speed) * 10;
+//         fc_effect.dream_scene.speed = led_speed_array[fc_effect.ls_speed];
+//         fb_speed();
+//         set_fc_effect();
+//     }
 
-    printf("  fc_effect.dream_scene.speed = %d", fc_effect.dream_scene.speed);
-}
+//     printf("  fc_effect.dream_scene.speed = %d", fc_effect.dream_scene.speed);
+// }
 
 /**
  * @brief  app设置灵敏度
@@ -436,26 +445,26 @@ void ls_pause_and_play(void)
 // fc_effect.meteor_period = 8;//默认8秒  周期值
 // fc_effect.period_cnt = fc_effect.meteor_period*1000;  //ms,运行时的计数器 8000ms
 
-void meteor_period_sub(void)
-{
+// void meteor_period_sub(void)
+// {
 
-    if (fc_effect.period_cnt > 10)
-    {
-        fc_effect.period_cnt -= 10;
-    }
-    else
-    {
+//     if (fc_effect.period_cnt > 10)
+//     {
+//         fc_effect.period_cnt -= 10;
+//     }
+//     else
+//     {
 
-        fc_effect.period_cnt = 0; // 计数器清零
+//         fc_effect.period_cnt = 0; // 计数器清零
 
-        if (fc_effect.mode_cycle) // 模式循环完成，更新
-        {
+//         if (fc_effect.mode_cycle) // 模式循环完成，更新
+//         {
 
-            fc_effect.period_cnt = (u16)((u32)fc_effect.meteor_period * 1000);
-            fc_effect.mode_cycle = 0;
-        }
-    }
-}
+//             fc_effect.period_cnt = (u16)((u32)fc_effect.meteor_period * 1000);
+//             fc_effect.mode_cycle = 0;
+//         }
+//     }
+// }
 
 // 0:计时完成
 // 1：计时中
@@ -467,20 +476,20 @@ u8 get_effect_p(void)
         return 0;
 }
 
-/**
- * @brief 设置流星周期时间
- *
- * @param tp_p
- */
-void app_set_meteor_pro(u8 tp_p)
-{
+// /**
+//  * @brief 设置流星周期时间
+//  *
+//  * @param tp_p
+//  */
+// void app_set_meteor_pro(u8 tp_p)
+// {
 
-    if (tp_p >= 2 && tp_p <= 20)
-    {
-        fc_effect.meteor_period = tp_p;
-        fc_effect.period_cnt = 0;
-    }
-}
+//     if (tp_p >= 2 && tp_p <= 20)
+//     {
+//         fc_effect.meteor_period = tp_p;
+//         fc_effect.period_cnt = 0;
+//     }
+// }
 
 /**
  * @brief 设置流星开关
@@ -699,7 +708,7 @@ void ls_set_star_pro(void)
     if (cycle_cntt > 4)
         cycle_cntt = 0;
 
-    printf("fc_effect.meteor_period = %d", fc_effect.meteor_period);
+    // printf("fc_effect.meteor_period = %d", fc_effect.meteor_period);
     fd_meteor_cycle();
 }
 
@@ -1194,10 +1203,10 @@ void ir_timer_handler(void)
 }
 
 // 全彩效果初始化
-void full_color_init(void)
-{
+// void full_color_init(void)
+// {
 
-    WS2812FX_init(fc_effect.led_num, fc_effect.sequence); // 初始化ws2811
-    WS2812FX_setBrightness(fc_effect.b);
-    set_on_off_led(fc_effect.on_off_flag);
-}
+//     WS2812FX_init(fc_effect.led_num, fc_effect.sequence); // 初始化ws2811
+//     WS2812FX_setBrightness(fc_effect.b);
+//     set_on_off_led(fc_effect.on_off_flag);
+// }
