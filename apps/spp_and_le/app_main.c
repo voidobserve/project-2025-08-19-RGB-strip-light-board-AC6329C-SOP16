@@ -34,8 +34,8 @@
 #include "../../apps/user_app/led_strip/led_strand_effect.h"
 #include "../../apps/user_app/ws2812-fx-lib/WS2812FX_C/ws2812fx_effect.h"
 #include "../../apps/user_app/lighting_animation/lighting_animation.h"
-
 #include "../../../apps/user_app/led_strip/led_strand_effect.h" // fc_effect 变量定义
+#include "../../../apps/user_app/save_flash/save_flash.h" // 包含 save_info_t 结构体类型定义，save_info 结构体变量定义
 
 OS_SEM LED_TASK_SEM;
 
@@ -81,6 +81,8 @@ const struct task_info task_info_table[] = {
     // {"led_task", 2, 0, 512, 512}, // 灯光
 
     {"test_task", 3, 0, 512, 512}, // 定义线程   任务调度
+
+    // {"lighting_animation_task", 3, 0, 512, 512}, // 定义线程   任务调度
     {0, 0},
 };
 
@@ -383,6 +385,8 @@ void main_while(void)
     run_tick_per_10ms();
     WS2812FX_service();
 
+    // printf("10ms\n");
+
     // os_time_dly(1);
     // }
 }
@@ -403,8 +407,8 @@ void test_task(void)
 
     // fc_effect.b = 100;
     // WS2812FX_setBrightness(fc_effect.b);
-  
-    // lighting_animation_mode_change();
+
+    lighting_animation_mode_change(); // 根据 save_info 的数据来执行对应的灯光动画
 
     while (1)
     {
@@ -423,12 +427,19 @@ void my_main(void)
     // rf433_gpio_init();
 #endif
 
-    read_flash_device_status_init(); // 读取数据，进行初始化
+    // read_flash_device_status_init(); // 读取数据，进行初始化
     // full_color_init();
 
-    WS2812FX_init(fc_effect.led_num, fc_effect.sequence); // 初始化ws2811
-    WS2812FX_setBrightness(fc_effect.b); 
-    // set_on_off_led(fc_effect.on_off_flag); 
+    read_flash_device_status_init(); // 从flash中读出保存的数据
+    save_info_read(); // 从flash中读出保存的数据
+    // 根据读出的数据来初始化
+    WS2812FX_init(LIGHTING_ANIMATION_LED_NUMS, LIGHTING_ANIMATION_RGB_NEOPIXEL_PERMUTATIONS); // 初始化ws2811
+    WS2812FX_setBrightness(save_info.cur_brightness);                                         // 设置灯光亮度
+    // fc_data_init();
+
+    // WS2812FX_init(fc_effect.led_num, fc_effect.sequence); // 初始化ws2811
+    // WS2812FX_setBrightness(fc_effect.b);
+    // set_on_off_led(fc_effect.on_off_flag);
 
     // sys_s_hi_timer_add(NULL, count_down_run, 10); //注册定时关机定时器
     // sys_s_hi_timer_add(NULL, time_clock_handler, 10); //注册定时做的时间计时定时器
@@ -437,6 +448,7 @@ void my_main(void)
     // sys_s_hi_timer_add(NULL, rf433_handle, 10);      // 注册433遥控功能定时器
 
     sys_timer_add(NULL, main_while, 10);
+    // sys_s_hi_timer_add(NULL, main_while, 10);
 
     // os_sem_create(&LED_TASK_SEM,0);
     // task_create(main_while, NULL, "led_task");

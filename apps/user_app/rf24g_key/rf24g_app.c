@@ -9,7 +9,8 @@
 #include "led_strip_sys.h"
 
 #include "../../../apps/user_app/lighting_animation/lighting_animation.h" // 灯光动画
-#include "../../../apps/user_app/led_strip/led_strand_effect.h"           // fc_effect 变量定义
+// #include "../../../apps/user_app/led_strip/led_strand_effect.h"           // fc_effect 变量定义
+#include "../../../apps/user_app/save_flash/save_flash.h" // 包含 save_info_t 结构体类型定义，save_info 结构体变量定义
 
 #if (TCFG_RF24GKEY_ENABLE)
 
@@ -154,15 +155,15 @@ void rf24_key_handle(void)
     switch (rf24g_key_event)
     {
 // 收到短按、长按后松手，再执行对应的功能
-#if 0
+#if 1
 
     case RF24G_KEY_EVENT_ON_OFF_CLICK:
     case RF24G_KEY_EVENT_ON_OFF_LOOSE:
         printf("key event on/off\n");
         // 开机/关机
-        if (fc_effect.on_off_flag == DEVICE_OFF)
+        if (0 == save_info.flag_is_light_on)
         {
-            fc_effect.on_off_flag = DEVICE_ON;
+            save_info.flag_is_light_on = 1;
             lighting_animation_mode_change();
             // fb_led_on_off_state();  // 与app同步开关状态
             printf("soft_turn_on_the_light");
@@ -170,13 +171,13 @@ void rf24_key_handle(void)
         else
         {
             // 实际上只是关灯，没有低功耗
-            fc_effect.on_off_flag = DEVICE_OFF;
+            save_info.flag_is_light_on = 0;
             WS2812FX_stop();
             // fb_led_on_off_state();  // 与app同步开关状态
             printf("soft_turn_off_lights");
         }
 
-          save_user_data_area3(); // 保存参数配置到flash
+        save_info_write(); // 保存参数配置到flash
 
         break;
 
@@ -186,7 +187,7 @@ void rf24_key_handle(void)
         printf("key event demo\n");
         lighting_animation_init();
 
-        save_user_data_area3(); // 保存参数配置到flash
+        save_info_write(); // 保存参数配置到flash
         break;
 
         /* 模式加  ========================================================== */
@@ -194,7 +195,7 @@ void rf24_key_handle(void)
     case RF24G_KEY_EVENT_MODE_ADD_LOOSE:
         printf("key_event_mode_add\n");
         lighting_animation_mode_add();
-        save_user_data_area3(); // 保存参数配置到flash
+        save_info_write(); // 保存参数配置到flash
         break;
 
         /* 模式减  ========================================================== */
@@ -202,7 +203,7 @@ void rf24_key_handle(void)
     case RF24G_KEY_EVENT_MODE_SUB_LOOSE:
         printf("key evetn mode sub\n");
         lighting_animation_mode_sub();
-        save_user_data_area3(); // 保存参数配置到flash
+        save_info_write(); // 保存参数配置到flash
         break;
 
         /* 速度加  ========================================================== */
@@ -210,7 +211,7 @@ void rf24_key_handle(void)
     case RF24G_KEY_EVENT_SPEED_ADD_LOOSE:
         printf("key event speed add\n");
         lighting_animation_speed_add();
-        save_user_data_area3(); // 保存参数配置到flash
+        save_info_write(); // 保存参数配置到flash
         break;
 
         /* 速度减  ========================================================== */
@@ -218,7 +219,7 @@ void rf24_key_handle(void)
     case RF24G_KEY_EVENT_SPEED_SUB_LOOSE:
         printf("key event speed sub\n");
         lighting_animation_speed_sub();
-        save_user_data_area3(); // 保存参数配置到flash
+        save_info_write(); // 保存参数配置到flash
         break;
 
         /* 流水间隔时间变长（待确认）  ========================================================== */
@@ -226,7 +227,7 @@ void rf24_key_handle(void)
     case RF24G_KEY_EVENT_COLOR_ADD_LOOSE:
         printf("key event color add\n");
         lighting_animation_speed_sub();
-        save_user_data_area3(); // 保存参数配置到flash
+        save_info_write(); // 保存参数配置到flash
         break;
 
         /* 流水间隔时间变短（待确认）  ========================================================== */
@@ -234,7 +235,7 @@ void rf24_key_handle(void)
     case RF24G_KEY_EVENT_COLOR_SUB_LOOSE:
         printf("key event color sub\n");
         lighting_animation_speed_add();
-        save_user_data_area3(); // 保存参数配置到flash
+        save_info_write(); // 保存参数配置到flash
         break;
 
         /* 亮度加  ========================================================== */
@@ -242,7 +243,7 @@ void rf24_key_handle(void)
     case RF24G_KEY_EVENT_BRIGHT_ADD_LOOSE:
         printf("key event bright add\n");
         lighting_animation_bright_add();
-        save_user_data_area3(); // 保存参数配置到flash
+        save_info_write(); // 保存参数配置到flash
         break;
 
         /* 流水方向切换（待确认）  ========================================================== */
@@ -251,7 +252,7 @@ void rf24_key_handle(void)
     case RF24G_KEY_EVENT_BRIGHT_SUB_LOOSE:
         printf("key event bright sub\n");
         lighting_animation_dir_switch();
-        save_user_data_area3(); // 保存参数配置到flash
+        save_info_write(); // 保存参数配置到flash
         break;
 
         /* 流水间隔时间设置为最短（待确认）  ========================================================== */
@@ -259,7 +260,7 @@ void rf24_key_handle(void)
     case RF24G_KEY_EVENT_B_LOOSE:
         printf("key event b\n");
         lighting_animation_speed_max();
-        save_user_data_area3(); // 保存参数配置到flash
+        save_info_write(); // 保存参数配置到flash
         break;
 
         /* 流水间隔时间设置为最长（待确认）  ========================================================== */
@@ -267,7 +268,7 @@ void rf24_key_handle(void)
     case RF24G_KEY_EVENT_G_LOOSE:
         printf("key event G\n");
         lighting_animation_speed_min();
-        save_user_data_area3(); // 保存参数配置到flash
+        save_info_write(); // 保存参数配置到flash
         break;
 
         /* 6中流水间隔时间固定（待确认）  ========================================================== */
@@ -275,7 +276,7 @@ void rf24_key_handle(void)
     case RF24G_KEY_EVENT_F_LOOSE:
         printf("key event F\n");
         lighting_animation_speed_mid();
-        save_user_data_area3(); // 保存参数配置到flash
+        save_info_write(); // 保存参数配置到flash
         break;
 #endif
 
@@ -372,7 +373,7 @@ void rf24_key_handle(void)
         printf("key event F\n");
         break;
 #endif
-    } 
+    }
 }
 
 #endif // #if (TCFG_RF24GKEY_ENABLE)

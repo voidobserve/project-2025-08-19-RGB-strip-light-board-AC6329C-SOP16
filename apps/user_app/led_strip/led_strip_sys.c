@@ -71,12 +71,12 @@ void fc_data_init(void)
 
     // ================================================================ //
     // fc_effect.cur_mode = 1;
-    // fc_effect.star_speed = 3000;
-    // fc_effect.b = 255;
+    fc_effect.star_speed = 3000;
+    fc_effect.b = 255;
     // // fc_effect.b = 10; // 实际观察不到亮度有变化
-    // fc_effect.on_off_flag == DEVICE_ON;
+    fc_effect.on_off_flag == DEVICE_ON;
     // fc_effect.cur_options = NO_OPTIONS;
-    // fc_effect.sequence = NEO_RGB; // RGB 顺序 R->G->B
+    fc_effect.sequence = NEO_RGB; // RGB 顺序 R->G->B
 }
 
 /*********************************************************
@@ -89,9 +89,7 @@ void soft_turn_on_the_light(void) // 软开灯处理
     fc_effect.on_off_flag = DEVICE_ON;
 
     WS2812FX_start();
-
     set_fc_effect();
-
     fb_led_on_off_state();  // 与app同步开关状态
     save_user_data_area3(); // 保存参数配置到flash
     printf("soft_turn_on_the_light");
@@ -99,9 +97,11 @@ void soft_turn_on_the_light(void) // 软开灯处理
 
 void soft_turn_off_lights(void) // 软关灯处理
 {
-
     fc_effect.on_off_flag = DEVICE_OFF;
-    set_fc_effect();
+    // set_fc_effect();
+    
+
+
     fb_led_on_off_state();  // 与app同步开关状态
     save_user_data_area3(); // 保存参数配置到flash
     printf("soft_turn_off_lights");
@@ -445,26 +445,26 @@ void ls_pause_and_play(void)
 // fc_effect.meteor_period = 8;//默认8秒  周期值
 // fc_effect.period_cnt = fc_effect.meteor_period*1000;  //ms,运行时的计数器 8000ms
 
-// void meteor_period_sub(void)
-// {
+void meteor_period_sub(void)
+{
 
-//     if (fc_effect.period_cnt > 10)
-//     {
-//         fc_effect.period_cnt -= 10;
-//     }
-//     else
-//     {
+    if (fc_effect.period_cnt > 10)
+    {
+        fc_effect.period_cnt -= 10;
+    }
+    else
+    {
 
-//         fc_effect.period_cnt = 0; // 计数器清零
+        fc_effect.period_cnt = 0; // 计数器清零
 
-//         if (fc_effect.mode_cycle) // 模式循环完成，更新
-//         {
+        if (fc_effect.mode_cycle) // 模式循环完成，更新
+        {
 
-//             fc_effect.period_cnt = (u16)((u32)fc_effect.meteor_period * 1000);
-//             fc_effect.mode_cycle = 0;
-//         }
-//     }
-// }
+            fc_effect.period_cnt = (u16)((u32)fc_effect.meteor_period * 1000);
+            fc_effect.mode_cycle = 0;
+        }
+    }
+}
 
 // 0:计时完成
 // 1：计时中
@@ -476,20 +476,20 @@ u8 get_effect_p(void)
         return 0;
 }
 
-// /**
-//  * @brief 设置流星周期时间
-//  *
-//  * @param tp_p
-//  */
-// void app_set_meteor_pro(u8 tp_p)
-// {
+/**
+ * @brief 设置流星周期时间
+ *
+ * @param tp_p
+ */
+void app_set_meteor_pro(u8 tp_p)
+{
 
-//     if (tp_p >= 2 && tp_p <= 20)
-//     {
-//         fc_effect.meteor_period = tp_p;
-//         fc_effect.period_cnt = 0;
-//     }
-// }
+    if (tp_p >= 2 && tp_p <= 20)
+    {
+        fc_effect.meteor_period = tp_p;
+        fc_effect.period_cnt = 0;
+    }
+}
 
 /**
  * @brief 设置流星开关
@@ -708,7 +708,7 @@ void ls_set_star_pro(void)
     if (cycle_cntt > 4)
         cycle_cntt = 0;
 
-    // printf("fc_effect.meteor_period = %d", fc_effect.meteor_period);
+    printf("fc_effect.meteor_period = %d", fc_effect.meteor_period);
     fd_meteor_cycle();
 }
 

@@ -20,6 +20,9 @@ typedef enum
     IS_light_scene,  // 炫彩情景
     IS_smear_adjust, // 涂抹功能
 
+
+    CUR_MODE_CTL_BY_RF_24G, // 由2.4G遥控器控制的功能
+
 } Now_state_e;
 
 // 涂抹工具
@@ -136,12 +139,12 @@ typedef struct
     unsigned char b;           // 本地亮度
     unsigned char app_b;       // 反馈给APP亮度
     unsigned char app_speed;   // 反馈给APP速度
-    // unsigned char ls_b;        // 遥控调亮度
-    // unsigned char ls_speed;    // 遥控调速度
+    // unsigned char ls_b;        // 遥控调亮度 (未使用)
+    // unsigned char ls_speed;    // 遥控调速度 (未使用)
 
     color_t rgb; // 静态模式颜色
 
-    // unsigned char meteor_period; // 周期值，单位秒  /* 只在单色的流星灯动画起作用 */
+    unsigned char meteor_period; // 周期值，单位秒  /* 只在单色的流星灯动画起作用 */
     unsigned char mode_cycle;    // 1:模式完成一个循环。0：正在跑，和meteor_period搭配用
     u16 period_cnt;              // ms,运行时的计数器
     Now_state_e Now_state;       // 当前运行模式
@@ -153,17 +156,13 @@ typedef struct
     unsigned char auto_f;
     base_ins_t base_ins; // 电机
     unsigned char motor_on_off;
-    unsigned char star_on_off; // 流星开关
-    unsigned char star_index;
-    unsigned short star_speed;
-    unsigned char app_star_speed;
-    unsigned char star_speed_index;
+    unsigned char star_on_off;      // 流星开关
+    unsigned char star_index;       // 记录流星灯模式索引
+    unsigned short star_speed;      // 流星灯速度
+    unsigned char app_star_speed;   // app调节的流星灯速度
+    unsigned char star_speed_index; // 流星灯速度索引
 
-    // ==============================================================
-    // u8 cur_mode; // 当前灯光模式 1~20 
-    // u8 cur_options; // 当前配置
-    // ===============================================================
-} fc_effect_t;
+} fc_effect_t; // 这个结构体类型已经占用了超过200字节空间，只能用flash的一个id来写入，要保存其他数据，得换flash其他的id
 
 countdown_t zd_countdown[ALARM_NUMBER];
 

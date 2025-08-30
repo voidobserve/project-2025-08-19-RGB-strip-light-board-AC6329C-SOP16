@@ -6,6 +6,8 @@
 #include "led_strip_sys.h"
 #include "led_strand_effect.h"
 
+#include "../../../apps/user_app/save_flash/save_flash.h" // 包含 save_info_t 结构体类型定义，save_info 结构体变量定义
+
 /*
 Adafruit_NeoPixel库为实现WS2812类似系列的灯珠实现非常酷炫的效果提供了各种接口函数，
 应用层可以很方便的利用这些接口函数实现各种丰富的显示效果。Adafruit_NeoPixel库提供的example中包含了很多炫酷效果的例程，
@@ -57,7 +59,7 @@ volatile u8 buf[SYS_MAX_LED_NUMBER * 3] __attribute((aligned(4))); // 使用中�
  * @brief 灯具的驱动集成，包括七彩的驱动，幻彩的驱动
  *
  * @param pixels_pattern   颜色
- * @param pattern_size     灯具的长度    fc_effect.led_num * 3 或者 * 4
+ * @param pattern_size     灯具的长度    (fc_effect.led_num * 3 或者 * 4)
  */
 void ws281x_show(unsigned char *pixels_pattern, unsigned short pattern_size)
 {
@@ -99,10 +101,18 @@ void ws281x_show(unsigned char *pixels_pattern, unsigned short pattern_size)
 
   memcpy(buf, pixels_pattern, 36);
 
-  if (fc_effect.on_off_flag == DEVICE_OFF)
-  {
-    memset(buf, 0, 36);
-  }
+  // 如果灯光关闭，清空数据，不显示颜色
+  // if (fc_effect.on_off_flag == DEVICE_OFF)
+  // {
+  //   memset(buf, 0, 36);
+  // }
+
+    // 如果灯光关闭，清空数据，不显示颜色
+    if (0 == save_info.flag_is_light_on)
+    {
+        memset(buf, 0, 36);
+    }
+
 
   extern void ledc_send_rgbbuf_isr(u8 index, u8 * rgbbuf, u32 buf_len, u16 again_cnt);
   ledc_send_rgbbuf_isr(0, buf, pattern_size / 3, 0);

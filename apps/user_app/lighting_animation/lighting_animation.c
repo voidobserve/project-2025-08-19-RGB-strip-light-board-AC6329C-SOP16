@@ -2,9 +2,8 @@
 #include "Adafruit_NeoPixel.H" // 包含RGB排列顺序
 #include "led_strand_effect.h"
 #include "../../apps/user_app/ws2812-fx-lib/WS2812FX_C/WS2812FX.h"
-
 #include "../../../apps/user_app/led_strip/led_strand_effect.h" // fc_effect 变量定义
-
+#include "../../../apps/user_app/save_flash/save_flash.h"       // 包含 save_info_t 结构体类型定义，save_info 结构体变量定义
 
 extern Segment *_seg;            // currently active segment (20 bytes)
 extern Segment_runtime *_seg_rt; // currently active segment runtime (16 bytes)
@@ -128,7 +127,7 @@ u16 WS2812FX_sample_single_color_meteor_light(void)
     {
         interval = animation_len * (((double)15 + 4) / 4);
     }
-    // interval = animation_len; // 测试去掉动画时间间隔，动画本身所需的时间
+    interval = animation_len; // 测试去掉动画时间间隔，动画本身所需的时间
     // interval = _seg_len; // 测试去掉动画时间间隔，动画本身所需的时间
 
     _seg_rt->counter_mode_step = (_seg_rt->counter_mode_step + 1) % (interval);
@@ -136,11 +135,8 @@ u16 WS2812FX_sample_single_color_meteor_light(void)
     if (_seg_rt->counter_mode_step == 0)
     {
         SET_CYCLE;
-        // fc_effect.mode_cycle = 1;
     }
 
-    // return (_seg->speed / (fc_effect.led_num + 11));
-    // return (_seg->speed / (fc_effect.led_num + 12));
     return (_seg->speed / (animation_len));
 }
 
@@ -205,7 +201,6 @@ u16 WS2812FX_sample_8(void)
     if (_seg_rt->counter_mode_step == 0)
     {
         SET_CYCLE;
-        // fc_effect.mode_cycle = 1;
 
         // 每轮动画结束，切换颜色
         // 颜色索引对应 color_buff[]
@@ -223,7 +218,6 @@ u16 WS2812FX_sample_8(void)
         }
     }
 
-    // return (_seg->speed / fc_effect.led_num);
     return (_seg->speed / (animation_len));
 }
 
@@ -282,7 +276,6 @@ u16 WS2812FX_sample_9(void)
     if (_seg_rt->counter_mode_step == 0)
     {
         SET_CYCLE;
-        // fc_effect.mode_cycle = 1; // 表示模式完成一个循环 // 目前未使用
 
         // 每轮动画结束，切换颜色
         // 颜色索引对应 color_buff[]
@@ -316,7 +309,6 @@ u16 WS2812FX_sample_9(void)
         }
     }
 
-    // return (_seg->speed / fc_effect.led_num);
     return (_seg->speed / (animation_len));
 }
 
@@ -357,7 +349,6 @@ u16 WS2812FX_sample_12(void)
     if (_seg_rt->counter_mode_step == 0)
     {
         SET_CYCLE;
-        // fc_effect.mode_cycle = 1; // 表示模式完成一个循环
 
         _seg_rt->aux_param++;
         if (_seg_rt->aux_param >= 7) // 移植时需要后改为对应数组长度
@@ -366,7 +357,7 @@ u16 WS2812FX_sample_12(void)
         }
     }
 
-    return (_seg->speed / (fc_effect.led_num + 1)); // 加一，是因为动画最后是所有灯光熄灭
+    return (_seg->speed / (_seg_len + 1)); // 加一，是因为动画最后是所有灯光熄灭
 }
 
 /*
@@ -457,7 +448,6 @@ u16 WS2812FX_sample_14(void)
     if (_seg_rt->counter_mode_step == 0)
     {
         SET_CYCLE;
-        // fc_effect.mode_cycle = 1; // 表示模式完成一个循环
 
         _seg_rt->aux_param++;
         if (_seg_rt->aux_param >= 7) // 移植时需要后改为对应数组长度
@@ -466,7 +456,7 @@ u16 WS2812FX_sample_14(void)
         }
     }
 
-    return (_seg->speed / (fc_effect.led_num - 1));
+    return (_seg->speed / (_seg_len - 1));
 }
 
 /*
@@ -512,7 +502,6 @@ u16 WS2812FX_sample_16(void)
     if (_seg_rt->counter_mode_step == 0)
     {
         SET_CYCLE;
-        // fc_effect.mode_cycle = 1; // 表示模式完成一个循环
 
         _seg_rt->aux_param++;
         if (_seg_rt->aux_param >= 7) // 移植时需要后改为对应数组长度
@@ -521,7 +510,7 @@ u16 WS2812FX_sample_16(void)
         }
     }
 
-    return (_seg->speed / fc_effect.led_num);
+    return (_seg->speed / _seg_len);
 }
 
 /*
@@ -598,7 +587,6 @@ u16 WS2812FX_sample_18(void)
     if (_seg_rt->counter_mode_step == 0)
     {
         SET_CYCLE;
-        // fc_effect.mode_cycle = 1; // 表示模式完成一个循环
 
         _seg_rt->aux_param++;
         if (_seg_rt->aux_param >= 7) // 移植时需要后改为对应数组长度
@@ -618,11 +606,11 @@ u16 WS2812FX_sample_18(void)
 
     if (_seg_rt->aux_param3 == 0)
     {
-        return (_seg->speed / (fc_effect.led_num + 1));
+        return (_seg->speed / (_seg_len + 1));
     }
     else
     {
-        return (_seg->speed / fc_effect.led_num);
+        return (_seg->speed / _seg_len);
     }
 }
 
@@ -667,7 +655,7 @@ u16 WS2812FX_sample_19(void)
 
             _seg_rt->aux_param++; // 切换到下一种颜色
 
-            return (_seg->speed / (fc_effect.led_num - 1)); // 提前返回
+            return (_seg->speed / (_seg_len - 1)); // 提前返回
         }
 
         if (0 == _seg_rt->counter_mode_step)
@@ -682,8 +670,8 @@ u16 WS2812FX_sample_19(void)
             }
             _seg_rt->counter_mode_step = 1;
 
-            if (1 == _seg_rt->counter_mode_call)                // 刚进入该模式，从第一个灯开始上色
-                return (_seg->speed / (fc_effect.led_num - 1)); // 提前返回
+            if (1 == _seg_rt->counter_mode_call)       // 刚进入该模式，从第一个灯开始上色
+                return (_seg->speed / (_seg_len - 1)); // 提前返回
         }
 
         if (_seg_rt->counter_mode_step < _seg_len)
@@ -724,7 +712,6 @@ u16 WS2812FX_sample_19(void)
         if (_seg_rt->counter_mode_step == 0)
         {
             SET_CYCLE;
-            // fc_effect.mode_cycle = 1; // 表示模式完成一个循环
 
             if (0 == _seg_rt->aux_param)
             {
@@ -732,7 +719,7 @@ u16 WS2812FX_sample_19(void)
                 _seg_rt->aux_param3 |= 0x01 << 0;
                 // 清除上一轮的颜色残留
                 Adafruit_NeoPixel_clear();
-                return (_seg->speed / (fc_effect.led_num - 1));
+                return (_seg->speed / (_seg_len - 1));
             }
 
             _seg_rt->aux_param++;
@@ -742,7 +729,7 @@ u16 WS2812FX_sample_19(void)
             }
         }
 
-        return (_seg->speed / (fc_effect.led_num - 1));
+        return (_seg->speed / (_seg_len - 1));
     }
     else
     {
@@ -776,7 +763,6 @@ u16 WS2812FX_sample_19(void)
         if (_seg_rt->counter_mode_step == 0)
         {
             SET_CYCLE;
-            // fc_effect.mode_cycle = 1; // 表示模式完成一个循环
 
             _seg_rt->aux_param++;
             if (_seg_rt->aux_param >= 7) // 移植时需要后改为对应数组长度
@@ -790,7 +776,7 @@ u16 WS2812FX_sample_19(void)
             }
         }
 
-        return (_seg->speed / fc_effect.led_num);
+        return (_seg->speed / _seg_len);
     }
 }
 
@@ -847,7 +833,6 @@ u16 WS2812FX_sample_20(void)
         if (_seg_rt->counter_mode_step == 0)
         {
             SET_CYCLE;
-            // fc_effect.mode_cycle = 1; // 表示模式完成一个循环
 
             _seg_rt->aux_param++;
             if (_seg_rt->aux_param >= 7) // 移植时需要后改为对应数组长度
@@ -858,7 +843,7 @@ u16 WS2812FX_sample_20(void)
             }
         }
 
-        return (_seg->speed / (fc_effect.led_num + 1));
+        return (_seg->speed / (_seg_len + 1));
     }
     else
     {
@@ -874,7 +859,7 @@ u16 WS2812FX_sample_20(void)
 
             _seg_rt->aux_param++; // 切换到下一种颜色
 
-            return (_seg->speed / (fc_effect.led_num - 1)); // 提前返回
+            return (_seg->speed / (_seg_len - 1)); // 提前返回
         }
 
         if (0 == _seg_rt->counter_mode_step && 7 != _seg_rt->aux_param)
@@ -889,8 +874,8 @@ u16 WS2812FX_sample_20(void)
             }
             _seg_rt->counter_mode_step = 1;
 
-            if (1 == _seg_rt->counter_mode_call)                // 刚进入该模式，从第一个灯开始上色
-                return (_seg->speed / (fc_effect.led_num - 1)); // 提前返回
+            if (1 == _seg_rt->counter_mode_call)       // 刚进入该模式，从第一个灯开始上色
+                return (_seg->speed / (_seg_len - 1)); // 提前返回
         }
 
         if (_seg_rt->counter_mode_step < _seg_len)
@@ -955,7 +940,6 @@ u16 WS2812FX_sample_20(void)
         if (_seg_rt->counter_mode_step == 0)
         {
             SET_CYCLE;
-            // fc_effect.mode_cycle = 1; // 表示模式完成一个循环
 
             _seg_rt->aux_param++;
             if (_seg_rt->aux_param >= (7 + 1)) // 移植时需要后改为对应数组长度 + 1，最后一个是红色流水，流水完毕，直接切换到下一个模式
@@ -968,7 +952,7 @@ u16 WS2812FX_sample_20(void)
             }
         }
 
-        return (_seg->speed / (fc_effect.led_num - 1));
+        return (_seg->speed / (_seg_len - 1));
     }
 }
 
@@ -1079,10 +1063,9 @@ u16 WS2812FX_sample_10(void)
     if (_seg_rt->counter_mode_step == 0)
     {
         SET_CYCLE;
-        // fc_effect.mode_cycle = 1; // 表示模式完成一个循环
     }
 
-    return (_seg->speed / (fc_effect.led_num + 5)); // 相当于从第1个灯流水到 第 WS2812_LED_NUM_MAX + 5个灯
+    return (_seg->speed / (_seg_len + 5)); // 相当于从第1个灯流水到 第 WS2812_LED_NUM_MAX + 5个灯
 }
 
 /*
@@ -1265,10 +1248,9 @@ u16 WS2812FX_sample_11(void)
     if (_seg_rt->counter_mode_step == 0)
     {
         SET_CYCLE;
-        // fc_effect.mode_cycle = 1; // 表示模式完成一个循环
     }
 
-    return (_seg->speed / ((fc_effect.led_num + 6) * 2)); // 相当于从第1个灯流水到 第 WS2812_LED_NUM_MAX + 5个灯 + 1帧全部熄灭
+    return (_seg->speed / ((_seg_len + 6) * 2)); // 相当于从第1个灯流水到 第 WS2812_LED_NUM_MAX + 5个灯 + 1帧全部熄灭
 }
 
 /*
@@ -1343,10 +1325,9 @@ u16 WS2812FX_sample_13(void)
     if (_seg_rt->counter_mode_step == 0)
     {
         SET_CYCLE;
-        // fc_effect.mode_cycle = 1; // 表示模式完成一个循环
     }
 
-    return (_seg->speed / fc_effect.led_num);
+    return (_seg->speed / _seg_len);
 }
 
 /*
@@ -1522,13 +1503,12 @@ u16 WS2812FX_sample_15(void)
     if (_seg_rt->counter_mode_step == 0)
     {
         SET_CYCLE;
-        // fc_effect.mode_cycle = 1; // 表示模式完成一个循环
 
         _seg_rt->aux_param = 0;
         _seg_rt->aux_param3 = 0;
     }
 
-    return (_seg->speed / (fc_effect.led_num + 5)); // 动画的步骤 0 ~ _seg_len + 4
+    return (_seg->speed / (_seg_len + 5)); // 动画的步骤 0 ~ _seg_len + 4
 }
 
 /*
@@ -1572,15 +1552,14 @@ u16 WS2812FX_sample_17(void)
     if (_seg_rt->counter_mode_step == 0)
     {
         SET_CYCLE;
-        // fc_effect.mode_cycle = 1; // 表示模式完成一个循环
 
         _seg_rt->aux_param = 0;
     }
 
-    return (_seg->speed / (fc_effect.led_num));
+    return (_seg->speed / (_seg_len));
 }
 
-#if 0
+#if 1
 
 /*
     在 模式 1 - 7，单色流星灯动画使用到的数组，[0]为流星灯颜色，[1]为背景色（设置背景好像没有效果）
@@ -1589,23 +1568,24 @@ static volatile u32 color_buff_in_mode_1_7[2] = {BLACK, BLACK};
 
 /*
     根据模式切换灯光动画
-    根据 fc_effect.cur_mode，切换到对应的动画
+    根据 save_info.cur_lighting_animation_mode ，切换到对应的动画
 
 
 */
 void lighting_animation_mode_change(void)
 {
-    if (fc_effect.on_off_flag == DEVICE_OFF)
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
 
     mode_ptr lighting_mode_ptr = NULL;
 
-    printf("cur mode %u\n", (u16)fc_effect.cur_mode);
+    printf("cur mode %u\n", (u16)save_info.cur_lighting_animation_mode);
 
     // mode 1 ~ 7，单色流星灯
-    if (fc_effect.cur_mode >= 1 && fc_effect.cur_mode <= 7)
+    if (save_info.cur_lighting_animation_mode >= 1 &&
+        save_info.cur_lighting_animation_mode <= 7)
     {
-        switch (fc_effect.cur_mode)
+        switch (save_info.cur_lighting_animation_mode)
         {
         case 1:
             // color = RED;
@@ -1640,64 +1620,64 @@ void lighting_animation_mode_change(void)
         WS2812FX_setSegment_colorsOptions(
             0,                                          // 第0段
             0,                                          // 起始位置
-            fc_effect.led_num - 1,                      // 结束位置
+            LIGHTING_ANIMATION_LED_NUMS - 1,            // 结束位置
             &WS2812FX_sample_single_color_meteor_light, // 效果
             color_buff_in_mode_1_7,                     // 颜色，WS2812FX_setColors设置
-            fc_effect.star_speed,                       // 速度
-            fc_effect.cur_options);                     // 选项
+            save_info.cur_speed,                        // 速度
+            save_info.cur_options);                     // 选项
         WS2812FX_start();
     }
     else
     {
-        if (8 == fc_effect.cur_mode)
+        if (8 == save_info.cur_lighting_animation_mode)
         {
             lighting_mode_ptr = WS2812FX_sample_8;
         }
-        else if (9 == fc_effect.cur_mode)
+        else if (9 == save_info.cur_lighting_animation_mode)
         {
             lighting_mode_ptr = WS2812FX_sample_9;
         }
-        else if (10 == fc_effect.cur_mode)
+        else if (10 == save_info.cur_lighting_animation_mode)
         {
             lighting_mode_ptr = WS2812FX_sample_10;
         }
-        else if (11 == fc_effect.cur_mode)
+        else if (11 == save_info.cur_lighting_animation_mode)
         {
             lighting_mode_ptr = WS2812FX_sample_11;
         }
-        else if (12 == fc_effect.cur_mode)
+        else if (12 == save_info.cur_lighting_animation_mode)
         {
             lighting_mode_ptr = WS2812FX_sample_12;
         }
-        else if (13 == fc_effect.cur_mode)
+        else if (13 == save_info.cur_lighting_animation_mode)
         {
             lighting_mode_ptr = WS2812FX_sample_13;
         }
-        else if (14 == fc_effect.cur_mode)
+        else if (14 == save_info.cur_lighting_animation_mode)
         {
             lighting_mode_ptr = WS2812FX_sample_14;
         }
-        else if (15 == fc_effect.cur_mode)
+        else if (15 == save_info.cur_lighting_animation_mode)
         {
             lighting_mode_ptr = WS2812FX_sample_15;
         }
-        else if (16 == fc_effect.cur_mode)
+        else if (16 == save_info.cur_lighting_animation_mode)
         {
             lighting_mode_ptr = WS2812FX_sample_16;
         }
-        else if (17 == fc_effect.cur_mode)
+        else if (17 == save_info.cur_lighting_animation_mode)
         {
             lighting_mode_ptr = WS2812FX_sample_17;
         }
-        else if (18 == fc_effect.cur_mode)
+        else if (18 == save_info.cur_lighting_animation_mode)
         {
             lighting_mode_ptr = WS2812FX_sample_18;
         }
-        else if (19 == fc_effect.cur_mode)
+        else if (19 == save_info.cur_lighting_animation_mode)
         {
             lighting_mode_ptr = WS2812FX_sample_19;
         }
-        else if (20 == fc_effect.cur_mode)
+        else if (20 == save_info.cur_lighting_animation_mode)
         {
             lighting_mode_ptr = WS2812FX_sample_20;
         }
@@ -1709,24 +1689,24 @@ void lighting_animation_mode_change(void)
         if (WS2812FX_sample_13 == lighting_mode_ptr)
         {
             WS2812FX_setSegment_colorsOptions(
-                0,                      // 第0段
-                0,                      // 起始位置
-                fc_effect.led_num - 1,  // 结束位置
-                lighting_mode_ptr,      // 效果
-                color_buff_mode13,      // 颜色，WS2812FX_setColors设置
-                fc_effect.star_speed,   // 速度
-                fc_effect.cur_options); // 选项
+                0,                               // 第0段
+                0,                               // 起始位置
+                LIGHTING_ANIMATION_LED_NUMS - 1, // 结束位置
+                lighting_mode_ptr,               // 效果
+                color_buff_mode13,               // 颜色，WS2812FX_setColors设置
+                save_info.cur_speed,             // 速度
+                save_info.cur_options);          // 选项
         }
         else
         {
             WS2812FX_setSegment_colorsOptions(
-                0,                      // 第0段
-                0,                      // 起始位置
-                fc_effect.led_num - 1,  // 结束位置
-                lighting_mode_ptr,      // 效果
-                color_buff,             // 颜色，WS2812FX_setColors设置
-                fc_effect.star_speed,   // 速度
-                fc_effect.cur_options); // 选项
+                0,                               // 第0段
+                0,                               // 起始位置
+                LIGHTING_ANIMATION_LED_NUMS - 1, // 结束位置
+                lighting_mode_ptr,               // 效果
+                color_buff,                      // 颜色，WS2812FX_setColors设置
+                save_info.cur_speed,             // 速度
+                save_info.cur_options);          // 选项
         }
         WS2812FX_start();
     }
@@ -1734,13 +1714,13 @@ void lighting_animation_mode_change(void)
 
 void lighting_animation_mode_add(void)
 {
-    if (fc_effect.on_off_flag == DEVICE_OFF)
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
 
-    // if (fc_effect.cur_mode < 8) // 测试用
-    if (fc_effect.cur_mode < 20) //
+    // if (save_info.cur_lighting_animation_mode < 8) // 测试用
+    if (save_info.cur_lighting_animation_mode < 20) //
     {
-        fc_effect.cur_mode++;
+        save_info.cur_lighting_animation_mode++;
     }
 
     // 保存信息：
@@ -1751,12 +1731,12 @@ void lighting_animation_mode_add(void)
 
 void lighting_animation_mode_sub(void)
 {
-    if (fc_effect.on_off_flag == DEVICE_OFF)
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
 
-    if (fc_effect.cur_mode > 1) // 最小为模式1，没有模式0
+    if (save_info.cur_lighting_animation_mode > 1) // 最小为模式1，没有模式0
     {
-        fc_effect.cur_mode--;
+        save_info.cur_lighting_animation_mode--;
     }
 
     // 保存信息：
@@ -1767,32 +1747,42 @@ void lighting_animation_mode_sub(void)
 
 void lighting_animation_speed_add(void)
 {
-    if (fc_effect.on_off_flag == DEVICE_OFF)
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
 
     // 数值越小，对应的动画速度越快
-    if (fc_effect.star_speed > 1000)
+    if (save_info.cur_speed > 1000)
     {
-        fc_effect.star_speed -= 1000;
+        save_info.cur_speed -= 1000;
     }
 
-    printf("cur speed %u\n", fc_effect.star_speed);
+    if (save_info.cur_speed < 1000)
+    {
+        save_info.cur_speed = 1000;
+    }
+
+    printf("cur speed %u\n", save_info.cur_speed);
     // 重新开始跑动画
     lighting_animation_mode_change();
 }
 
 void lighting_animation_speed_sub(void)
 {
-    if (fc_effect.on_off_flag == DEVICE_OFF)
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
 
     // 数值越大，对应的动画速度越慢
-    if (fc_effect.star_speed < 4000)
+    if (save_info.cur_speed < 4000)
     {
-        fc_effect.star_speed += 1000;
+        save_info.cur_speed += 1000;
     }
 
-    printf("cur speed %u\n", fc_effect.star_speed);
+    if (save_info.cur_speed > 4000)
+    {
+        save_info.cur_speed = 4000;
+    }
+
+    printf("cur speed %u\n", save_info.cur_speed);
     // 重新开始跑动画
     lighting_animation_mode_change();
 }
@@ -1800,17 +1790,18 @@ void lighting_animation_speed_sub(void)
 // 切换灯光动画的方向(正向、反向)
 void lighting_animation_dir_switch(void)
 {
-    if (fc_effect.on_off_flag == DEVICE_OFF)
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
-    if (fc_effect.cur_options == REVERSE)
+
+    if (save_info.cur_options == REVERSE)
     {
         // 如果当前方向为反向，则切换为正向
-        fc_effect.cur_options = NO_OPTIONS;
+        save_info.cur_options = NO_OPTIONS;
     }
     else
     {
         // 如果当前方向为正向，则切换为反向
-        fc_effect.cur_options = REVERSE;
+        save_info.cur_options = REVERSE;
     }
 
     // 重新开始跑动画
@@ -1820,9 +1811,10 @@ void lighting_animation_dir_switch(void)
 // 动画设置为最快速度
 void lighting_animation_speed_max(void)
 {
-    if (fc_effect.on_off_flag == DEVICE_OFF)
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
-    fc_effect.star_speed = 1000;
+
+    save_info.cur_speed = 1000;
 
     // 重新开始跑动画
     lighting_animation_mode_change();
@@ -1831,9 +1823,10 @@ void lighting_animation_speed_max(void)
 // 动画设置为最慢速度
 void lighting_animation_speed_min(void)
 {
-    if (fc_effect.on_off_flag == DEVICE_OFF)
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
-    fc_effect.star_speed = 4000;
+
+    save_info.cur_speed = 1000;
 
     // 重新开始跑动画
     lighting_animation_mode_change();
@@ -1842,10 +1835,11 @@ void lighting_animation_speed_min(void)
 // 动画设置为中速
 void lighting_animation_speed_mid(void)
 {
-    if (fc_effect.on_off_flag == DEVICE_OFF)
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
+
     // 中速在 2000 或 3000
-    fc_effect.star_speed = 3000;
+    save_info.cur_speed = 3000;
 
     // 重新开始跑动画
     lighting_animation_mode_change();
@@ -1853,21 +1847,22 @@ void lighting_animation_speed_mid(void)
 
 void lighting_animation_bright_add(void)
 {
-    if (fc_effect.on_off_flag == DEVICE_OFF)
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
+
     // 亮度不能超过100
-    if (fc_effect.b < 255 - (255 / 10))
+    if (save_info.cur_brightness < 255 - (255 / 10))
     {
-        fc_effect.b += 255 / 10;
+        save_info.cur_brightness += 255 / 10;
     }
     else
     {
-        fc_effect.b = 255;
+        save_info.cur_brightness = 255;
     }
 
-    printf("cur brightness %u\n", (u16)fc_effect.b);
+    printf("cur brightness %u\n", (u16)save_info.cur_brightness);
 
-    WS2812FX_setBrightness(fc_effect.b);
+    WS2812FX_setBrightness(save_info.cur_brightness);
 
     // 亮度改变，重新开始跑动画
     lighting_animation_mode_change();
@@ -1876,18 +1871,28 @@ void lighting_animation_bright_add(void)
 // 初始化（恢复出厂设置）
 void lighting_animation_init(void)
 {
-    if (fc_effect.on_off_flag == DEVICE_OFF)
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
-    fc_effect.cur_mode = 1;
-    fc_effect.star_speed = 3000;
-    fc_effect.b = 100;
-    // fc_effect.b = 10; // 实际观察不到亮度有变化
-    fc_effect.on_off_flag == DEVICE_ON;
-    fc_effect.cur_options = NO_OPTIONS;
 
-    fc_effect.sequence = NEO_RGB; // RGB 顺序 R->G->B
+    save_info.cur_lighting_animation_mode = 1; // 灯光动画模式1
+    save_info.cur_speed = 3000;
+    save_info.cur_brightness = 100;
+    // save_info.cur_brightness = 10; // 实际观察不到亮度有变化
+    save_info.flag_is_light_on = 1;
+    save_info.cur_options = NO_OPTIONS;
+
+    // save_info.sequence = NEO_RGB; // RGB 顺序 R->G->B
 
     lighting_animation_mode_change();
+}
+
+void lighting_animation_config_init(void)
+{
+    save_info.cur_lighting_animation_mode = 1; // 灯光动画模式1
+    save_info.cur_speed = 3000;                // 动画速度
+    save_info.cur_brightness = 100;            // 亮度
+    save_info.flag_is_light_on = 1;
+    save_info.cur_options = NO_OPTIONS;
 }
 
 #endif
