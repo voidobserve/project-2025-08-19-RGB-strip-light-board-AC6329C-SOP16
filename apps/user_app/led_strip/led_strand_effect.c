@@ -1298,10 +1298,8 @@ static void ls_static_effect(void)
  */
 void set_fc_effect(void)
 {
-
     if (fc_effect.on_off_flag == DEVICE_ON)
-    {
-
+    { 
         switch (fc_effect.Now_state)
         {
         // 幻彩场景

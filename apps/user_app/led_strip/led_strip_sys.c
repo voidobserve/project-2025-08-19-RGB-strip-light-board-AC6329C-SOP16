@@ -4,6 +4,9 @@
 #include "Adafruit_NeoPixel.H"
 #include "led_strand_effect.h"
 
+#include "../../apps/user_app/lighting_animation/lighting_animation.h" // 包含2.4G遥控器控制的灯光动画
+#include "../../../apps/user_app/save_flash/save_flash.h"              // 包含 save_info_t 结构体类型定义，save_info 结构体变量定义
+
 #define MAX_BRIGHT_RANK 10
 #define MAX_SPEED_RANK 10
 #define MIN_BRIGHT_VALUE 10
@@ -34,7 +37,7 @@ void fc_data_init(void)
 
 #endif
     fc_effect.dream_scene.c_n = 1; // 颜色数量为1
-    fc_effect.b = 255; // 本地亮度
+    fc_effect.b = 255;             // 本地亮度
     fc_effect.app_b = 100;
     // fc_effect.ls_b = (MAX_BRIGHT_RANK - 1);
     fc_effect.app_speed = 80;
@@ -86,21 +89,70 @@ void fc_data_init(void)
  *********************************************************/
 void soft_turn_on_the_light(void) // 软开灯处理
 {
+    if (save_info.flag_is_cur_rf_24g_mode_enable)
+    {
+        // 如果当前是由2.4G遥控器控制的灯光模式
+        save_info.flag_is_light_on = 1;
+        lighting_animation_mode_change(); // 执行 save_info.cur_lighting_animation_mode 对应的灯光动画
+        save_info_write();                // 保存 save_info 数据
+        save_user_data_area3();           // 保存参数配置到flash
+
+        // 与app同步开关状态
+        u8 tp_buffer[3];
+        tp_buffer[0] = 0x01;
+        tp_buffer[1] = 0x01;
+        tp_buffer[2] = save_info.flag_is_light_on; // 0:灯光关 1:灯光开
+        zd_fb_2_app(tp_buffer, 3);
+
+        // 与app同步流星灯开关状态
+        tp_buffer[0] = 0x2F;
+        tp_buffer[1] = 0x02;
+        tp_buffer[2] = save_info.flag_is_light_on; // 0:灯光关 1:灯光开
+        zd_fb_2_app(tp_buffer, 3);
+        return;
+    }
+
     fc_effect.on_off_flag = DEVICE_ON;
 
-    WS2812FX_start();
+    // 如果进入到这里，说明当前是app控制的灯光模式
     set_fc_effect();
     fb_led_on_off_state();  // 与app同步开关状态
+    fd_meteor_on_off();     // 与app同步流星灯开关状态
+    save_info_write();      // 保存 save_info 数据
     save_user_data_area3(); // 保存参数配置到flash
     printf("soft_turn_on_the_light");
 }
 
 void soft_turn_off_lights(void) // 软关灯处理
 {
+    if (save_info.flag_is_cur_rf_24g_mode_enable)
+    {
+        // 如果当前是由2.4G遥控器控制的灯光模式
+        save_info.flag_is_light_on = 0;
+        // lighting_animation_mode_change(); // 执行 save_info.cur_lighting_animation_mode 对应的灯光动画
+        WS2812FX_stop();
+
+        printf("soft_turn_off_lights");
+
+        save_info_write(); // 保存 save_info 数据
+
+        // 与app同步开关状态
+        u8 tp_buffer[3];
+        tp_buffer[0] = 0x01;
+        tp_buffer[1] = 0x01;
+        tp_buffer[2] = save_info.flag_is_light_on; // 0:灯光关 1:灯光开
+        zd_fb_2_app(tp_buffer, 3);
+
+        // tp_buffer[0] = 0x2F;
+        // tp_buffer[1] = 0x02;
+        // tp_buffer[2] = save_info.flag_is_light_on; // 0:灯光关 1:灯光开
+        // zd_fb_2_app(tp_buffer, 3);
+
+        return;
+    }
+
     fc_effect.on_off_flag = DEVICE_OFF;
     // set_fc_effect();
-    
-
 
     fb_led_on_off_state();  // 与app同步开关状态
     save_user_data_area3(); // 保存参数配置到flash
@@ -126,7 +178,6 @@ const u16 led_speed_array[MAX_SPEED_RANK] = {
  */
 void app_set_bright(u8 tp_b)
 {
-
     if (fc_effect.Now_state == IS_STATIC)
     {
         if (tp_b < MIN_BRIGHT_VALUE)
@@ -159,7 +210,7 @@ u16 get_max_sp(void)
  */
 void app_set_speed(u8 tp_speed)
 {
-    if (fc_effect.Now_state == IS_light_scene)
+    if (fc_effect.Now_state == IS_light_scene) // 炫彩情景
     {
         fc_effect.dream_scene.speed = MIN_SLOW_SPEED - (MIN_SLOW_SPEED * tp_speed / 100);
         fc_effect.app_speed = tp_speed;
@@ -501,10 +552,8 @@ void app_set_on_off_meteor(u8 tp_sw)
     fc_effect.star_on_off = tp_sw;
     if (fc_effect.star_on_off == DEVICE_ON)
     {
-
         ls_meteor_stat_effect();
     }
-
     else
     {
         extern void close_metemor(void);
@@ -534,6 +583,19 @@ void app_set_mereor_mode(u8 tp_m)
         fc_effect.star_index = tp_m;
         set_fc_effect();
     }
+
+#if 0
+    if (tp_m <= 10) // 1~10，对应样机模式1~模式10
+    {
+        save_info.flag_is_cur_rf_24g_mode_enable = 1;
+
+        lighting_animation_mode_change();
+    }
+    else if (tp_m >= 11 && tp_m <= 13) // 11~13，对应app中的音乐律动1~3
+    {
+
+    }
+#endif
 
     // if(tp_m <= 22)  //void custom_meteor_effect(void)有关
     // {
@@ -872,6 +934,15 @@ void power_motor_Init(void)
 
 ON_OFF_FLAG get_on_off_state(void)
 {
+    // return fc_effect.on_off_flag;
+
+    if (save_info.flag_is_cur_rf_24g_mode_enable)
+    {
+        // 如果当前模式是2.4G遥控器模式，则返回2.4G遥控器模式开关状态
+        return save_info.flag_is_light_on;
+    }
+
+    // 如果过当前模式是app控制的模式
     return fc_effect.on_off_flag;
 }
 

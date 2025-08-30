@@ -24,7 +24,13 @@ typedef struct
 typedef struct
 {
     u16 cur_speed;                            // 当前动画速度
+
+    /*
+        cur_lighting_animation_time_interval 和 flag_is_time_interval_enable 一起使用
+    */
     u16 cur_lighting_animation_time_interval; // 当前动画与动画之间的时间间隔
+    u8 flag_is_time_interval_enable;          // 时间间隔使能标志
+
     // u8 rgb_neopixel_permutations;   // RGB像素排列
     u8 cur_lighting_animation_mode; // 当前灯光动画模式
 

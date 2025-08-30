@@ -3,7 +3,7 @@
 
 #include "board_ac632n_demo_cfg.h"
 // @ key_app.h
-#if 1
+#if 0
 #include "led_strip_sys.h"
 
 // ----------------------------------------------硬件配置，根据PCB实际修改

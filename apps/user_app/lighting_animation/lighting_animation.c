@@ -1714,7 +1714,7 @@ void lighting_animation_mode_change(void)
 
 void lighting_animation_mode_add(void)
 {
-    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回 
         return;
 
     // if (save_info.cur_lighting_animation_mode < 8) // 测试用
@@ -1731,7 +1731,7 @@ void lighting_animation_mode_add(void)
 
 void lighting_animation_mode_sub(void)
 {
-    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回 
         return;
 
     if (save_info.cur_lighting_animation_mode > 1) // 最小为模式1，没有模式0
@@ -1888,10 +1888,11 @@ void lighting_animation_init(void)
 
 void lighting_animation_config_init(void)
 {
-    save_info.cur_lighting_animation_mode = 1; // 灯光动画模式1
-    save_info.cur_speed = 3000;                // 动画速度
-    save_info.cur_brightness = 100;            // 亮度
-    save_info.flag_is_light_on = 1;
+    save_info.flag_is_cur_rf_24g_mode_enable = 1; // 2.4G遥控器控制的灯光模式，使能
+    save_info.cur_lighting_animation_mode = 1;    // 灯光动画模式1
+    save_info.cur_speed = 3000;                   // 动画速度
+    save_info.cur_brightness = 100;               // 亮度
+    save_info.flag_is_light_on = 1; 
     save_info.cur_options = NO_OPTIONS;
 }
 

@@ -112,9 +112,8 @@ void save_info_read(void)
     {
         printf("is first power on\n");
 
-        save_info.is_data_valid = 0xC5;
-        // USER_TODO 可能要在这里加其他的配置项
-        lighting_animation_config_init();
+        save_info.is_data_valid = 0xC5; 
+        lighting_animation_config_init(); // 初始化参数
 
         save_info_write(); // 将初始化后的数据写回flash
     }
@@ -123,25 +122,25 @@ void save_info_read(void)
         printf("is not first power on\n");
     }
 
-    printf("save_info.flag_is_light_on %u\n", (u16)save_info.flag_is_light_on);
-    printf("cur_options %u\n", (u16)save_info.cur_options);
-    printf("cur_brightness %u\n", (u16)save_info.cur_brightness);
-    printf("cur_lighting_animation_mode %u\n", (u16)save_info.cur_lighting_animation_mode);
-    printf("cur_speed %u\n", (u16)save_info.cur_speed);
-    printf("%s %d\n", __func__, __LINE__);
+    // printf("save_info.flag_is_light_on %u\n", (u16)save_info.flag_is_light_on);
+    // printf("cur_options %u\n", (u16)save_info.cur_options);
+    // printf("cur_brightness %u\n", (u16)save_info.cur_brightness);
+    // printf("cur_lighting_animation_mode %u\n", (u16)save_info.cur_lighting_animation_mode);
+    // printf("cur_speed %u\n", (u16)save_info.cur_speed);
+    // printf("%s %d\n", __func__, __LINE__);
 }
 
 // 写入 save_info 到flash
 void save_info_write(void)
 {
-    printf("%s %d\n", __func__, __LINE__);
+    // printf("%s %d\n", __func__, __LINE__);
     int ret = 0;
     save_info.is_data_valid = 0xC5; // 表示数据有效
 
     local_irq_disable(); // 禁用中断
     ret = syscfg_write(CFG_USER_SAVE_INFO_ID, (u8 *)(&save_info), sizeof(save_info_t));
     local_irq_enable(); // 使能中断
-    printf("ret %d \n", ret);
+    // printf("ret %d \n", ret);
     if (ret != sizeof(save_info_t))
     {
         // 如果实际写入的数据与配置的参数不一致
@@ -149,8 +148,8 @@ void save_info_write(void)
 
     // printf("sizeof(save_info_t) == %u \n", (u16)sizeof(save_info_t));
 
-    printf("save info done \n");
-    printf("%s %d\n", __func__, __LINE__);
+    // printf("save info done \n");
+    // printf("%s %d\n", __func__, __LINE__);
 }
 
 // 默认的初始化，从flash中读出保存的数据
