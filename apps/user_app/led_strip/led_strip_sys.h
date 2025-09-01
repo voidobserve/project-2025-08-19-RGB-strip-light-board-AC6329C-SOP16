@@ -120,4 +120,12 @@ typedef enum
 // 静态效果设置
 void set_static_mode(u8 r, u8 g, u8 b);
 
+/**
+ * @brief app设置流星模式
+ *
+ *
+ * @param tp_m
+ */
+void app_set_mereor_mode(u8 tp_m);
+
 #endif

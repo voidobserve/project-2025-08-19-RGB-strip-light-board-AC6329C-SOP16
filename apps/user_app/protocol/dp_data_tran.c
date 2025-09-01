@@ -673,8 +673,8 @@ void parse_zd_data(unsigned char *LedCommand)
                 set_static_mode(LedCommand[3], LedCommand[4], LedCommand[5]);
                 fb_rgb_value(); // feedback，返回设置好的rgb值
             }
-            //---------------------------------静态（模式）任务处理-----------------------------------
-            #if 0
+//---------------------------------静态（模式）任务处理-----------------------------------
+#if 0
             if (LedCommand[0] == 0x04 && LedCommand[1] == 0x02 && LedCommand[2] >= 0 && LedCommand[2] < 0x07)
             {
                 printf("static mode handle\n");
@@ -709,9 +709,9 @@ void parse_zd_data(unsigned char *LedCommand)
                     break; // WHITE
                 }
             }
-            #endif
+#endif
 
-            #if 0 
+#if 0 
             //---------------------------------动态处理-----------------------------------
             // if (LedCommand[0] == 0x04 && LedCommand[1] == 0x02 && LedCommand[2] >= 0x07 && LedCommand[2] <= 0x24)
             // {
@@ -719,7 +719,7 @@ void parse_zd_data(unsigned char *LedCommand)
             //     // printf("dynamic\n");
             //     base_Dynamic_Effect(LedCommand[2]);
             // }
-            #endif
+#endif
             //---------------------------------调节亮度0-100-----------------------------------
             if (LedCommand[0] == 0x04 && LedCommand[1] == 0x03)
             {
@@ -732,8 +732,31 @@ void parse_zd_data(unsigned char *LedCommand)
             //---------------------------------调节速度0-100-----------------------------------
             if (LedCommand[0] == 0x04 && LedCommand[1] == 0x04)
             {
-                // 在app模式界面，调节速度，范围0-100 
+                // 在app模式界面，调节速度，范围0-100
                 printf("set speed\n");
+                /*
+                    样机的动画速度
+                    最快 1000 ， 对应 1s
+                    最慢 4000 ， 对应 4s
+
+                    app设置100， save_info.cur_speed == 1000 (动画速度最快)
+                    app设置0， save_info.cur_speed == 4000 (动画速度最慢)
+                    app设置25， save_info.cur_speed == 2250
+                    其他值， save_info.cur_speed > 1000 && save_info.cur_speed < 4000
+                */
+                save_info.cur_speed = (u16)(4000 - (u16)((u32)(4000 - 1000) * LedCommand[2] / 100));
+                printf("save_info.cur_speed %u\n", save_info.cur_speed);
+                // printf("save_info.cur_lighting_animation_time_interval \n");
+                // printf("%u\n", save_info.cur_lighting_animation_time_interval);
+                lighting_animation_mode_change();
+
+                // 向app反馈数据
+                uint8_t tp_buffer[3];
+                tp_buffer[0] = 0x04;
+                tp_buffer[1] = 0x04;
+                tp_buffer[2] = LedCommand[2];
+                zd_fb_2_app(tp_buffer, 3);
+
                 // extern void app_set_speed(u8 tp_speed);
                 // app_set_speed(LedCommand[2]);
                 // fb_speed();
@@ -792,7 +815,7 @@ void parse_zd_data(unsigned char *LedCommand)
 #endif
             //---------------------------------设置麦克风灵，电机，流星敏度-----------------------------------
             if (LedCommand[0] == 0x2F && LedCommand[1] == 0x05)
-            { 
+            {
                 // app_set_sensitive(100 - LedCommand[2]);
                 fb_sensitive();
             }
@@ -811,8 +834,18 @@ void parse_zd_data(unsigned char *LedCommand)
             {
                 // 设置速度值，范围：0-100
                 printf("【recv:】Meteorite lamp speed ctl\n");
-                // app_set_mereor_speed(LedCommand[2]);
-                // fd_meteor_speed();
+
+                // 将传入的0~100的速度值转换为1000~4000的数值：
+                save_info.cur_speed = (u16)(4000 - (u16)((u32)(4000 - 1000) * LedCommand[2] / 100));
+                printf("save_info.cur_speed %u\n", save_info.cur_speed);
+                lighting_animation_mode_change();
+
+                // 向app反馈流星灯速度
+                uint8_t tp_buffer[3];
+                tp_buffer[0] = 0x2F;
+                tp_buffer[1] = 0x01;
+                tp_buffer[2] = LedCommand[2];
+                zd_fb_2_app(tp_buffer, 3);
             }
             //-------------------------------- 流星开关-----------------------------------
             if (LedCommand[0] == 0x2F && LedCommand[1] == 0x02)
@@ -827,6 +860,33 @@ void parse_zd_data(unsigned char *LedCommand)
             {
                 // 设置流星灯动画间的时间间隔，范围：2-20，单位： ？
                 printf("【recv:】Meteorite lamp time interval ctl\n");
+
+                u16 timer_interval = 2;
+                if (LedCommand[2] >= 2 && LedCommand[2] <= 20)
+                {
+                    // 将传入的数值转换成0~180的数值：
+                    timer_interval = LedCommand[2] - 2;
+                }
+
+                /*
+                    将传入的2~20的时间间隔转换为4000~15000的数值：
+                    时间最短 4000，对应 4s
+                    时间最长 15000，对应 15s
+
+                    app设置 2 ， 对应的数值 4000
+                    app设置 20 ， 对应的数值 15000
+                    app设置 15 ， 对应的数值 7944
+
+                    注意，如果当前模式不是 模式1~10（流行1~流星10），不修改数值
+                */
+                if (save_info.cur_lighting_animation_mode >= 1 && save_info.cur_lighting_animation_mode <= 10)
+                {
+                    save_info.cur_lighting_animation_time_interval = (u16)(4000 + (u16)((u32)(15000 - 4000) * timer_interval / 18));
+                }
+
+                // 向app反馈时间、时间间隔
+                
+
                 // app_set_meteor_pro(LedCommand[2]);
                 // fd_meteor_cycle();
             }

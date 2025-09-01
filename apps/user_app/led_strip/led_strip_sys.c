@@ -89,10 +89,17 @@ void fc_data_init(void)
  *********************************************************/
 void soft_turn_on_the_light(void) // 软开灯处理
 {
+    /*
+        save_info.flag_is_light_on 和 fc_effect.on_off_flag 都要设置为 DEVICE_ON
+        再根据 save_info.flag_is_cur_rf_24g_mode_enable 判断要执行2.4G遥控器对应的灯光模式还是app对应的灯光模式
+    */
+    save_info.flag_is_light_on = 1;
+    fc_effect.on_off_flag = DEVICE_ON;
+
     if (save_info.flag_is_cur_rf_24g_mode_enable)
     {
         // 如果当前是由2.4G遥控器控制的灯光模式
-        save_info.flag_is_light_on = 1;
+
         lighting_animation_mode_change(); // 执行 save_info.cur_lighting_animation_mode 对应的灯光动画
         save_info_write();                // 保存 save_info 数据
         save_user_data_area3();           // 保存参数配置到flash
@@ -112,8 +119,6 @@ void soft_turn_on_the_light(void) // 软开灯处理
         return;
     }
 
-    fc_effect.on_off_flag = DEVICE_ON;
-
     // 如果进入到这里，说明当前是app控制的灯光模式
     set_fc_effect();
     fb_led_on_off_state();  // 与app同步开关状态
@@ -125,16 +130,22 @@ void soft_turn_on_the_light(void) // 软开灯处理
 
 void soft_turn_off_lights(void) // 软关灯处理
 {
+    /*
+        save_info.flag_is_light_on 和 fc_effect.on_off_flag 都要设置为 DEVICE_OFF
+    */
+    save_info.flag_is_light_on = 0;
+    fc_effect.on_off_flag = DEVICE_OFF;
+
     if (save_info.flag_is_cur_rf_24g_mode_enable)
     {
         // 如果当前是由2.4G遥控器控制的灯光模式
-        save_info.flag_is_light_on = 0;
+
         // lighting_animation_mode_change(); // 执行 save_info.cur_lighting_animation_mode 对应的灯光动画
         WS2812FX_stop();
 
         printf("soft_turn_off_lights");
-
-        save_info_write(); // 保存 save_info 数据
+        save_info_write();      // 保存 save_info 数据
+        save_user_data_area3(); // 保存参数配置到flash
 
         // 与app同步开关状态
         u8 tp_buffer[3];
@@ -151,10 +162,11 @@ void soft_turn_off_lights(void) // 软关灯处理
         return;
     }
 
-    fc_effect.on_off_flag = DEVICE_OFF;
     // set_fc_effect();
 
     fb_led_on_off_state();  // 与app同步开关状态
+    fd_meteor_on_off();     // 与app同步流星灯开关状态
+    save_info_write();      // 保存 save_info 数据
     save_user_data_area3(); // 保存参数配置到flash
     printf("soft_turn_off_lights");
 }
@@ -577,23 +589,39 @@ void app_set_on_off_meteor(u8 tp_sw)
  */
 void app_set_mereor_mode(u8 tp_m)
 {
+#if 0
     if (tp_m <= 13)
     {
 
         fc_effect.star_index = tp_m;
         set_fc_effect();
     }
+#endif
 
-#if 0
+#if 1
     if (tp_m <= 10) // 1~10，对应样机模式1~模式10
     {
-        save_info.flag_is_cur_rf_24g_mode_enable = 1;
-
+        save_info.flag_is_cur_rf_24g_mode_enable = 1; // 表示要执行的不是2.4G遥控器对应的模式
+        save_info.cur_lighting_animation_mode = tp_m;
         lighting_animation_mode_change();
     }
     else if (tp_m >= 11 && tp_m <= 13) // 11~13，对应app中的音乐律动1~3
     {
-
+        save_info.flag_is_cur_rf_24g_mode_enable = 0; // 表示要执行的不是2.4G遥控器对应的模式
+        if (11 == tp_m)
+        {
+            fc_effect.music.m = 0;
+        }
+        else if (12 == tp_m)
+        {
+            fc_effect.music.m = 1;
+        }
+        else if (13 == tp_m)
+        {
+            fc_effect.music.m = 2;
+        }
+        fc_effect.Now_state = IS_light_music; // 音乐模式（声控模式）
+        ls_music_effect();
     }
 #endif
 

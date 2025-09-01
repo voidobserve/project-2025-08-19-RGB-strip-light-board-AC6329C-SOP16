@@ -2151,7 +2151,12 @@ obj/Release/apps/user_app/led_strip/led_strand_effect.o
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,WS2812FX_mode_comet_6,l
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,meteor,l
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,save_user_data_area3,l
+-r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,ls_music_effect,pl
+-r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,fc_music_gradual,l
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,app_set_bright,l
+-r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,fc_music_breath,l
+-r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,fc_music_static,l
+-r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,fc_music_twinkle,l
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,SM_mode_rainbow,l
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,WS2812FX_mode_static,l
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,fade_type,pl
@@ -2221,6 +2226,7 @@ obj/Release/apps/user_app/led_strip/led_strip_sys.o
 -r=obj/Release/apps/user_app/led_strip/led_strip_sys.o,close_metemor,l
 -r=obj/Release/apps/user_app/led_strip/led_strip_sys.o,WS2812FX_start,l
 -r=obj/Release/apps/user_app/led_strip/led_strip_sys.o,app_set_mereor_mode,pl
+-r=obj/Release/apps/user_app/led_strip/led_strip_sys.o,ls_music_effect,l
 -r=obj/Release/apps/user_app/led_strip/led_strip_sys.o,app_set_mereor_speed,pl
 -r=obj/Release/apps/user_app/led_strip/led_strip_sys.o,get_custom_index,pl
 -r=obj/Release/apps/user_app/led_strip/led_strip_sys.o,ls_set_star_one_two,pl
@@ -2301,6 +2307,7 @@ obj/Release/apps/user_app/lighting_animation/lighting_animation.o
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,WS2812FX_setPixelColor_rgbw,l
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,WS2812FX_sample_single_color_meteor_light,pl
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,WS2812FX_fade_out,l
+-r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,printf,l
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,WS2812FX_sample_8,pl
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,WS2812FX_sample_9,pl
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,WS2812FX_sample_12,pl
@@ -2316,7 +2323,6 @@ obj/Release/apps/user_app/lighting_animation/lighting_animation.o
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,WS2812FX_sample_15,pl
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,WS2812FX_sample_17,pl
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,lighting_animation_mode_change,pl
--r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,printf,l
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,WS2812FX_show,l
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,WS2812FX_stop,l
 -r=obj/Release/apps/user_app/lighting_animation/lighting_animation.o,WS2812FX_setSegment_colorsOptions,l
@@ -2409,10 +2415,12 @@ obj/Release/apps/user_app/protocol/dp_data_tran.o
 -r=obj/Release/apps/user_app/protocol/dp_data_tran.o,set_on_off_led,l
 -r=obj/Release/apps/user_app/protocol/dp_data_tran.o,get_on_off_state,l
 -r=obj/Release/apps/user_app/protocol/dp_data_tran.o,set_static_mode,l
--r=obj/Release/apps/user_app/protocol/dp_data_tran.o,app_set_RGBsequence,l
 -r=obj/Release/apps/user_app/protocol/dp_data_tran.o,app_set_bright,l
+-r=obj/Release/apps/user_app/protocol/dp_data_tran.o,lighting_animation_mode_change,l
+-r=obj/Release/apps/user_app/protocol/dp_data_tran.o,app_set_RGBsequence,l
 -r=obj/Release/apps/user_app/protocol/dp_data_tran.o,app_set_music_mode,l
 -r=obj/Release/apps/user_app/protocol/dp_data_tran.o,set_music_type,l
+-r=obj/Release/apps/user_app/protocol/dp_data_tran.o,app_set_mereor_mode,l
 -r=obj/Release/apps/user_app/protocol/dp_data_tran.o,parse_led_strip_data,pl
 -r=obj/Release/apps/user_app/protocol/dp_data_tran.o,save_user_data_area3,l
 -r=obj/Release/apps/user_app/protocol/dp_data_tran.o,tuya_fb_sw_state,pl

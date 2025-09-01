@@ -35,7 +35,7 @@
 #include "../../apps/user_app/ws2812-fx-lib/WS2812FX_C/ws2812fx_effect.h"
 #include "../../apps/user_app/lighting_animation/lighting_animation.h"
 #include "../../../apps/user_app/led_strip/led_strand_effect.h" // fc_effect 变量定义
-#include "../../../apps/user_app/save_flash/save_flash.h" // 包含 save_info_t 结构体类型定义，save_info 结构体变量定义
+#include "../../../apps/user_app/save_flash/save_flash.h"       // 包含 save_info_t 结构体类型定义，save_info 结构体变量定义
 
 OS_SEM LED_TASK_SEM;
 
@@ -381,7 +381,7 @@ void main_while(void)
     // =================================
     //           默认内容，不用修改
     // =================================
-    sound_handle();
+    sound_handle(); // 声控模式处理函数
     run_tick_per_10ms();
     WS2812FX_service();
 
@@ -420,7 +420,7 @@ void test_task(void)
 void my_main(void)
 {
 
-    mic_gpio_init();
+    mic_gpio_init();  // mic脚IO口初始化
     led_state_init(); // 初始化LED接口
     led_pwr_on();
 #if TCFG_RF433GKEY_ENABLE
@@ -431,7 +431,7 @@ void my_main(void)
     // full_color_init();
 
     read_flash_device_status_init(); // 从flash中读出保存的数据
-    save_info_read(); // 从flash中读出保存的数据
+    save_info_read();                // 从flash中读出保存的数据
     // 根据读出的数据来初始化
     WS2812FX_init(LIGHTING_ANIMATION_LED_NUMS, LIGHTING_ANIMATION_RGB_NEOPIXEL_PERMUTATIONS); // 初始化ws2811
     WS2812FX_setBrightness(save_info.cur_brightness);                                         // 设置灯光亮度

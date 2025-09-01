@@ -11,7 +11,7 @@
 
 // function_control effect
 volatile fc_effect_t fc_effect; // 幻彩灯串效果数据
-void set_fc_effect(void);
+extern void set_fc_effect(void);
 
 // FADE_SLOW：12颗
 // FADE_MEDIUM：6颗
@@ -1226,9 +1226,8 @@ static void ls_custom_effect(void)
  * @brief 音乐效果集合
  *
  */
-static void ls_music_effect(void)
+void ls_music_effect(void)
 {
-
     extern uint16_t fc_music_gradual(void);
     extern uint16_t fc_music_breath(void);
     extern uint16_t fc_music_static(void);
@@ -1236,7 +1235,7 @@ static void ls_music_effect(void)
 
     void *music_effect_addr = &fc_music_gradual; // 避免出现地址空，导致不断复位
     app_set_bright(100);
-#if (LED_STRIP_TYPE == TYPE_Fiber_optic_lights)
+    // #if (LED_STRIP_TYPE == TYPE_Fiber_optic_lights)
     switch (fc_effect.music.m)
     {
     case 0:
@@ -1256,17 +1255,18 @@ static void ls_music_effect(void)
     }
 
     WS2812FX_setSegment_colorOptions(
-        0,                       // 第0段
-        0, 0,                    // 起始位置，结束位置
-        music_effect_addr,       // 效果
-        WHITE,                   // 颜色，WS2812FX_setColors设置
-        100,                     // 速度
-        SIZE_MEDIUM | FADE_XSLOW // 选项，这里像素点大小：3,反向/反向
+        0,                               // 第0段
+        0,                               // 起始位置
+        LIGHTING_ANIMATION_LED_NUMS - 1, // 结束位置
+        music_effect_addr,               // 效果
+        WHITE,                           // 颜色，WS2812FX_setColors设置
+        100,                             // 速度
+        SIZE_MEDIUM | FADE_XSLOW         // 选项，这里像素点大小：3,反向/反向
     );
 
-#elif (LED_STRIP_TYPE == TYPE_Magic_lights)
+    // #elif (LED_STRIP_TYPE == TYPE_Magic_lights)
 
-#endif
+    // #endif
 
     WS2812FX_start();
 }
@@ -1299,7 +1299,7 @@ static void ls_static_effect(void)
 void set_fc_effect(void)
 {
     if (fc_effect.on_off_flag == DEVICE_ON)
-    { 
+    {
         switch (fc_effect.Now_state)
         {
         // 幻彩场景
@@ -1347,9 +1347,9 @@ void set_fc_effect(void)
             // WS2812FX_start();
             break;
 
-        case CUR_MODE_CTL_BY_RF_24G: // 由2.4G遥控器控制的模式
+        // case CUR_MODE_CTL_BY_RF_24G: // 由2.4G遥控器控制的模式
 
-            break;
+        //     break;
         default:
             break;
         }

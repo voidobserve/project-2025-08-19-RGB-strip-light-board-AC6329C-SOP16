@@ -76,16 +76,7 @@ void WS2812FX_fade_out_targetColor_in_offset(uint8_t offset, uint32_t targetColo
 */
 u16 WS2812FX_sample_single_color_meteor_light(void)
 {
-    // u16 animation_len = _seg_len + 6; // 动画长度，等于_seg_len + 流星灯的长度
     u16 animation_len = _seg_len * 2; // 动画长度，等于_seg_len + 流星灯的长度
-
-    // 清除上一轮的颜色残留
-    // Adafruit_NeoPixel_clear();
-
-    // for (u16 i =0 ; i < _seg_len; i++)
-    // {
-    //     WS2812FX_setPixelColor(i, BLACK);
-    // }
 
     WS2812FX_fade_out();
 
@@ -110,24 +101,32 @@ u16 WS2812FX_sample_single_color_meteor_light(void)
         每轮动画的时间 == 执行一次 0->_seg_len的动画所需时间 + 动画之间的时间间隔
     */
     u16 interval = 0;
-    if (_seg->speed == 1000) // 速度值对应 1s，从0到_seg_len的动画时间为1s
+    // if (_seg->speed == 1000) // 速度值对应 1s，从0到_seg_len的动画时间为1s
+    // {
+    //     interval = animation_len * (4 + 1); //
+    // }
+    // else if (_seg->speed == 2000) // 速度值对应 2s，从0到_seg_len的动画时间为2s
+    // {
+    //     interval = animation_len * ((8 + 2) / 2);
+    // }
+    // else if (_seg->speed == 3000)
+    // {
+    //     // interval = _seg_len * ((10 + 3) *10 / 3) / 10; // 这一句会丢失部分时间精度
+    //     interval = animation_len * (((double)10 + 3) / 3);
+    // }
+    // else if (_seg->speed == 4000)
+    // {
+    //     interval = animation_len * (((double)15 + 4) / 4);
+    // }
+    // else // 如果是 1000 ~ 4000之间的速度值，不包括 1000 和 4000
     {
-        interval = animation_len * (4 + 1); //
+#if 1
+        interval = animation_len *
+                   (((double)_seg->speed + save_info.cur_lighting_animation_time_interval) / _seg->speed);
+#endif
     }
-    else if (_seg->speed == 2000) // 速度值对应 2s，从0到_seg_len的动画时间为2s
-    {
-        interval = animation_len * ((8 + 2) / 2);
-    }
-    else if (_seg->speed == 3000)
-    {
-        // interval = _seg_len * ((10 + 3) *10 / 3) / 10; // 这一句会丢失部分时间精度
-        interval = animation_len * (((double)10 + 3) / 3);
-    }
-    else if (_seg->speed == 4000)
-    {
-        interval = animation_len * (((double)15 + 4) / 4);
-    }
-    interval = animation_len; // 测试去掉动画时间间隔，动画本身所需的时间
+
+    // interval = animation_len; // 测试去掉动画时间间隔，动画本身所需的时间
     // interval = _seg_len; // 测试去掉动画时间间隔，动画本身所需的时间
 
     _seg_rt->counter_mode_step = (_seg_rt->counter_mode_step + 1) % (interval);
@@ -135,6 +134,8 @@ u16 WS2812FX_sample_single_color_meteor_light(void)
     if (_seg_rt->counter_mode_step == 0)
     {
         SET_CYCLE;
+
+        // printf("interval %u\n", interval);
     }
 
     return (_seg->speed / (animation_len));
@@ -176,6 +177,7 @@ u16 WS2812FX_sample_8(void)
         每轮动画的时间 == 执行一次 0->_seg_len的动画所需时间 + 动画之间的时间间隔
     */
     u16 interval = 0;
+#if 0
     if (_seg->speed == 1000) // 速度值对应 1s，从0到_seg_len的动画时间为1s
     {
         interval = animation_len * (4 + 1); //
@@ -193,6 +195,13 @@ u16 WS2812FX_sample_8(void)
     {
         interval = animation_len * (((double)15 + 4) / 4);
     }
+#endif
+
+#if 1
+    interval = animation_len *
+               (((double)_seg->speed + save_info.cur_lighting_animation_time_interval) / _seg->speed);
+#endif
+
     // interval = animation_len; // 测试去掉动画时间间隔，动画本身所需的时间
     // interval = _seg_len; // 测试去掉动画时间间隔，动画本身所需的时间
 
@@ -252,6 +261,7 @@ u16 WS2812FX_sample_9(void)
         每轮动画的时间 == 执行一次 0->_seg_len的动画所需时间 + 动画之间的时间间隔
     */
     u16 interval = 0;
+#if 0
     if (_seg->speed == 1000) // 速度值对应 1s，从0到_seg_len的动画时间为1s
     {
         interval = animation_len * (4 + 1); //
@@ -269,6 +279,13 @@ u16 WS2812FX_sample_9(void)
     {
         interval = animation_len * (((double)15 + 4) / 4);
     }
+#endif
+
+#if 1
+    interval = animation_len *
+               (((double)_seg->speed + save_info.cur_lighting_animation_time_interval) / _seg->speed);
+#endif
+
     // interval = animation_len; // 测试去掉动画时间间隔，动画本身所需时间
 
     _seg_rt->counter_mode_step = (_seg_rt->counter_mode_step + 1) % (interval);
@@ -463,7 +480,7 @@ u16 WS2812FX_sample_14(void)
     动画效果，对应样机模式16
     单个灯为一组，进行流水动画，背景为黑色
     顺序：红 绿 蓝 黄 粉 cyan 白
-    每轮动画结束后，灯光全灭，灭灯的时间很短
+    每轮动画结束后，灯光全灭，灭灯的时间很短（动画时间间隔很短）
 
     注意：
     速度值 == 单个动画时间
@@ -967,10 +984,12 @@ u16 WS2812FX_sample_20(void)
 */
 u16 WS2812FX_sample_10(void)
 {
+    u16 animation_len = _seg_len + 5;
+
     // 清除上一轮的颜色残留
     Adafruit_NeoPixel_clear();
 
-    if (_seg_rt->counter_mode_step < _seg_len + 5)
+    if (_seg_rt->counter_mode_step < animation_len)
     {
         uint32_t led_offset = _seg_rt->counter_mode_step;
 
@@ -1040,23 +1059,32 @@ u16 WS2812FX_sample_10(void)
     每轮动画的时间 == 执行一次 0->_seg_len的动画所需时间 + 动画之间的时间间隔
 */
     u16 interval = 0;
+#if 0
     if (_seg->speed == 1000) // 速度值对应 1s，从0到_seg_len的动画时间为1s
     {
-        interval = (_seg_len + 5) * (4 + 1); //
+        interval = (animation_len) * (4 + 1); //
     }
     else if (_seg->speed == 2000) // 速度值对应 2s，从0到_seg_len的动画时间为2s
     {
-        interval = (_seg_len + 5) * ((8 + 2) / 2);
+        interval = (animation_len) * ((8 + 2) / 2);
     }
     else if (_seg->speed == 3000)
     {
-        interval = (_seg_len + 5) * (((double)10 + 3) / 3);
+        interval = (animation_len) * (((double)10 + 3) / 3);
     }
     else if (_seg->speed == 4000)
     {
-        interval = (_seg_len + 5) * (((double)15 + 4) / 4);
+        interval = (animation_len) * (((double)15 + 4) / 4);
     }
+#endif
+
+#if 1
+    interval = animation_len *
+               (((double)_seg->speed + save_info.cur_lighting_animation_time_interval) / _seg->speed);
+#endif
+
     // interval = (_seg_len + 5); // 测试去掉动画时间间隔，动画本身所需的时间
+    // interval = (animation_len); // 测试去掉动画时间间隔，动画本身所需的时间
 
     _seg_rt->counter_mode_step = (_seg_rt->counter_mode_step + 1) % (interval);
 
@@ -1065,7 +1093,8 @@ u16 WS2812FX_sample_10(void)
         SET_CYCLE;
     }
 
-    return (_seg->speed / (_seg_len + 5)); // 相当于从第1个灯流水到 第 WS2812_LED_NUM_MAX + 5个灯
+    // return (_seg->speed / (_seg_len + 5)); // 相当于从第1个灯流水到 第 WS2812_LED_NUM_MAX + 5个灯
+    return (_seg->speed / (animation_len)); //
 }
 
 /*
@@ -1225,6 +1254,7 @@ u16 WS2812FX_sample_11(void)
         每轮动画的时间 == 执行一次 0->_seg_len的动画所需时间 + 动画之间的时间间隔
     */
     u16 interval = 0;
+#if 0
     if (_seg->speed == 1000) // 速度值对应 1s，从0到_seg_len的动画时间为1s
     {
         interval = (animation_time * 2) * (4 + 1); //
@@ -1241,6 +1271,12 @@ u16 WS2812FX_sample_11(void)
     {
         interval = (animation_time * 2) * (((double)15 + 4) / 4);
     }
+#endif
+
+#if 1
+    interval = (animation_time * 2) *
+               (((double)_seg->speed + save_info.cur_lighting_animation_time_interval) / _seg->speed);
+#endif
     // interval = (animation_time * 2); // 测试去掉动画时间间隔，动画本身所需的时间
 
     _seg_rt->counter_mode_step = (_seg_rt->counter_mode_step + 1) % (interval);
@@ -1714,7 +1750,7 @@ void lighting_animation_mode_change(void)
 
 void lighting_animation_mode_add(void)
 {
-    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回 
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
 
     // if (save_info.cur_lighting_animation_mode < 8) // 测试用
@@ -1731,7 +1767,7 @@ void lighting_animation_mode_add(void)
 
 void lighting_animation_mode_sub(void)
 {
-    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回 
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
 
     if (save_info.cur_lighting_animation_mode > 1) // 最小为模式1，没有模式0
@@ -1751,14 +1787,35 @@ void lighting_animation_speed_add(void)
         return;
 
     // 数值越小，对应的动画速度越快
-    if (save_info.cur_speed > 1000)
-    {
-        save_info.cur_speed -= 1000;
-    }
+    // if (save_info.cur_speed > 1000)
+    // {
+    //     save_info.cur_speed -= 1000;
+    // }
 
-    if (save_info.cur_speed < 1000)
+    // if (save_info.cur_speed < 1000)
+    // {
+    //     save_info.cur_speed = 1000;
+    // }
+
+    if (save_info.cur_speed > 4000)
+    {
+        save_info.cur_speed = 4000;
+        save_info.cur_lighting_animation_time_interval = 15000; // 动画与动画之间的时间间隔 15s
+    }
+    else if (save_info.cur_speed > 3000)
+    {
+        save_info.cur_speed = 3000;
+        save_info.cur_lighting_animation_time_interval = 10000; // 动画与动画之间的时间间隔 10s
+    }
+    else if (save_info.cur_speed > 2000)
+    {
+        save_info.cur_speed = 2000;
+        save_info.cur_lighting_animation_time_interval = 8000; // 动画与动画之间的时间间隔 8s
+    }
+    else // else if (save_info.cur_speed > 1000)
     {
         save_info.cur_speed = 1000;
+        save_info.cur_lighting_animation_time_interval = 4000; // 动画与动画之间的时间间隔 4s
     }
 
     printf("cur speed %u\n", save_info.cur_speed);
@@ -1772,16 +1829,37 @@ void lighting_animation_speed_sub(void)
         return;
 
     // 数值越大，对应的动画速度越慢
-    if (save_info.cur_speed < 4000)
-    {
-        save_info.cur_speed += 1000;
-    }
+    // if (save_info.cur_speed < 4000)
+    // {
+    //     save_info.cur_speed += 1000;
+    // }
 
-    if (save_info.cur_speed > 4000)
+    // if (save_info.cur_speed > 4000)
+    // {
+    //     save_info.cur_speed = 4000;
+    // }
+
+    // 样机只有四种速度挡位：
+    if (save_info.cur_speed < 1000)
+    {
+        save_info.cur_speed = 1000;
+        save_info.cur_lighting_animation_time_interval = 4000; // 动画与动画之间的时间间隔 4s
+    }
+    else if (save_info.cur_speed < 2000)
+    {
+        save_info.cur_speed = 2000;
+        save_info.cur_lighting_animation_time_interval = 8000; // 动画与动画之间的时间间隔 8s
+    }
+    else if (save_info.cur_speed < 3000)
+    {
+        save_info.cur_speed = 3000;
+        save_info.cur_lighting_animation_time_interval = 10000; // 动画与动画之间的时间间隔 10s
+    }
+    else // else if (save_info.cur_speed < 4000)
     {
         save_info.cur_speed = 4000;
+        save_info.cur_lighting_animation_time_interval = 15000; // 动画与动画之间的时间间隔 15s
     }
-
     printf("cur speed %u\n", save_info.cur_speed);
     // 重新开始跑动画
     lighting_animation_mode_change();
@@ -1876,6 +1954,8 @@ void lighting_animation_init(void)
 
     save_info.cur_lighting_animation_mode = 1; // 灯光动画模式1
     save_info.cur_speed = 3000;
+    // save_info.cur_lighting_animation_time_interval = 10.0; // 动画时间间隔 10s
+    save_info.cur_lighting_animation_time_interval = 10000; // 动画时间间隔 10s
     save_info.cur_brightness = 100;
     // save_info.cur_brightness = 10; // 实际观察不到亮度有变化
     save_info.flag_is_light_on = 1;
@@ -1891,8 +1971,10 @@ void lighting_animation_config_init(void)
     save_info.flag_is_cur_rf_24g_mode_enable = 1; // 2.4G遥控器控制的灯光模式，使能
     save_info.cur_lighting_animation_mode = 1;    // 灯光动画模式1
     save_info.cur_speed = 3000;                   // 动画速度
-    save_info.cur_brightness = 100;               // 亮度
-    save_info.flag_is_light_on = 1; 
+    // save_info.cur_lighting_animation_time_interval = 10.0; // 动画时间间隔 10s
+    save_info.cur_lighting_animation_time_interval = 10000; // 动画时间间隔 10s
+    save_info.cur_brightness = 100;                         // 亮度
+    save_info.flag_is_light_on = 1;
     save_info.cur_options = NO_OPTIONS;
 }
 

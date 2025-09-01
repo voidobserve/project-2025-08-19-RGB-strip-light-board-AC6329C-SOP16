@@ -125,7 +125,7 @@ typedef struct
 
 typedef struct
 {
-    unsigned char m;      // 效果模式
+    unsigned char m;      // 效果模式(索引值)
     unsigned char s;      // 灵敏度
     unsigned char m_type; // 区分音乐的模式，手机麦或者外麦
 } music_t;
@@ -171,5 +171,7 @@ countdown_t zd_countdown[ALARM_NUMBER];
 extern volatile fc_effect_t fc_effect; // 幻彩灯串效果数据
 
 void base_Dynamic_Effect(u8 tp_num);
+
+void ls_music_effect(void);
 
 #endif
