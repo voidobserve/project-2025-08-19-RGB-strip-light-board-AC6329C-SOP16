@@ -17,6 +17,7 @@
         "board_config.h": "c",
         "lighting_animation.h": "c",
         "ws2812fx_effect.h": "c",
-        "save_flash.h": "c"
+        "save_flash.h": "c",
+        "board_ac632n_demo_cfg.h": "c"
     }
 }

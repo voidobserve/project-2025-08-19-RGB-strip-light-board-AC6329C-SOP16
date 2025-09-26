@@ -222,19 +222,19 @@ void rf24_key_handle(void)
         save_info_write(); // 保存参数配置到flash
         break;
 
-        /* 流水间隔时间变长（待确认）  ========================================================== */
+        /* 流水间隔时间变长 */
     case RF24G_KEY_EVENT_COLOR_ADD_CLICK:
     case RF24G_KEY_EVENT_COLOR_ADD_LOOSE:
         printf("key event color add\n");
-        lighting_animation_speed_sub();
+        lighting_animation_time_interval_add();
         save_info_write(); // 保存参数配置到flash
         break;
 
-        /* 流水间隔时间变短（待确认）  ========================================================== */
+        /* 流水间隔时间变短 */
     case RF24G_KEY_EVENT_COLOR_SUB_CLICK:
     case RF24G_KEY_EVENT_COLOR_SUB_LOOSE:
         printf("key event color sub\n");
-        lighting_animation_speed_add();
+        lighting_animation_time_interval_sub();
         save_info_write(); // 保存参数配置到flash
         break;
 
@@ -246,7 +246,7 @@ void rf24_key_handle(void)
         save_info_write(); // 保存参数配置到flash
         break;
 
-        /* 流水方向切换（待确认）  ========================================================== */
+        /* 流水方向切换  */
     case RF24G_KEY_EVENT_BRIGHT_SUB_CLICK:
     // case RF24G_KEY_EVENT_BRIGHT_SUB_HOLD: // 加上hold会影响动画效果
     case RF24G_KEY_EVENT_BRIGHT_SUB_LOOSE:
@@ -255,28 +255,28 @@ void rf24_key_handle(void)
         save_info_write(); // 保存参数配置到flash
         break;
 
-        /* 流水间隔时间设置为最短（待确认）  ========================================================== */
+        /* 流水间隔时间设置为最短 */
     case RF24G_KEY_EVENT_B_CLICK:
     case RF24G_KEY_EVENT_B_LOOSE:
         printf("key event b\n");
-        lighting_animation_speed_max();
-        save_info_write(); // 保存参数配置到flash
+        lighting_animation_time_interval_fast(); // 时间间隔设置为最快
+        save_info_write();                       // 保存参数配置到flash
         break;
 
-        /* 流水间隔时间设置为最长（待确认）  ========================================================== */
+        /* 流水间隔时间设置为最长  */
     case RF24G_KEY_EVENT_G_CLICK:
     case RF24G_KEY_EVENT_G_LOOSE:
         printf("key event G\n");
-        lighting_animation_speed_min();
-        save_info_write(); // 保存参数配置到flash
+        lighting_animation_time_interval_slow(); // 时间间隔设置为最慢
+        save_info_write();                       // 保存参数配置到flash
         break;
 
-        /* 6中流水间隔时间固定（待确认）  ========================================================== */
+        /* 6种流水间隔时间固定 */
     case RF24G_KEY_EVENT_F_CLICK:
     case RF24G_KEY_EVENT_F_LOOSE:
         printf("key event F\n");
-        lighting_animation_speed_mid();
-        save_info_write(); // 保存参数配置到flash
+        lighting_animation_time_interval_mid(); // 时间间隔设置为适中
+        save_info_write();                      // 保存参数配置到flash
         break;
 #endif
 

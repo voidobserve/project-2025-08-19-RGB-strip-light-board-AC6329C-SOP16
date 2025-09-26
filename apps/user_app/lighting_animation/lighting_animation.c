@@ -1797,25 +1797,41 @@ void lighting_animation_speed_add(void)
     //     save_info.cur_speed = 1000;
     // }
 
+#if 0
     if (save_info.cur_speed > 4000)
     {
         save_info.cur_speed = 4000;
-        save_info.cur_lighting_animation_time_interval = 15000; // 动画与动画之间的时间间隔 15s
+        // save_info.cur_lighting_animation_time_interval = 15000; // 动画与动画之间的时间间隔 15s
     }
     else if (save_info.cur_speed > 3000)
     {
         save_info.cur_speed = 3000;
-        save_info.cur_lighting_animation_time_interval = 10000; // 动画与动画之间的时间间隔 10s
+        // save_info.cur_lighting_animation_time_interval = 10000; // 动画与动画之间的时间间隔 10s
     }
     else if (save_info.cur_speed > 2000)
     {
         save_info.cur_speed = 2000;
-        save_info.cur_lighting_animation_time_interval = 8000; // 动画与动画之间的时间间隔 8s
+        // save_info.cur_lighting_animation_time_interval = 8000; // 动画与动画之间的时间间隔 8s
     }
     else // else if (save_info.cur_speed > 1000)
     {
         save_info.cur_speed = 1000;
-        save_info.cur_lighting_animation_time_interval = 4000; // 动画与动画之间的时间间隔 4s
+        // save_info.cur_lighting_animation_time_interval = 4000; // 动画与动画之间的时间间隔 4s
+    }
+#endif
+
+    // 数值越小，对应的动画速度越快
+    if (save_info.cur_speed >= 4000)
+    {
+        save_info.cur_speed = 3000;
+    }
+    else if (save_info.cur_speed >= 3000)
+    {
+        save_info.cur_speed = 2000;
+    }
+    else if (save_info.cur_speed >= 2000)
+    {
+        save_info.cur_speed = 1000;
     }
 
     printf("cur speed %u\n", save_info.cur_speed);
@@ -1828,39 +1844,112 @@ void lighting_animation_speed_sub(void)
     if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
 
-    // 数值越大，对应的动画速度越慢
-    // if (save_info.cur_speed < 4000)
-    // {
-    //     save_info.cur_speed += 1000;
-    // }
+// 数值越大，对应的动画速度越慢
+// if (save_info.cur_speed < 4000)
+// {
+//     save_info.cur_speed += 1000;
+// }
 
-    // if (save_info.cur_speed > 4000)
-    // {
-    //     save_info.cur_speed = 4000;
-    // }
+// if (save_info.cur_speed > 4000)
+// {
+//     save_info.cur_speed = 4000;
+// }
 
-    // 样机只有四种速度挡位：
+// 样机只有四种速度挡位：
+#if 0
     if (save_info.cur_speed < 1000)
     {
         save_info.cur_speed = 1000;
-        save_info.cur_lighting_animation_time_interval = 4000; // 动画与动画之间的时间间隔 4s
+        // save_info.cur_lighting_animation_time_interval = 4000; // 动画与动画之间的时间间隔 4s
     }
     else if (save_info.cur_speed < 2000)
     {
         save_info.cur_speed = 2000;
-        save_info.cur_lighting_animation_time_interval = 8000; // 动画与动画之间的时间间隔 8s
+        // save_info.cur_lighting_animation_time_interval = 8000; // 动画与动画之间的时间间隔 8s
     }
     else if (save_info.cur_speed < 3000)
     {
         save_info.cur_speed = 3000;
-        save_info.cur_lighting_animation_time_interval = 10000; // 动画与动画之间的时间间隔 10s
+        // save_info.cur_lighting_animation_time_interval = 10000; // 动画与动画之间的时间间隔 10s
     }
     else // else if (save_info.cur_speed < 4000)
     {
         save_info.cur_speed = 4000;
-        save_info.cur_lighting_animation_time_interval = 15000; // 动画与动画之间的时间间隔 15s
+        // save_info.cur_lighting_animation_time_interval = 15000; // 动画与动画之间的时间间隔 15s
     }
+#endif
+
+    // 数值越大，对应的动画速度越慢
+    if (save_info.cur_speed <= 1000)
+    {
+        save_info.cur_speed = 2000;
+    }
+    else if (save_info.cur_speed <= 2000)
+    {
+        save_info.cur_speed = 3000;
+    }
+    // else if (save_info.cur_speed >= 2000)
+    else
+    {
+        save_info.cur_speed = 4000;
+    }
+
     printf("cur speed %u\n", save_info.cur_speed);
+    // 重新开始跑动画
+    lighting_animation_mode_change();
+}
+
+// 添加动画时间间隔(动画时间间隔变长)
+void lighting_animation_time_interval_add(void)
+{
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
+        return;
+
+    // 单位：ms
+    // if (save_info.cur_lighting_animation_time_interval < 4000)
+    // {
+    //     save_info.cur_lighting_animation_time_interval = 4000;
+    // }
+    // else if (save_info.cur_lighting_animation_time_interval < 8000)
+    if (save_info.cur_lighting_animation_time_interval < 8000)
+    {
+        save_info.cur_lighting_animation_time_interval = 8000;
+    }
+    else if (save_info.cur_lighting_animation_time_interval < 10000)
+    {
+        save_info.cur_lighting_animation_time_interval = 10000;
+    }
+    else if (save_info.cur_lighting_animation_time_interval < 15000)
+    {
+        save_info.cur_lighting_animation_time_interval = 15000;
+    }
+
+    printf("cur time interval %u\n", save_info.cur_lighting_animation_time_interval);
+    // 重新开始跑动画
+    lighting_animation_mode_change();
+}
+
+// 减少动画时间间隔(动画时间间隔变短)
+void lighting_animation_time_interval_sub(void)
+{
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
+        return;
+
+    if (save_info.cur_lighting_animation_time_interval >= 15000)
+    {
+        save_info.cur_lighting_animation_time_interval = 10000;
+    }
+    else if (save_info.cur_lighting_animation_time_interval >= 10000)
+    {
+        save_info.cur_lighting_animation_time_interval = 8000;
+    }
+    // else if (save_info.cur_lighting_animation_time_interval >= 8000)
+    else
+    {
+        save_info.cur_lighting_animation_time_interval = 4000;
+    }
+
+    printf("cur time interval %u\n", save_info.cur_lighting_animation_time_interval);
     // 重新开始跑动画
     lighting_animation_mode_change();
 }
@@ -1904,7 +1993,7 @@ void lighting_animation_speed_min(void)
     if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
 
-    save_info.cur_speed = 1000;
+    save_info.cur_speed = 4000;
 
     // 重新开始跑动画
     lighting_animation_mode_change();
@@ -1923,12 +2012,55 @@ void lighting_animation_speed_mid(void)
     lighting_animation_mode_change();
 }
 
+// 时间间隔设置为最快
+void lighting_animation_time_interval_fast(void)
+{
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
+        return;
+
+    // 时间间隔快在 4000
+    save_info.cur_lighting_animation_time_interval = 4000;
+
+    printf("cur time interval %u\n", save_info.cur_lighting_animation_time_interval);
+    // 重新开始跑动画
+    lighting_animation_mode_change();
+}
+
+// 时间间隔设置为最慢
+void lighting_animation_time_interval_slow(void)
+{
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
+        return;
+
+    // 时间间隔最慢在 15000
+    save_info.cur_lighting_animation_time_interval = 15000;
+
+    printf("cur time interval %u\n", save_info.cur_lighting_animation_time_interval);
+    // 重新开始跑动画
+    lighting_animation_mode_change();
+}
+
+// 时间间隔设置为适中
+void lighting_animation_time_interval_mid(void)
+{
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
+        return;
+
+    // 时间间隔中间在 8000 或 10000
+    save_info.cur_lighting_animation_time_interval = 8000;
+
+    printf("cur time interval %u\n", save_info.cur_lighting_animation_time_interval);
+
+    // 重新开始跑动画
+    lighting_animation_mode_change();
+}
+
 void lighting_animation_bright_add(void)
 {
     if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
 
-    // 亮度不能超过100
+    // 亮度不能超过100%
     if (save_info.cur_brightness < 255 - (255 / 10))
     {
         save_info.cur_brightness += 255 / 10;
@@ -1966,9 +2098,12 @@ void lighting_animation_init(void)
     lighting_animation_mode_change();
 }
 
+// 第一次上电的时候，初始化变量：
 void lighting_animation_config_init(void)
 {
-    save_info.flag_is_cur_rf_24g_mode_enable = 1; // 2.4G遥控器控制的灯光模式，使能
+    // save_info.flag_is_cur_rf_24g_mode_enable = 1; // 2.4G遥控器控制的灯光模式，使能
+
+
     save_info.cur_lighting_animation_mode = 1;    // 灯光动画模式1
     save_info.cur_speed = 3000;                   // 动画速度
     // save_info.cur_lighting_animation_time_interval = 10.0; // 动画时间间隔 10s

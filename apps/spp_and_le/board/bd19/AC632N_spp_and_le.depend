@@ -58204,7 +58204,7 @@
 	"typedef.h"
 	"asm/adc_api.h"
 
-1755763542 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\rf24g_key\rf24g_app.h
+1757753970 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\rf24g_key\rf24g_app.h
 	"board_ac632n_demo_cfg.h"
 
 1719187031 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\include_lib\driver\cpu\bd19\asm\ctmu.h
@@ -60286,7 +60286,7 @@
 	"led_strip_drive.h"
 	"one_wire.h"
 
-1756689007 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strip_sys.h
+1757050953 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strip_sys.h
 	"cpu.h"
 
 1756431433 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\ws2812-fx-lib\ws2812fx_c\ws2812fx.h
@@ -60312,7 +60312,7 @@
 1719186947 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\one_wire\one_wire.h
 	"system/includes.h"
 
-1756689495 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strand_effect.c
+1758879028 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strand_effect.c
 	"system/includes.h"
 	"led_strand_effect.h"
 	"WS2812FX.H"
@@ -60336,14 +60336,14 @@
 	"asm/mcpwm.h"
 	"led_strand_effect.h"
 
-1756690556 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strip_sys.c
+1758852863 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strip_sys.c
 	"led_strip_sys.h"
 	"Adafruit_NeoPixel.H"
 	"led_strand_effect.h"
 	"../../apps/user_app/lighting_animation/lighting_animation.h"
 	"../../../apps/user_app/save_flash/save_flash.h"
 
-1756689836 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strip_voice.c
+1758852236 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strip_voice.c
 	"led_strip_voice.h"
 	"asm/adc_api.h"
 	"led_strip_drive.h"
@@ -60364,7 +60364,7 @@
 	"one_wire.h"
 	"led_strand_effect.h"
 
-1756704792 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\protocol\dp_data_tran.c
+1758879184 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\protocol\dp_data_tran.c
 	"cpu.h"
 	"led_strip_sys.h"
 	"paint_tool.h"
@@ -60386,7 +60386,7 @@
 	<stdint.h>
 	"app_config.h"
 
-1756524967 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\rf24g_key\rf24g_app.c
+1758866398 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\rf24g_key\rf24g_app.c
 	"system/includes.h"
 	"task.h"
 	"event.h"
@@ -61372,7 +61372,7 @@
 	<stdint.h>
 	"app_config.h"
 
-1756258101 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\examples\multi_conn\ble_multi_central.c
+1758852685 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\examples\multi_conn\ble_multi_central.c
 	"system/app_core.h"
 	"system/includes.h"
 	"app_config.h"
@@ -61393,7 +61393,7 @@
 	"le_client_demo.h"
 	"gatt_common/le_gatt_common.h"
 
-1722481338 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\examples\multi_conn\ble_multi_peripheral.c
+1758877652 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\examples\multi_conn\ble_multi_peripheral.c
 	"system/app_core.h"
 	"system/includes.h"
 	"app_config.h"
@@ -61898,11 +61898,11 @@
 	"debug.h"
 	"uart_update.h"
 
-1756519751 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\lighting_animation\lighting_animation.h
+1758866309 d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\lighting_animation\lighting_animation.h
 	"includes.h"
 	"Adafruit_NeoPixel.H"
 
-1756698960 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\lighting_animation\lighting_animation.c
+1758866325 source:d:\baidusyncdisk\a_workst\aworkst\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\lighting_animation\lighting_animation.c
 	"lighting_animation.h"
 	"Adafruit_NeoPixel.H"
 	"led_strand_effect.h"

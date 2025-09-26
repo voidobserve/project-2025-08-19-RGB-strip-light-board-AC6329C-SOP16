@@ -74,7 +74,7 @@ void fc_data_init(void)
 
     // ================================================================ //
     // fc_effect.cur_mode = 1;
-    fc_effect.star_speed = 3000;
+    fc_effect.star_speed = 3000; // 流星灯速度
     fc_effect.b = 255;
     // // fc_effect.b = 10; // 实际观察不到亮度有变化
     fc_effect.on_off_flag == DEVICE_ON;
@@ -96,6 +96,7 @@ void soft_turn_on_the_light(void) // 软开灯处理
     save_info.flag_is_light_on = 1;
     fc_effect.on_off_flag = DEVICE_ON;
 
+    // USER_TO_DO ：
     if (save_info.flag_is_cur_rf_24g_mode_enable)
     {
         // 如果当前是由2.4G遥控器控制的灯光模式
@@ -136,6 +137,7 @@ void soft_turn_off_lights(void) // 软关灯处理
     save_info.flag_is_light_on = 0;
     fc_effect.on_off_flag = DEVICE_OFF;
 
+    // USER_TO_DO ：
     if (save_info.flag_is_cur_rf_24g_mode_enable)
     {
         // 如果当前是由2.4G遥控器控制的灯光模式
@@ -446,6 +448,16 @@ void app_set_RGBsequence(u8 tp_s)
     }
 }
 
+// void app_set_RGBWsequence(u8 tp_s)
+// {
+
+//     if (tp_s < 6)
+//     {
+//         fc_effect.sequence = RGBsequence_map[tp_s]; 
+//         WS2812FX_init(fc_effect.led_num, fc_effect.sequence);
+//     }
+// }
+
 /**
  * @brief 设置声控使用手机麦还是外部麦
  *
@@ -601,13 +613,13 @@ void app_set_mereor_mode(u8 tp_m)
 #if 1
     if (tp_m <= 10) // 1~10，对应样机模式1~模式10
     {
-        save_info.flag_is_cur_rf_24g_mode_enable = 1; // 表示要执行的不是2.4G遥控器对应的模式
+        // save_info.flag_is_cur_rf_24g_mode_enable = 1; // 表示要执行的不是2.4G遥控器对应的模式
         save_info.cur_lighting_animation_mode = tp_m;
         lighting_animation_mode_change();
     }
     else if (tp_m >= 11 && tp_m <= 13) // 11~13，对应app中的音乐律动1~3
     {
-        save_info.flag_is_cur_rf_24g_mode_enable = 0; // 表示要执行的不是2.4G遥控器对应的模式
+        // save_info.flag_is_cur_rf_24g_mode_enable = 0; // 表示要执行的不是2.4G遥控器对应的模式
         if (11 == tp_m)
         {
             fc_effect.music.m = 0;
@@ -964,11 +976,11 @@ ON_OFF_FLAG get_on_off_state(void)
 {
     // return fc_effect.on_off_flag;
 
-    if (save_info.flag_is_cur_rf_24g_mode_enable)
-    {
-        // 如果当前模式是2.4G遥控器模式，则返回2.4G遥控器模式开关状态
-        return save_info.flag_is_light_on;
-    }
+    // if (save_info.flag_is_cur_rf_24g_mode_enable)
+    // {
+    //     // 如果当前模式是2.4G遥控器模式，则返回2.4G遥控器模式开关状态
+    //     return save_info.flag_is_light_on;
+    // }
 
     // 如果过当前模式是app控制的模式
     return fc_effect.on_off_flag;

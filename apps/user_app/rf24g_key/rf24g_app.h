@@ -5,6 +5,7 @@
 
 #if TCFG_RF24GKEY_ENABLE
 
+// 定义按键键值：
 enum
 {
     RF24G_KEY_ON_OFF = 0x01,

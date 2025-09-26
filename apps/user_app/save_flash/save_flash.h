@@ -38,6 +38,7 @@ typedef struct
     u8 cur_brightness;                 // 当前灯光亮度
     u8 cur_options;                    // 当前选项
     u8 flag_is_light_on;               // 标志位，灯光是否开启
+    
     /*
         标志位，当前是否要使能2.4G遥控器的功能；
         app控制和2.4G控制会有冲突，需要加上这个标志位来区分

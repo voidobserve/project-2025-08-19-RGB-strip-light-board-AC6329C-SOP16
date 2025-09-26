@@ -83,6 +83,7 @@ void sound_handle(void)
                 {
                     music_voic.sound_trg = 1;  // 七彩声控
                     music_voic.meteor_trg = 1; // 流星声控
+                    WS2812FX_trigger(); // 让主循环扫描到，立即切换动画；如果没有这一句，声控的灵敏度会差一些
                 }
             }
         }

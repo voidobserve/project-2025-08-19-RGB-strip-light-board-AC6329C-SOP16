@@ -1234,7 +1234,7 @@ void ls_music_effect(void)
     extern uint16_t fc_music_twinkle(void);
 
     void *music_effect_addr = &fc_music_gradual; // 避免出现地址空，导致不断复位
-    app_set_bright(100);
+    app_set_bright(100); // 设置为最大亮度
     // #if (LED_STRIP_TYPE == TYPE_Fiber_optic_lights)
     switch (fc_effect.music.m)
     {
