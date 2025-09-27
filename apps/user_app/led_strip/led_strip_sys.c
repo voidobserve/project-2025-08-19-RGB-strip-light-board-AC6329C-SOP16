@@ -6,6 +6,7 @@
 
 #include "../../apps/user_app/lighting_animation/lighting_animation.h" // 包含2.4G遥控器控制的灯光动画
 #include "../../../apps/user_app/save_flash/save_flash.h"              // 包含 save_info_t 结构体类型定义，save_info 结构体变量定义
+#include "../../../apps/user_app/protocol/dp_data_tran.h"
 
 #define MAX_BRIGHT_RANK 10
 #define MAX_SPEED_RANK 10
@@ -25,8 +26,8 @@ void fc_data_init(void)
     // 灯具
     fc_effect.on_off_flag = DEVICE_ON; // 灯为开启状态
     // fc_effect.led_num = 14;        //灯带的总灯珠数量   森木流星灯的效果有些bug，未知道哪里出问题呢，10颗流星需要配置12
-    fc_effect.led_num = 12;           // 灯带的总灯珠数量
-    fc_effect.Now_state = ACT_CUSTOM; // 当前运行状态 静态 （修改这里会影响流星灯尾焰长度）
+    fc_effect.led_num = 12; // 灯带的总灯珠数量
+    // fc_effect.Now_state = ACT_CUSTOM; // 当前运行状态 静态 （修改这里会影响流星灯尾焰长度）
 
     fc_effect.rgb.r = 255;
     fc_effect.rgb.g = 255;
@@ -47,7 +48,7 @@ void fc_data_init(void)
     // fc_effect.sequence = NEO_BGR;
     fc_effect.sequence = NEO_RGB; // RGB 顺序 R->G->B
     fc_effect.auto_f = IS_PAUSE;
-    fc_effect.music.s = 85;
+    fc_effect.music.s = 85; // 声控模式的灵敏度
 
     // //闹钟
     //     zd_countdown[0].set_on_off = DEVICE_OFF;
@@ -80,6 +81,10 @@ void fc_data_init(void)
     fc_effect.on_off_flag == DEVICE_ON;
     // fc_effect.cur_options = NO_OPTIONS;
     fc_effect.sequence = NEO_RGB; // RGB 顺序 R->G->B
+
+    // lighting_animation_config_init(); // 初始化参数
+
+    fc_effect.Now_state = METEORITE_LAMP_MODE; // 默认启动流星灯模式
 }
 
 /*********************************************************
@@ -87,90 +92,37 @@ void fc_data_init(void)
  *      软件开机  关机 API
  *
  *********************************************************/
+
+/**
+ * @brief 软件开机 API
+ * @attention 调用前要先设置好 fc_effect.Now_state
+ *
+ */
 void soft_turn_on_the_light(void) // 软开灯处理
 {
-    /*
-        save_info.flag_is_light_on 和 fc_effect.on_off_flag 都要设置为 DEVICE_ON
-        再根据 save_info.flag_is_cur_rf_24g_mode_enable 判断要执行2.4G遥控器对应的灯光模式还是app对应的灯光模式
-    */
+    // u8 send_buff[3];
+
     save_info.flag_is_light_on = 1;
     fc_effect.on_off_flag = DEVICE_ON;
+    
+    // printf("fc_effect.Now_state = %u\n", fc_effect.Now_state); /* 把这里注释掉，好像有可能会导致复位 */
 
-    // USER_TO_DO ：
-    if (save_info.flag_is_cur_rf_24g_mode_enable)
-    {
-        // 如果当前是由2.4G遥控器控制的灯光模式
+    set_fc_effect(); // 根据 fc_effect.Now_state 的状态，执行对应的模式
 
-        lighting_animation_mode_change(); // 执行 save_info.cur_lighting_animation_mode 对应的灯光动画
-        save_info_write();                // 保存 save_info 数据
-        save_user_data_area3();           // 保存参数配置到flash
-
-        // 与app同步开关状态
-        u8 tp_buffer[3];
-        tp_buffer[0] = 0x01;
-        tp_buffer[1] = 0x01;
-        tp_buffer[2] = save_info.flag_is_light_on; // 0:灯光关 1:灯光开
-        zd_fb_2_app(tp_buffer, 3);
-
-        // 与app同步流星灯开关状态
-        tp_buffer[0] = 0x2F;
-        tp_buffer[1] = 0x02;
-        tp_buffer[2] = save_info.flag_is_light_on; // 0:灯光关 1:灯光开
-        zd_fb_2_app(tp_buffer, 3);
-        return;
-    }
-
-    // 如果进入到这里，说明当前是app控制的灯光模式
-    set_fc_effect();
-    fb_led_on_off_state();  // 与app同步开关状态
-    fd_meteor_on_off();     // 与app同步流星灯开关状态
-    save_info_write();      // 保存 save_info 数据
-    save_user_data_area3(); // 保存参数配置到flash
-    printf("soft_turn_on_the_light");
+    app_feedback_led_on_off_state();
+    printf("soft_turn_on_the_light end\n");
 }
 
 void soft_turn_off_lights(void) // 软关灯处理
 {
-    /*
-        save_info.flag_is_light_on 和 fc_effect.on_off_flag 都要设置为 DEVICE_OFF
-    */
+    // u8 send_buff[3];
     save_info.flag_is_light_on = 0;
     fc_effect.on_off_flag = DEVICE_OFF;
 
-    // USER_TO_DO ：
-    if (save_info.flag_is_cur_rf_24g_mode_enable)
-    {
-        // 如果当前是由2.4G遥控器控制的灯光模式
+    WS2812FX_stop();
 
-        // lighting_animation_mode_change(); // 执行 save_info.cur_lighting_animation_mode 对应的灯光动画
-        WS2812FX_stop();
-
-        printf("soft_turn_off_lights");
-        save_info_write();      // 保存 save_info 数据
-        save_user_data_area3(); // 保存参数配置到flash
-
-        // 与app同步开关状态
-        u8 tp_buffer[3];
-        tp_buffer[0] = 0x01;
-        tp_buffer[1] = 0x01;
-        tp_buffer[2] = save_info.flag_is_light_on; // 0:灯光关 1:灯光开
-        zd_fb_2_app(tp_buffer, 3);
-
-        // tp_buffer[0] = 0x2F;
-        // tp_buffer[1] = 0x02;
-        // tp_buffer[2] = save_info.flag_is_light_on; // 0:灯光关 1:灯光开
-        // zd_fb_2_app(tp_buffer, 3);
-
-        return;
-    }
-
-    // set_fc_effect();
-
-    fb_led_on_off_state();  // 与app同步开关状态
-    fd_meteor_on_off();     // 与app同步流星灯开关状态
-    save_info_write();      // 保存 save_info 数据
-    save_user_data_area3(); // 保存参数配置到flash
-    printf("soft_turn_off_lights");
+    app_feedback_led_on_off_state();
+    printf("soft_turn_off_lights end\n");
 }
 
 /*********************************************************
@@ -453,7 +405,7 @@ void app_set_RGBsequence(u8 tp_s)
 
 //     if (tp_s < 6)
 //     {
-//         fc_effect.sequence = RGBsequence_map[tp_s]; 
+//         fc_effect.sequence = RGBsequence_map[tp_s];
 //         WS2812FX_init(fc_effect.led_num, fc_effect.sequence);
 //     }
 // }
@@ -595,7 +547,7 @@ void app_set_on_off_meteor(u8 tp_sw)
 
 /**
  * @brief app设置流星模式
- *
+ *      函数内部会根据传参设置好 fc_effect.Now_state
  *
  * @param tp_m
  */
@@ -613,13 +565,14 @@ void app_set_mereor_mode(u8 tp_m)
 #if 1
     if (tp_m <= 10) // 1~10，对应样机模式1~模式10
     {
-        // save_info.flag_is_cur_rf_24g_mode_enable = 1; // 表示要执行的不是2.4G遥控器对应的模式
-        save_info.cur_lighting_animation_mode = tp_m;
+        fc_effect.Now_state = METEORITE_LAMP_MODE;    // 流星灯模式
+        save_info.cur_lighting_animation_mode = tp_m; // 存放对应的流星灯模式索引
         lighting_animation_mode_change();
+        // set_fc_effect();
     }
     else if (tp_m >= 11 && tp_m <= 13) // 11~13，对应app中的音乐律动1~3
     {
-        // save_info.flag_is_cur_rf_24g_mode_enable = 0; // 表示要执行的不是2.4G遥控器对应的模式
+        fc_effect.Now_state = IS_light_music; // 音乐模式（声控模式）
         if (11 == tp_m)
         {
             fc_effect.music.m = 0;
@@ -632,7 +585,7 @@ void app_set_mereor_mode(u8 tp_m)
         {
             fc_effect.music.m = 2;
         }
-        fc_effect.Now_state = IS_light_music; // 音乐模式（声控模式）
+
         ls_music_effect();
     }
 #endif
@@ -982,7 +935,6 @@ ON_OFF_FLAG get_on_off_state(void)
     //     return save_info.flag_is_light_on;
     // }
 
-    // 如果过当前模式是app控制的模式
     return fc_effect.on_off_flag;
 }
 

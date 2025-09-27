@@ -145,6 +145,7 @@ u8 rf24g_convert_key_event(u8 key_value, u8 key_driver_event)
 void rf24_key_handle(void)
 {
     u8 rf24g_key_event = 0;
+    u8 tp_buffer[3]; // 存放要向app发送的数据
 
     if (NO_KEY == rf24g_key_driver_value)
         return;
@@ -159,25 +160,24 @@ void rf24_key_handle(void)
 
     case RF24G_KEY_EVENT_ON_OFF_CLICK:
     case RF24G_KEY_EVENT_ON_OFF_LOOSE:
-        printf("key event on/off\n");
-        // 开机/关机
+        printf("rf 24g key event on/off\n");
+
+        // printf("save_info.flag_is_light_on = %u\n", (u16)save_info.flag_is_light_on);
+        // printf("fc_effect.on_off_flag = %u\n", (u16)fc_effect.on_off_flag); 
+        
+        printf("fc_effect.Now_state = %u\n", (u16)fc_effect.Now_state); 
+
         if (0 == save_info.flag_is_light_on)
         {
-            save_info.flag_is_light_on = 1;
-            lighting_animation_mode_change();
-            // fb_led_on_off_state();  // 与app同步开关状态
-            printf("soft_turn_on_the_light");
+            soft_turn_on_the_light(); // 开灯
         }
         else
         {
-            // 实际上只是关灯，没有低功耗
-            save_info.flag_is_light_on = 0;
-            WS2812FX_stop();
-            // fb_led_on_off_state();  // 与app同步开关状态
-            printf("soft_turn_off_lights");
+            soft_turn_off_lights(); // 关灯
         }
 
-        save_info_write(); // 保存参数配置到flash
+        save_info_write();      // 保存 save_info 数据
+        save_user_data_area3(); // 保存参数配置到flash
 
         break;
 
@@ -185,33 +185,48 @@ void rf24_key_handle(void)
     case RF24G_KEY_EVENT_DEMO_CLICK:
     case RF24G_KEY_EVENT_DEMO_LOOSE:
         printf("key event demo\n");
+
         lighting_animation_init();
 
-        save_info_write(); // 保存参数配置到flash
+        save_info_write();      // 保存 save_info 数据
+        save_user_data_area3(); // 保存参数配置到flash
         break;
 
         /* 模式加  ========================================================== */
     case RF24G_KEY_EVENT_MODE_ADD_CLICK:
     case RF24G_KEY_EVENT_MODE_ADD_LOOSE:
         printf("key_event_mode_add\n");
+
         lighting_animation_mode_add();
-        save_info_write(); // 保存参数配置到flash
+
+        save_info_write();      // 保存 save_info 数据
+        save_user_data_area3(); // 保存参数配置到flash
         break;
 
         /* 模式减  ========================================================== */
     case RF24G_KEY_EVENT_MODE_SUB_CLICK:
     case RF24G_KEY_EVENT_MODE_SUB_LOOSE:
         printf("key evetn mode sub\n");
+
         lighting_animation_mode_sub();
-        save_info_write(); // 保存参数配置到flash
+        save_info_write();      // 保存参数配置到flash
+        save_user_data_area3(); // 保存参数配置到flash
         break;
 
         /* 速度加  ========================================================== */
     case RF24G_KEY_EVENT_SPEED_ADD_CLICK:
     case RF24G_KEY_EVENT_SPEED_ADD_LOOSE:
         printf("key event speed add\n");
+
         lighting_animation_speed_add();
-        save_info_write(); // 保存参数配置到flash
+        save_info_write();      // 保存参数配置到flash
+        save_user_data_area3(); // 保存参数配置到flash
+
+        // 向app反馈流星灯速度（app的速度值是0~100，这里需要做转换）
+        tp_buffer[0] = 0x2F;
+        tp_buffer[1] = 0x01;
+        tp_buffer[2] = (u32)(save_info.cur_speed - 1000) * 100 / 3000; // 将 1000~4000 转换成 0~100 的数值
+        zd_fb_2_app(tp_buffer, 3);
         break;
 
         /* 速度减  ========================================================== */
@@ -219,7 +234,15 @@ void rf24_key_handle(void)
     case RF24G_KEY_EVENT_SPEED_SUB_LOOSE:
         printf("key event speed sub\n");
         lighting_animation_speed_sub();
-        save_info_write(); // 保存参数配置到flash
+
+        save_info_write();      // 保存参数配置到flash
+        save_user_data_area3(); // 保存参数配置到flash
+
+        // 向app反馈流星灯速度（app的速度值是0~100，这里需要做转换）
+        tp_buffer[0] = 0x2F;
+        tp_buffer[1] = 0x01;
+        tp_buffer[2] = (u32)(save_info.cur_speed - 1000) * 100 / 3000; // 将 1000~4000 转换成 0~100 的数值
+        zd_fb_2_app(tp_buffer, 3);
         break;
 
         /* 流水间隔时间变长 */
@@ -227,7 +250,19 @@ void rf24_key_handle(void)
     case RF24G_KEY_EVENT_COLOR_ADD_LOOSE:
         printf("key event color add\n");
         lighting_animation_time_interval_add();
-        save_info_write(); // 保存参数配置到flash
+        save_info_write();      // 保存参数配置到flash
+        save_user_data_area3(); // 保存参数配置到flash
+
+        // 向app反馈时间间隔（app的时间间隔是 2~20，这里需要做转换）
+        tp_buffer[0] = 0x2F;
+        tp_buffer[1] = 0x03;
+        /*
+            将 4000~15000 转换成 2~20 的数值
+            公式：
+            newValue = (oldValue - 4000) * (20 - 2) / (15000 - 4000) + 2
+        */
+        tp_buffer[2] = (u32)(save_info.cur_lighting_animation_time_interval - 4000) * (20 - 2) / (15000 - 4000) + 2;
+        zd_fb_2_app(tp_buffer, 3);
         break;
 
         /* 流水间隔时间变短 */
@@ -235,7 +270,19 @@ void rf24_key_handle(void)
     case RF24G_KEY_EVENT_COLOR_SUB_LOOSE:
         printf("key event color sub\n");
         lighting_animation_time_interval_sub();
-        save_info_write(); // 保存参数配置到flash
+        save_info_write();      // 保存参数配置到flash
+        save_user_data_area3(); // 保存参数配置到flash
+
+        // 向app反馈时间间隔（app的时间间隔是 2~20，这里需要做转换）
+        tp_buffer[0] = 0x2F;
+        tp_buffer[1] = 0x03;
+        /*
+            将 4000~15000 转换成 2~20 的数值
+            公式：
+            newValue = (oldValue - 4000) * (20 - 2) / (15000 - 4000) + 2
+        */
+        tp_buffer[2] = (u32)(save_info.cur_lighting_animation_time_interval - 4000) * (20 - 2) / (15000 - 4000) + 2;
+        zd_fb_2_app(tp_buffer, 3);
         break;
 
         /* 亮度加  ========================================================== */
@@ -243,7 +290,14 @@ void rf24_key_handle(void)
     case RF24G_KEY_EVENT_BRIGHT_ADD_LOOSE:
         printf("key event bright add\n");
         lighting_animation_bright_add();
-        save_info_write(); // 保存参数配置到flash
+
+        save_info_write();      // 保存参数配置到flash
+        save_user_data_area3(); // 保存参数配置到flash
+
+        // 向app反馈亮度（app的亮度是 0~100，这里需要做转换）
+        fc_effect.app_b = (u32)fc_effect.b * 100 / 255;
+        fb_bright(); // 向app返回亮度数据
+
         break;
 
         /* 流水方向切换  */
@@ -251,8 +305,11 @@ void rf24_key_handle(void)
     // case RF24G_KEY_EVENT_BRIGHT_SUB_HOLD: // 加上hold会影响动画效果
     case RF24G_KEY_EVENT_BRIGHT_SUB_LOOSE:
         printf("key event bright sub\n");
+
         lighting_animation_dir_switch();
-        save_info_write(); // 保存参数配置到flash
+        save_info_write();      // 保存参数配置到flash
+        save_user_data_area3(); // 保存参数配置到flash
+
         break;
 
         /* 流水间隔时间设置为最短 */
@@ -261,6 +318,19 @@ void rf24_key_handle(void)
         printf("key event b\n");
         lighting_animation_time_interval_fast(); // 时间间隔设置为最快
         save_info_write();                       // 保存参数配置到flash
+        save_user_data_area3();                  // 保存参数配置到flash
+
+        // 向app反馈时间间隔（app的时间间隔是 2~20，这里需要做转换）
+        tp_buffer[0] = 0x2F;
+        tp_buffer[1] = 0x03;
+        /*
+            将 4000~15000 转换成 2~20 的数值
+            公式：
+            newValue = (oldValue - 4000) * (20 - 2) / (15000 - 4000) + 2
+        */
+        tp_buffer[2] = (u32)(save_info.cur_lighting_animation_time_interval - 4000) * (20 - 2) / (15000 - 4000) + 2;
+        zd_fb_2_app(tp_buffer, 3);
+
         break;
 
         /* 流水间隔时间设置为最长  */
@@ -269,6 +339,18 @@ void rf24_key_handle(void)
         printf("key event G\n");
         lighting_animation_time_interval_slow(); // 时间间隔设置为最慢
         save_info_write();                       // 保存参数配置到flash
+        save_user_data_area3();                  // 保存参数配置到flash
+
+        // 向app反馈时间间隔（app的时间间隔是 2~20，这里需要做转换）
+        tp_buffer[0] = 0x2F;
+        tp_buffer[1] = 0x03;
+        /*
+            将 4000~15000 转换成 2~20 的数值
+            公式：
+            newValue = (oldValue - 4000) * (20 - 2) / (15000 - 4000) + 2
+        */
+        tp_buffer[2] = (u32)(save_info.cur_lighting_animation_time_interval - 4000) * (20 - 2) / (15000 - 4000) + 2;
+        zd_fb_2_app(tp_buffer, 3);
         break;
 
         /* 6种流水间隔时间固定 */
@@ -277,6 +359,18 @@ void rf24_key_handle(void)
         printf("key event F\n");
         lighting_animation_time_interval_mid(); // 时间间隔设置为适中
         save_info_write();                      // 保存参数配置到flash
+        save_user_data_area3();                 // 保存参数配置到flash
+
+        // 向app反馈时间间隔（app的时间间隔是 2~20，这里需要做转换）
+        tp_buffer[0] = 0x2F;
+        tp_buffer[1] = 0x03;
+        /*
+            将 4000~15000 转换成 2~20 的数值
+            公式：
+            newValue = (oldValue - 4000) * (20 - 2) / (15000 - 4000) + 2
+        */
+        tp_buffer[2] = (u32)(save_info.cur_lighting_animation_time_interval - 4000) * (20 - 2) / (15000 - 4000) + 2;
+        zd_fb_2_app(tp_buffer, 3);
         break;
 #endif
 

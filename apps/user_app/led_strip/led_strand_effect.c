@@ -83,20 +83,26 @@ void ls_set_color(uint8_t n, uint32_t c)
 //====================================================================================================
 
 /*----------------------------------静态色效果----------------------------------*/
-static void static_mode(void)
+// static void static_mode(void)
+void static_mode(void)
 {
     extern uint16_t WS2812FX_mode_static(void);
+    WS2812FX_stop();
 
-    WS2812FX_setSegment_colorOptions(                   // 设置一段颜色的效果
-        0,                                              // 第0段
-        0,                                              // 起始位置
-        LIGHTING_ANIMATION_LED_NUMS - 1,                // 结束位置(函数内部会给这个参数加一)
-        &WS2812FX_mode_static,                          // 效果
-        0,                                              // 颜色，WS2812FX_setColors设置
-        100,                                            // 速度
-        0);                                             // 选项，这里像素点大小：1
+    // WS2812FX_set_coloQty(0, fc_effect.dream_scene.c_n); // 设置颜色数量  0：第0段   fc_effect.dream_scene.c_n  颜色数量，一个颜色包含（RGB）
+    // ls_set_colors(1, &fc_effect.rgb); // 1:1个颜色    &fc_effect.rgb 这个颜色是什么色
+
+    WS2812FX_setSegment_colorOptions(    // 设置一段颜色的效果
+        0,                               // 第0段
+        0,                               // 起始位置
+        LIGHTING_ANIMATION_LED_NUMS - 1, // 结束位置(函数内部会给这个参数加一)
+        &WS2812FX_mode_static,           // 效果
+        0,                               // 颜色，WS2812FX_setColors设置
+        100,                             // 速度
+        0);                              // 选项，这里像素点大小：1
+  
     WS2812FX_set_coloQty(0, fc_effect.dream_scene.c_n); // 设置颜色数量  0：第0段   fc_effect.dream_scene.c_n  颜色数量，一个颜色包含（RGB）
-    ls_set_colors(1, &fc_effect.rgb);                   // 1:1个颜色    &fc_effect.rgb 这个颜色是什么色
+    ls_set_colors(1, &fc_effect.rgb); // 1:1个颜色    &fc_effect.rgb 这个颜色是什么色
 
     WS2812FX_start();
 }
@@ -1234,7 +1240,7 @@ void ls_music_effect(void)
     extern uint16_t fc_music_twinkle(void);
 
     void *music_effect_addr = &fc_music_gradual; // 避免出现地址空，导致不断复位
-    app_set_bright(100); // 设置为最大亮度
+    app_set_bright(100);                         // 设置为最大亮度
     // #if (LED_STRIP_TYPE == TYPE_Fiber_optic_lights)
     switch (fc_effect.music.m)
     {
@@ -1329,7 +1335,12 @@ void set_fc_effect(void)
 
         // 静态模式
         case IS_STATIC:
-            ls_static_effect();
+            // ls_static_effect();
+
+            // printf("== static mode ==\n");
+
+            extern void static_mode(void);
+            static_mode();
 
             // extern uint16_t WS2812FX_mode_static(void);
 
@@ -1347,9 +1358,11 @@ void set_fc_effect(void)
             // WS2812FX_start();
             break;
 
-        // case CUR_MODE_CTL_BY_RF_24G: // 由2.4G遥控器控制的模式
+        case METEORITE_LAMP_MODE: // 流星灯模式
 
-        //     break;
+            lighting_animation_mode_change();
+
+            break;
         default:
             break;
         }

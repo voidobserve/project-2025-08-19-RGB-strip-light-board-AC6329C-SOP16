@@ -20,8 +20,8 @@ typedef enum
     IS_light_scene,  // 炫彩情景
     IS_smear_adjust, // 涂抹功能
 
-
-    CUR_MODE_CTL_BY_RF_24G, // 由2.4G遥控器控制的功能
+    METEORITE_LAMP_MODE, // 流星灯模式
+    // CUR_MODE_CTL_BY_RF_24G, // 由2.4G遥控器控制的功能
 
 } Now_state_e;
 
@@ -126,14 +126,14 @@ typedef struct
 typedef struct
 {
     unsigned char m;      // 效果模式(索引值)
-    unsigned char s;      // 灵敏度
+    unsigned char s;      // 灵敏度（数值越小，越灵敏）
     unsigned char m_type; // 区分音乐的模式，手机麦或者外麦
 } music_t;
 
 /*----------------------------幻彩灯串效果大结构体----------------------------------*/
 typedef struct
 {
-    unsigned char on_off_flag; // 开关状态
+    volatile unsigned char on_off_flag; // 灯的开关状态
     unsigned char led_num;     // 灯点数
     unsigned char sequence;    // RGB通道顺序
     unsigned char b;           // 本地亮度

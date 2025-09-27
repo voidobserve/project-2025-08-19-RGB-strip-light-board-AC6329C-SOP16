@@ -63,11 +63,13 @@ volatile u8 buf[SYS_MAX_LED_NUMBER * 3] __attribute((aligned(4))); // 使用中�
  */
 void ws281x_show(unsigned char *pixels_pattern, unsigned short pattern_size)
 {
-  unsigned short i, j = 0, k = 0;
-
-  u8 r, g, b;
+    
 
 #if 0
+
+    unsigned short i, j = 0, k = 0;
+
+    u8 r, g, b;
   for(i=0; i< pattern_size/3; i++)
   {
     *(buf+i) = *(pixels_pattern + i*3);
@@ -99,13 +101,13 @@ void ws281x_show(unsigned char *pixels_pattern, unsigned short pattern_size)
   }
 #endif
 
-  memcpy(buf, pixels_pattern, 36);
+    memcpy(buf, pixels_pattern, 36);
 
-  // 如果灯光关闭，清空数据，不显示颜色
-  // if (fc_effect.on_off_flag == DEVICE_OFF)
-  // {
-  //   memset(buf, 0, 36);
-  // }
+    // 如果灯光关闭，清空数据，不显示颜色
+    // if (fc_effect.on_off_flag == DEVICE_OFF)
+    // {
+    //   memset(buf, 0, 36);
+    // }
 
     // 如果灯光关闭，清空数据，不显示颜色
     if (0 == save_info.flag_is_light_on)
@@ -113,21 +115,20 @@ void ws281x_show(unsigned char *pixels_pattern, unsigned short pattern_size)
         memset(buf, 0, 36);
     }
 
-
-  extern void ledc_send_rgbbuf_isr(u8 index, u8 * rgbbuf, u32 buf_len, u16 again_cnt);
-  ledc_send_rgbbuf_isr(0, buf, pattern_size / 3, 0);
+    extern void ledc_send_rgbbuf_isr(u8 index, u8 * rgbbuf, u32 buf_len, u16 again_cnt);
+    ledc_send_rgbbuf_isr(0, buf, pattern_size / 3, 0);
 }
 
 // 周期10ms
 unsigned long HAL_GetTick(void)
 {
-  return tick_ms;
+    return tick_ms;
 }
 
 // 每10ms调用一次
 void run_tick_per_10ms(void)
 {
-  tick_ms += 10;
+    tick_ms += 10;
 }
 
 //=============================== 以下是库代码 尽量不要改动  =======================
@@ -137,26 +138,26 @@ void run_tick_per_10ms(void)
 void Adafruit_NeoPixel_init(uint16_t pixel_num, neoPixelType type)
 {
 
-  /* WS2812系列灯珠，底层驱动初始化 */
-  ws281x_init();
+    /* WS2812系列灯珠，底层驱动初始化 */
+    ws281x_init();
 
-  /*   free(pixels); */
-  brightness = 0;
-  //  endTime = 0;
-  wOffset = (type) >> 6 & 0x3;
-  rOffset = (type) >> 4 & 0x3;
-  gOffset = (type) >> 2 & 0x3;
-  bOffset = (type) & 0x3;
-  numBytes = pixel_num * ((wOffset == rOffset) ? 3 : 4);
-  memset(pixels, 0, numBytes);
-  numLEDs = pixel_num;
-  /*   pixels = (uint8_t *)malloc(numBytes);
-    if(NULL != pixels){ //内存申请成功
-      memset(pixels, 0, numBytes);
+    /*   free(pixels); */
+    brightness = 0;
+    //  endTime = 0;
+    wOffset = (type) >> 6 & 0x3;
+    rOffset = (type) >> 4 & 0x3;
+    gOffset = (type) >> 2 & 0x3;
+    bOffset = (type) & 0x3;
+    numBytes = pixel_num * ((wOffset == rOffset) ? 3 : 4);
+    memset(pixels, 0, numBytes);
+    numLEDs = pixel_num;
+    /*   pixels = (uint8_t *)malloc(numBytes);
+      if(NULL != pixels){ //内存申请成功
+        memset(pixels, 0, numBytes);
 
-    } else {
-      numLEDs = numBytes = 0;
-    } */
+      } else {
+        numLEDs = numBytes = 0;
+      } */
 }
 
 /*!
@@ -171,18 +172,18 @@ void Adafruit_NeoPixel_init(uint16_t pixel_num, neoPixelType type)
 */
 void Adafruit_NeoPixel_updateLength(uint16_t n)
 {
-  /* free(pixels); */ // Free existing data (if any)
+    /* free(pixels); */ // Free existing data (if any)
 
-  // Allocate new data -- note: ALL PIXELS ARE CLEARED
-  numBytes = n * ((wOffset == rOffset) ? 3 : 4);
-  memset(pixels, 0, numBytes);
-  /*   pixels = (uint8_t *)malloc(numBytes);
-    if(pixels) {
-      memset(pixels, 0, numBytes);
-      numLEDs = n;
-    } else {
-      numLEDs = numBytes = 0;
-    } */
+    // Allocate new data -- note: ALL PIXELS ARE CLEARED
+    numBytes = n * ((wOffset == rOffset) ? 3 : 4);
+    memset(pixels, 0, numBytes);
+    /*   pixels = (uint8_t *)malloc(numBytes);
+      if(pixels) {
+        memset(pixels, 0, numBytes);
+        numLEDs = n;
+      } else {
+        numLEDs = numBytes = 0;
+      } */
 }
 
 /*!
@@ -204,21 +205,21 @@ void Adafruit_NeoPixel_updateLength(uint16_t n)
 */
 void Adafruit_NeoPixel_updateType(neoPixelType t)
 {
-  unsigned char oldThreeBytesPerPixel = (wOffset == rOffset); // false if RGBW
+    unsigned char oldThreeBytesPerPixel = (wOffset == rOffset); // false if RGBW
 
-  wOffset = (t >> 6) & 0x03; // See notes in header file
-  rOffset = (t >> 4) & 0x03; // regarding R/G/B/W offsets
-  gOffset = (t >> 2) & 0x03;
-  bOffset = t & 0x03;
+    wOffset = (t >> 6) & 0x03; // See notes in header file
+    rOffset = (t >> 4) & 0x03; // regarding R/G/B/W offsets
+    gOffset = (t >> 2) & 0x03;
+    bOffset = t & 0x03;
 
-  // If bytes-per-pixel has changed (and pixel data was previously
-  // allocated), re-allocate to new size. Will clear any data.
-  if (pixels)
-  {
-    unsigned char newThreeBytesPerPixel = (wOffset == rOffset);
-    if (newThreeBytesPerPixel != oldThreeBytesPerPixel)
-      Adafruit_NeoPixel_updateLength(numLEDs);
-  }
+    // If bytes-per-pixel has changed (and pixel data was previously
+    // allocated), re-allocate to new size. Will clear any data.
+    if (pixels)
+    {
+        unsigned char newThreeBytesPerPixel = (wOffset == rOffset);
+        if (newThreeBytesPerPixel != oldThreeBytesPerPixel)
+            Adafruit_NeoPixel_updateLength(numLEDs);
+    }
 }
 
 /*!
@@ -244,43 +245,43 @@ void Adafruit_NeoPixel_updateType(neoPixelType t)
 void Adafruit_NeoPixel_show(void)
 {
 
-  if (!pixels)
-    return;
+    if (!pixels)
+        return;
 
-  // Data latch = 300+ microsecond pause in the output stream. Rather than
-  // put a delay at the end of the function, the ending time is noted and
-  // the function will simply hold off (if needed) on issuing the
-  // subsequent round of data until the latch time has elapsed. This
-  // allows the mainline code to start generating the next frame of data
-  // rather than stalling for the latch.
-  // while(!canShow());
-  // endTime is a private member (rather than global var) so that multiple
-  // instances on different pins can be quickly issued in succession (each
-  // instance doesn't delay the next).
+    // Data latch = 300+ microsecond pause in the output stream. Rather than
+    // put a delay at the end of the function, the ending time is noted and
+    // the function will simply hold off (if needed) on issuing the
+    // subsequent round of data until the latch time has elapsed. This
+    // allows the mainline code to start generating the next frame of data
+    // rather than stalling for the latch.
+    // while(!canShow());
+    // endTime is a private member (rather than global var) so that multiple
+    // instances on different pins can be quickly issued in succession (each
+    // instance doesn't delay the next).
 
-  // In order to make this code runtime-configurable to work with any pin,
-  // SBI/CBI instructions are eschewed in favor of full PORT writes via the
-  // OUT or ST instructions. It relies on two facts: that peripheral
-  // functions (such as PWM) take precedence on output pins, so our PORT-
-  // wide writes won't interfere, and that interrupts are globally disabled
-  // while data is being issued to the LEDs, so no other code will be
-  // accessing the PORT. The code takes an initial 'snapshot' of the PORT
-  // state, computes 'pin high' and 'pin low' values, and writes these back
-  // to the PORT register as needed.
+    // In order to make this code runtime-configurable to work with any pin,
+    // SBI/CBI instructions are eschewed in favor of full PORT writes via the
+    // OUT or ST instructions. It relies on two facts: that peripheral
+    // functions (such as PWM) take precedence on output pins, so our PORT-
+    // wide writes won't interfere, and that interrupts are globally disabled
+    // while data is being issued to the LEDs, so no other code will be
+    // accessing the PORT. The code takes an initial 'snapshot' of the PORT
+    // state, computes 'pin high' and 'pin low' values, and writes these back
+    // to the PORT register as needed.
 
-  // To support both the SoftDevice + Neopixels we use the EasyDMA
-  // feature from the NRF25. However this technique implies to
-  // generate a pattern and store it on the memory. The actual
-  // memory used in bytes corresponds to the following formula:
-  //              totalMem = numBytes*8*2+(2*2)
-  // The two additional bytes at the end are needed to reset the
-  // sequence.
-  //
-  // If there is not enough memory, we will fall back to cycle counter
-  // using DWT
-  uint32_t pattern_size = numBytes * 8 * sizeof(uint16_t) + 2 * sizeof(uint16_t);
-  uint16_t *pixels_pattern = NULL;
-  ws281x_show(pixels, numBytes);
+    // To support both the SoftDevice + Neopixels we use the EasyDMA
+    // feature from the NRF25. However this technique implies to
+    // generate a pattern and store it on the memory. The actual
+    // memory used in bytes corresponds to the following formula:
+    //              totalMem = numBytes*8*2+(2*2)
+    // The two additional bytes at the end are needed to reset the
+    // sequence.
+    //
+    // If there is not enough memory, we will fall back to cycle counter
+    // using DWT
+    uint32_t pattern_size = numBytes * 8 * sizeof(uint16_t) + 2 * sizeof(uint16_t);
+    uint16_t *pixels_pattern = NULL;
+    ws281x_show(pixels, numBytes);
 #if 0
 #if defined(ARDUINO_NRF52_ADAFRUIT) // use thread-safe malloc
       pixels_pattern = (uint16_t *) rtos_malloc(pattern_size);
@@ -340,28 +341,28 @@ void Adafruit_NeoPixel_setPixelColor_rgb(
     uint16_t n, uint8_t r, uint8_t g, uint8_t b)
 {
 
-  if (n < numLEDs)
-  {
-    if (brightness)
-    { // See notes in setBrightness()
-      r = (r * brightness) >> 8;
-      g = (g * brightness) >> 8;
-      b = (b * brightness) >> 8;
+    if (n < numLEDs)
+    {
+        if (brightness)
+        { // See notes in setBrightness()
+            r = (r * brightness) >> 8;
+            g = (g * brightness) >> 8;
+            b = (b * brightness) >> 8;
+        }
+        uint8_t *p;
+        if (wOffset == rOffset)
+        {                       // Is an RGB-type strip
+            p = &pixels[n * 3]; // 3 bytes per pixel
+        }
+        else
+        {                       // Is a WRGB-type strip
+            p = &pixels[n * 4]; // 4 bytes per pixel
+            p[wOffset] = 0;     // But only R,G,B passed -- set W to 0
+        }
+        p[rOffset] = r; // R,G,B always stored
+        p[gOffset] = g;
+        p[bOffset] = b;
     }
-    uint8_t *p;
-    if (wOffset == rOffset)
-    {                     // Is an RGB-type strip
-      p = &pixels[n * 3]; // 3 bytes per pixel
-    }
-    else
-    {                     // Is a WRGB-type strip
-      p = &pixels[n * 4]; // 4 bytes per pixel
-      p[wOffset] = 0;     // But only R,G,B passed -- set W to 0
-    }
-    p[rOffset] = r; // R,G,B always stored
-    p[gOffset] = g;
-    p[bOffset] = b;
-  }
 }
 
 /*!
@@ -378,32 +379,32 @@ void Adafruit_NeoPixel_setPixelColor_rgbw(
     uint16_t n, uint8_t r, uint8_t g, uint8_t b, uint8_t w)
 {
 
-  if (n < numLEDs)
-  {
-    if (brightness)
-    { // See notes in setBrightness()
-      r = (r * brightness) >> 8;
-      g = (g * brightness) >> 8;
-      b = (b * brightness) >> 8;
-      w = (w * brightness) >> 8;
+    if (n < numLEDs)
+    {
+        if (brightness)
+        { // See notes in setBrightness()
+            r = (r * brightness) >> 8;
+            g = (g * brightness) >> 8;
+            b = (b * brightness) >> 8;
+            w = (w * brightness) >> 8;
+        }
+        uint8_t *p;
+        if (wOffset == rOffset)
+        {                       // Is an RGB-type strip
+            p = &pixels[n * 3]; // 3 bytes per pixel (ignore W)
+        }
+        else
+        {                       // Is a WRGB-type strip
+            p = &pixels[n * 4]; // 4 bytes per pixel
+            p[wOffset] = w;     // Store W
+        }
+        p[rOffset] = r; // Store R,G,B
+        p[gOffset] = g;
+        p[bOffset] = b;
+        /*     printf("rOffset = %d\n",p[rOffset]);
+            printf("gOffset = %d\n",p[gOffset]);
+            printf("bOffset = %d\n",p[bOffset]); */
     }
-    uint8_t *p;
-    if (wOffset == rOffset)
-    {                     // Is an RGB-type strip
-      p = &pixels[n * 3]; // 3 bytes per pixel (ignore W)
-    }
-    else
-    {                     // Is a WRGB-type strip
-      p = &pixels[n * 4]; // 4 bytes per pixel
-      p[wOffset] = w;     // Store W
-    }
-    p[rOffset] = r; // Store R,G,B
-    p[gOffset] = g;
-    p[bOffset] = b;
-    /*     printf("rOffset = %d\n",p[rOffset]);
-        printf("gOffset = %d\n",p[gOffset]);
-        printf("bOffset = %d\n",p[bOffset]); */
-  }
 }
 
 /*!
@@ -415,57 +416,57 @@ void Adafruit_NeoPixel_setPixelColor_rgbw(
 */
 void Adafruit_NeoPixel_setPixelColor(uint16_t n, uint32_t c)
 {
-  if (n < numLEDs)
-  {
-    uint8_t *p,
-        r = (uint8_t)(c >> 16),
-        g = (uint8_t)(c >> 8),
-        b = (uint8_t)c;
-    if (brightness)
-    { // See notes in setBrightness()
-      r = (r * brightness) >> 8;
-      g = (g * brightness) >> 8;
-      b = (b * brightness) >> 8;
-    }
-    if (wOffset == rOffset)
+    if (n < numLEDs)
     {
-      p = &pixels[n * 3];
+        uint8_t *p,
+            r = (uint8_t)(c >> 16),
+            g = (uint8_t)(c >> 8),
+            b = (uint8_t)c;
+        if (brightness)
+        { // See notes in setBrightness()
+            r = (r * brightness) >> 8;
+            g = (g * brightness) >> 8;
+            b = (b * brightness) >> 8;
+        }
+        if (wOffset == rOffset)
+        {
+            p = &pixels[n * 3];
+        }
+        else
+        {
+            p = &pixels[n * 4];
+            uint8_t w = (uint8_t)(c >> 24);
+            p[wOffset] = brightness ? ((w * brightness) >> 8) : w;
+        }
+        p[rOffset] = r;
+        p[gOffset] = g;
+        p[bOffset] = b;
     }
-    else
-    {
-      p = &pixels[n * 4];
-      uint8_t w = (uint8_t)(c >> 24);
-      p[wOffset] = brightness ? ((w * brightness) >> 8) : w;
-    }
-    p[rOffset] = r;
-    p[gOffset] = g;
-    p[bOffset] = b;
-  }
 }
 
 // 透传写入颜色，没有调整亮度
 void Adafruit_NeoPixel_setPixelColor_raw(uint16_t n, uint32_t c)
 {
-  if (n < numLEDs)
-  {
-    uint8_t *p,
-        r = (uint8_t)(c >> 16),
-        g = (uint8_t)(c >> 8),
-        b = (uint8_t)c;
-    if (wOffset == rOffset)
+    if (n < numLEDs)
     {
-      p = &pixels[n * 3];
+        uint8_t *p,
+            r = (uint8_t)(c >> 16),
+            g = (uint8_t)(c >> 8),
+            b = (uint8_t)c;
+        if (wOffset == rOffset)
+        {
+            p = &pixels[n * 3];
+        }
+        else
+        {
+            p = &pixels[n * 4];
+            uint8_t w = (uint8_t)(c >> 24);
+            p[wOffset] = brightness ? ((w * brightness) >> 8) : w;
+        }
+        p[rOffset] = r;
+        p[gOffset] = g;
+        p[bOffset] = b;
     }
-    else
-    {
-      p = &pixels[n * 4];
-      uint8_t w = (uint8_t)(c >> 24);
-      p[wOffset] = brightness ? ((w * brightness) >> 8) : w;
-    }
-    p[rOffset] = r;
-    p[gOffset] = g;
-    p[bOffset] = b;
-  }
 }
 /*!
   @brief   Fill all or part of the NeoPixel strip with a color.
@@ -481,31 +482,31 @@ void Adafruit_NeoPixel_setPixelColor_raw(uint16_t n, uint32_t c)
 */
 void Adafruit_NeoPixel_fill(uint32_t c, uint16_t first, uint16_t count)
 {
-  uint16_t i, end;
+    uint16_t i, end;
 
-  if (first >= numLEDs)
-  {
-    return; // If first LED is past end of strip, nothing to do
-  }
+    if (first >= numLEDs)
+    {
+        return; // If first LED is past end of strip, nothing to do
+    }
 
-  // Calculate the index ONE AFTER the last pixel to fill
-  if (count == 0)
-  {
-    // Fill to end of strip
-    end = numLEDs;
-  }
-  else
-  {
-    // Ensure that the loop won't go past the last pixel
-    end = first + count;
-    if (end > numLEDs)
-      end = numLEDs;
-  }
+    // Calculate the index ONE AFTER the last pixel to fill
+    if (count == 0)
+    {
+        // Fill to end of strip
+        end = numLEDs;
+    }
+    else
+    {
+        // Ensure that the loop won't go past the last pixel
+        end = first + count;
+        if (end > numLEDs)
+            end = numLEDs;
+    }
 
-  for (i = first; i < end; i++)
-  {
-    Adafruit_NeoPixel_setPixelColor(i, c);
-  }
+    for (i = first; i < end; i++)
+    {
+        Adafruit_NeoPixel_setPixelColor(i, c);
+    }
 }
 
 /*!
@@ -534,94 +535,94 @@ void Adafruit_NeoPixel_fill(uint32_t c, uint16_t first, uint16_t count)
 uint32_t Adafruit_NeoPixel_ColorHSV(uint16_t hue, uint8_t sat, uint8_t val)
 {
 
-  uint8_t r, g, b;
+    uint8_t r, g, b;
 
-  // Remap 0-65535 to 0-1529. Pure red is CENTERED on the 64K rollover;
-  // 0 is not the start of pure red, but the midpoint...a few values above
-  // zero and a few below 65536 all yield pure red (similarly, 32768 is the
-  // midpoint, not start, of pure cyan). The 8-bit RGB hexcone (256 values
-  // each for red, green, blue) really only allows for 1530 distinct hues
-  // (not 1536, more on that below), but the full unsigned 16-bit type was
-  // chosen for hue so that one's code can easily handle a contiguous color
-  // wheel by allowing hue to roll over in either direction.
-  hue = (hue * 1530L + 32768) / 65536;
-  // Because red is centered on the rollover point (the +32768 above,
-  // essentially a fixed-point +0.5), the above actually yields 0 to 1530,
-  // where 0 and 1530 would yield the same thing. Rather than apply a
-  // costly modulo operator, 1530 is handled as a special case below.
+    // Remap 0-65535 to 0-1529. Pure red is CENTERED on the 64K rollover;
+    // 0 is not the start of pure red, but the midpoint...a few values above
+    // zero and a few below 65536 all yield pure red (similarly, 32768 is the
+    // midpoint, not start, of pure cyan). The 8-bit RGB hexcone (256 values
+    // each for red, green, blue) really only allows for 1530 distinct hues
+    // (not 1536, more on that below), but the full unsigned 16-bit type was
+    // chosen for hue so that one's code can easily handle a contiguous color
+    // wheel by allowing hue to roll over in either direction.
+    hue = (hue * 1530L + 32768) / 65536;
+    // Because red is centered on the rollover point (the +32768 above,
+    // essentially a fixed-point +0.5), the above actually yields 0 to 1530,
+    // where 0 and 1530 would yield the same thing. Rather than apply a
+    // costly modulo operator, 1530 is handled as a special case below.
 
-  // So you'd think that the color "hexcone" (the thing that ramps from
-  // pure red, to pure yellow, to pure green and so forth back to red,
-  // yielding six slices), and with each color component having 256
-  // possible values (0-255), might have 1536 possible items (6*256),
-  // but in reality there's 1530. This is because the last element in
-  // each 256-element slice is equal to the first element of the next
-  // slice, and keeping those in there this would create small
-  // discontinuities in the color wheel. So the last element of each
-  // slice is dropped...we regard only elements 0-254, with item 255
-  // being picked up as element 0 of the next slice. Like this:
-  // Red to not-quite-pure-yellow is:        255,   0, 0 to 255, 254,   0
-  // Pure yellow to not-quite-pure-green is: 255, 255, 0 to   1, 255,   0
-  // Pure green to not-quite-pure-cyan is:     0, 255, 0 to   0, 255, 254
-  // and so forth. Hence, 1530 distinct hues (0 to 1529), and hence why
-  // the constants below are not the multiples of 256 you might expect.
+    // So you'd think that the color "hexcone" (the thing that ramps from
+    // pure red, to pure yellow, to pure green and so forth back to red,
+    // yielding six slices), and with each color component having 256
+    // possible values (0-255), might have 1536 possible items (6*256),
+    // but in reality there's 1530. This is because the last element in
+    // each 256-element slice is equal to the first element of the next
+    // slice, and keeping those in there this would create small
+    // discontinuities in the color wheel. So the last element of each
+    // slice is dropped...we regard only elements 0-254, with item 255
+    // being picked up as element 0 of the next slice. Like this:
+    // Red to not-quite-pure-yellow is:        255,   0, 0 to 255, 254,   0
+    // Pure yellow to not-quite-pure-green is: 255, 255, 0 to   1, 255,   0
+    // Pure green to not-quite-pure-cyan is:     0, 255, 0 to   0, 255, 254
+    // and so forth. Hence, 1530 distinct hues (0 to 1529), and hence why
+    // the constants below are not the multiples of 256 you might expect.
 
-  // Convert hue to R,G,B (nested ifs faster than divide+mod+switch):
-  if (hue < 510)
-  { // Red to Green-1
-    b = 0;
-    if (hue < 255)
-    { //   Red to Yellow-1
-      r = 255;
-      g = hue; //     g = 0 to 254
+    // Convert hue to R,G,B (nested ifs faster than divide+mod+switch):
+    if (hue < 510)
+    { // Red to Green-1
+        b = 0;
+        if (hue < 255)
+        { //   Red to Yellow-1
+            r = 255;
+            g = hue; //     g = 0 to 254
+        }
+        else
+        {                  //   Yellow to Green-1
+            r = 510 - hue; //     r = 255 to 1
+            g = 255;
+        }
+    }
+    else if (hue < 1020)
+    { // Green to Blue-1
+        r = 0;
+        if (hue < 765)
+        { //   Green to Cyan-1
+            g = 255;
+            b = hue - 510; //     b = 0 to 254
+        }
+        else
+        {                   //   Cyan to Blue-1
+            g = 1020 - hue; //     g = 255 to 1
+            b = 255;
+        }
+    }
+    else if (hue < 1530)
+    { // Blue to Red-1
+        g = 0;
+        if (hue < 1275)
+        {                   //   Blue to Magenta-1
+            r = hue - 1020; //     r = 0 to 254
+            b = 255;
+        }
+        else
+        { //   Magenta to Red-1
+            r = 255;
+            b = 1530 - hue; //     b = 255 to 1
+        }
     }
     else
-    {                //   Yellow to Green-1
-      r = 510 - hue; //     r = 255 to 1
-      g = 255;
+    { // Last 0.5 Red (quicker than % operator)
+        r = 255;
+        g = b = 0;
     }
-  }
-  else if (hue < 1020)
-  { // Green to Blue-1
-    r = 0;
-    if (hue < 765)
-    { //   Green to Cyan-1
-      g = 255;
-      b = hue - 510; //     b = 0 to 254
-    }
-    else
-    {                 //   Cyan to Blue-1
-      g = 1020 - hue; //     g = 255 to 1
-      b = 255;
-    }
-  }
-  else if (hue < 1530)
-  { // Blue to Red-1
-    g = 0;
-    if (hue < 1275)
-    {                 //   Blue to Magenta-1
-      r = hue - 1020; //     r = 0 to 254
-      b = 255;
-    }
-    else
-    { //   Magenta to Red-1
-      r = 255;
-      b = 1530 - hue; //     b = 255 to 1
-    }
-  }
-  else
-  { // Last 0.5 Red (quicker than % operator)
-    r = 255;
-    g = b = 0;
-  }
 
-  // Apply saturation and value to R,G,B, pack into 32-bit result:
-  uint32_t v1 = 1 + val;  // 1 to 256; allows >>8 instead of /255
-  uint16_t s1 = 1 + sat;  // 1 to 256; same reason
-  uint8_t s2 = 255 - sat; // 255 to 0
-  return ((((((r * s1) >> 8) + s2) * v1) & 0xff00) << 8) |
-         (((((g * s1) >> 8) + s2) * v1) & 0xff00) |
-         (((((b * s1) >> 8) + s2) * v1) >> 8);
+    // Apply saturation and value to R,G,B, pack into 32-bit result:
+    uint32_t v1 = 1 + val;  // 1 to 256; allows >>8 instead of /255
+    uint16_t s1 = 1 + sat;  // 1 to 256; same reason
+    uint8_t s2 = 255 - sat; // 255 to 0
+    return ((((((r * s1) >> 8) + s2) * v1) & 0xff00) << 8) |
+           (((((g * s1) >> 8) + s2) * v1) & 0xff00) |
+           (((((b * s1) >> 8) + s2) * v1) >> 8);
 }
 
 /*!
@@ -637,77 +638,77 @@ uint32_t Adafruit_NeoPixel_ColorHSV(uint16_t hue, uint8_t sat, uint8_t val)
 */
 uint32_t Adafruit_NeoPixel_getPixelColor(uint16_t n)
 {
-  if (n >= numLEDs)
-    return 0; // Out of bounds, return no color.
+    if (n >= numLEDs)
+        return 0; // Out of bounds, return no color.
 
-  uint8_t *p;
+    uint8_t *p;
 
-  if (wOffset == rOffset)
-  { // Is RGB-type device
-    p = &pixels[n * 3];
-    if (brightness)
-    {
-      // Stored color was decimated by setBrightness(). Returned value
-      // attempts to scale back to an approximation of the original 24-bit
-      // value used when setting the pixel color, but there will always be
-      // some error -- those bits are simply gone. Issue is most
-      // pronounced at low brightness levels.
-      return (((uint32_t)(p[rOffset] << 8) / brightness) << 16) |
-             (((uint32_t)(p[gOffset] << 8) / brightness) << 8) |
-             ((uint32_t)(p[bOffset] << 8) / brightness);
+    if (wOffset == rOffset)
+    { // Is RGB-type device
+        p = &pixels[n * 3];
+        if (brightness)
+        {
+            // Stored color was decimated by setBrightness(). Returned value
+            // attempts to scale back to an approximation of the original 24-bit
+            // value used when setting the pixel color, but there will always be
+            // some error -- those bits are simply gone. Issue is most
+            // pronounced at low brightness levels.
+            return (((uint32_t)(p[rOffset] << 8) / brightness) << 16) |
+                   (((uint32_t)(p[gOffset] << 8) / brightness) << 8) |
+                   ((uint32_t)(p[bOffset] << 8) / brightness);
+        }
+        else
+        {
+            // No brightness adjustment has been made -- return 'raw' color
+            return ((uint32_t)p[rOffset] << 16) |
+                   ((uint32_t)p[gOffset] << 8) |
+                   (uint32_t)p[bOffset];
+        }
     }
     else
-    {
-      // No brightness adjustment has been made -- return 'raw' color
-      return ((uint32_t)p[rOffset] << 16) |
-             ((uint32_t)p[gOffset] << 8) |
-             (uint32_t)p[bOffset];
+    { // Is RGBW-type device
+        p = &pixels[n * 4];
+        if (brightness)
+        { // Return scaled color
+            return (((uint32_t)(p[wOffset] << 8) / brightness) << 24) |
+                   (((uint32_t)(p[rOffset] << 8) / brightness) << 16) |
+                   (((uint32_t)(p[gOffset] << 8) / brightness) << 8) |
+                   ((uint32_t)(p[bOffset] << 8) / brightness);
+        }
+        else
+        { // Return raw color
+            return ((uint32_t)p[wOffset] << 24) |
+                   ((uint32_t)p[rOffset] << 16) |
+                   ((uint32_t)p[gOffset] << 8) |
+                   (uint32_t)p[bOffset];
+        }
     }
-  }
-  else
-  { // Is RGBW-type device
-    p = &pixels[n * 4];
-    if (brightness)
-    { // Return scaled color
-      return (((uint32_t)(p[wOffset] << 8) / brightness) << 24) |
-             (((uint32_t)(p[rOffset] << 8) / brightness) << 16) |
-             (((uint32_t)(p[gOffset] << 8) / brightness) << 8) |
-             ((uint32_t)(p[bOffset] << 8) / brightness);
-    }
-    else
-    { // Return raw color
-      return ((uint32_t)p[wOffset] << 24) |
-             ((uint32_t)p[rOffset] << 16) |
-             ((uint32_t)p[gOffset] << 8) |
-             (uint32_t)p[bOffset];
-    }
-  }
 }
 
 /* 获取原始颜色，没有进行亮度调整的颜色 */
 uint32_t Adafruit_NeoPixel_getOriginPixelColor(uint16_t n)
 {
-  if (n >= numLEDs)
-    return 0; // Out of bounds, return no color.
+    if (n >= numLEDs)
+        return 0; // Out of bounds, return no color.
 
-  uint8_t *p;
+    uint8_t *p;
 
-  if (wOffset == rOffset)
-  { // Is RGB-type device
-    p = &pixels[n * 3];
-    // No brightness adjustment has been made -- return 'raw' color
-    return ((uint32_t)p[rOffset] << 16) |
-           ((uint32_t)p[gOffset] << 8) |
-           (uint32_t)p[bOffset];
-  }
-  else
-  { // Is RGBW-type device
-    p = &pixels[n * 4];
-    return ((uint32_t)p[wOffset] << 24) |
-           ((uint32_t)p[rOffset] << 16) |
-           ((uint32_t)p[gOffset] << 8) |
-           (uint32_t)p[bOffset];
-  }
+    if (wOffset == rOffset)
+    { // Is RGB-type device
+        p = &pixels[n * 3];
+        // No brightness adjustment has been made -- return 'raw' color
+        return ((uint32_t)p[rOffset] << 16) |
+               ((uint32_t)p[gOffset] << 8) |
+               (uint32_t)p[bOffset];
+    }
+    else
+    { // Is RGBW-type device
+        p = &pixels[n * 4];
+        return ((uint32_t)p[wOffset] << 24) |
+               ((uint32_t)p[rOffset] << 16) |
+               ((uint32_t)p[gOffset] << 8) |
+               (uint32_t)p[bOffset];
+    }
 }
 
 /*!
@@ -727,42 +728,42 @@ uint32_t Adafruit_NeoPixel_getOriginPixelColor(uint16_t n)
 */
 void Adafruit_NeoPixel_setBrightness(uint8_t b)
 {
-  // Stored brightness value is different than what's passed.
-  // This simplifies the actual scaling math later, allowing a fast
-  // 8x8-bit multiply and taking the MSB. 'brightness' is a uint8_t,
-  // adding 1 here may (intentionally) roll over...so 0 = max brightness
-  // (color values are interpreted literally; no scaling), 1 = min
-  // brightness (off), 255 = just below max brightness.
-  uint8_t newBrightness = b + 1;
-  if (newBrightness != brightness)
-  { // Compare against prior value
-    // Brightness has changed -- re-scale existing data in RAM,
-    // This process is potentially "lossy," especially when increasing
-    // brightness. The tight timing in the WS2811/WS2812 code means there
-    // aren't enough free cycles to perform this scaling on the fly as data
-    // is issued. So we make a pass through the existing color data in RAM
-    // and scale it (subsequent graphics commands also work at this
-    // brightness level). If there's a significant step up in brightness,
-    // the limited number of steps (quantization) in the old data will be
-    // quite visible in the re-scaled version. For a non-destructive
-    // change, you'll need to re-render the full strip data. C'est la vie.
-    uint8_t c,
-        *ptr = pixels,
-        oldBrightness = brightness - 1; // De-wrap old brightness value
-    uint16_t scale;
-    if (oldBrightness == 0)
-      scale = 0; // Avoid /0
-    else if (b == 255)
-      scale = 65535 / oldBrightness;
-    else
-      scale = (((uint16_t)newBrightness << 8) - 1) / oldBrightness;
-    for (uint16_t i = 0; i < numBytes; i++)
-    {
-      c = *ptr;
-      *ptr++ = (c * scale) >> 8;
+    // Stored brightness value is different than what's passed.
+    // This simplifies the actual scaling math later, allowing a fast
+    // 8x8-bit multiply and taking the MSB. 'brightness' is a uint8_t,
+    // adding 1 here may (intentionally) roll over...so 0 = max brightness
+    // (color values are interpreted literally; no scaling), 1 = min
+    // brightness (off), 255 = just below max brightness.
+    uint8_t newBrightness = b + 1;
+    if (newBrightness != brightness)
+    { // Compare against prior value
+        // Brightness has changed -- re-scale existing data in RAM,
+        // This process is potentially "lossy," especially when increasing
+        // brightness. The tight timing in the WS2811/WS2812 code means there
+        // aren't enough free cycles to perform this scaling on the fly as data
+        // is issued. So we make a pass through the existing color data in RAM
+        // and scale it (subsequent graphics commands also work at this
+        // brightness level). If there's a significant step up in brightness,
+        // the limited number of steps (quantization) in the old data will be
+        // quite visible in the re-scaled version. For a non-destructive
+        // change, you'll need to re-render the full strip data. C'est la vie.
+        uint8_t c,
+            *ptr = pixels,
+            oldBrightness = brightness - 1; // De-wrap old brightness value
+        uint16_t scale;
+        if (oldBrightness == 0)
+            scale = 0; // Avoid /0
+        else if (b == 255)
+            scale = 65535 / oldBrightness;
+        else
+            scale = (((uint16_t)newBrightness << 8) - 1) / oldBrightness;
+        for (uint16_t i = 0; i < numBytes; i++)
+        {
+            c = *ptr;
+            *ptr++ = (c * scale) >> 8;
+        }
+        brightness = newBrightness;
     }
-    brightness = newBrightness;
-  }
 }
 
 /*!
@@ -771,7 +772,7 @@ void Adafruit_NeoPixel_setBrightness(uint8_t b)
 */
 uint8_t Adafruit_NeoPixel_getBrightness(void)
 {
-  return brightness - 1;
+    return brightness - 1;
 }
 
 /*!
@@ -779,7 +780,7 @@ uint8_t Adafruit_NeoPixel_getBrightness(void)
 */
 void Adafruit_NeoPixel_clear(void)
 {
-  memset(pixels, 0, numBytes);
+    memset(pixels, 0, numBytes);
 }
 
 /*!
@@ -796,7 +797,7 @@ void Adafruit_NeoPixel_clear(void)
 */
 uint8_t Adafruit_NeoPixel_sine8(uint8_t x)
 {
-  return _NeoPixelSineTable[x]; // 0-255 in, 0-255 out
+    return _NeoPixelSineTable[x]; // 0-255 in, 0-255 out
 }
 
 /*!
@@ -812,7 +813,7 @@ uint8_t Adafruit_NeoPixel_sine8(uint8_t x)
 */
 uint8_t Adafruit_NeoPixel_gamma8(uint8_t x)
 {
-  return _NeoPixelGammaTable[x]; // 0-255 in, 0-255 out
+    return _NeoPixelGammaTable[x]; // 0-255 in, 0-255 out
 }
 
 /*!
@@ -828,7 +829,7 @@ uint8_t Adafruit_NeoPixel_gamma8(uint8_t x)
 */
 uint32_t Adafruit_NeoPixel_Color_rgb(uint8_t r, uint8_t g, uint8_t b)
 {
-  return ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
+    return ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
 }
 
 /*!
@@ -845,7 +846,7 @@ uint32_t Adafruit_NeoPixel_Color_rgb(uint8_t r, uint8_t g, uint8_t b)
 */
 uint32_t Adafruit_NeoPixel_Color_rgbw(uint8_t r, uint8_t g, uint8_t b, uint8_t w)
 {
-  return ((uint32_t)w << 24) | ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
+    return ((uint32_t)w << 24) | ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
 }
 
 /*!
@@ -864,18 +865,18 @@ uint32_t Adafruit_NeoPixel_Color_rgbw(uint8_t r, uint8_t g, uint8_t b, uint8_t w
 // to all components of a packed RGB or WRGB value.
 uint32_t Adafruit_NeoPixel_gamma32(uint32_t x)
 {
-  uint8_t *y = (uint8_t *)&x;
-  // All four bytes of a 32-bit value are filtered even if RGB (not WRGB),
-  // to avoid a bunch of shifting and masking that would be necessary for
-  // properly handling different endianisms (and each byte is a fairly
-  // trivial operation, so it might not even be wasting cycles vs a check
-  // and branch for the RGB case). In theory this might cause trouble *if*
-  // someone's storing information in the unused most significant byte
-  // of an RGB value, but this seems exceedingly rare and if it's
-  // encountered in reality they can mask values going in or coming out.
-  for (uint8_t i = 0; i < 4; i++)
-    y[i] = Adafruit_NeoPixel_gamma8(y[i]);
-  return x; // Packed 32-bit return
+    uint8_t *y = (uint8_t *)&x;
+    // All four bytes of a 32-bit value are filtered even if RGB (not WRGB),
+    // to avoid a bunch of shifting and masking that would be necessary for
+    // properly handling different endianisms (and each byte is a fairly
+    // trivial operation, so it might not even be wasting cycles vs a check
+    // and branch for the RGB case). In theory this might cause trouble *if*
+    // someone's storing information in the unused most significant byte
+    // of an RGB value, but this seems exceedingly rare and if it's
+    // encountered in reality they can mask values going in or coming out.
+    for (uint8_t i = 0; i < 4; i++)
+        y[i] = Adafruit_NeoPixel_gamma8(y[i]);
+    return x; // Packed 32-bit return
 }
 
 /*!
@@ -894,7 +895,7 @@ uint32_t Adafruit_NeoPixel_gamma32(uint32_t x)
 */
 uint8_t *Adafruit_NeoPixel_getPixels(void)
 {
-  return pixels;
+    return pixels;
 }
 
 /*!
@@ -903,15 +904,15 @@ uint8_t *Adafruit_NeoPixel_getPixels(void)
 */
 uint16_t Adafruit_NeoPixel_numPixels(void)
 {
-  return numLEDs;
+    return numLEDs;
 }
 
 uint8_t Adafruit_NeoPixel_getNumBytesPerPixel(void)
 {
-  return (wOffset == rOffset) ? 3 : 4; // 3=RGB  4=RGBW
+    return (wOffset == rOffset) ? 3 : 4; // 3=RGB  4=RGBW
 }
 
 uint16_t Adafruit_NeoPixel_getNumBytes(void)
 {
-  return numBytes;
+    return numBytes;
 }

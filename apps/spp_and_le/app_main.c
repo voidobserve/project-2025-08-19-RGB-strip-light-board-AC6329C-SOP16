@@ -80,7 +80,7 @@ const struct task_info task_info_table[] = {
 
     // {"led_task", 2, 0, 512, 512}, // 灯光
 
-    {"test_task", 3, 0, 512, 512}, // 定义线程   任务调度
+    {"test_task", 3, 0, 1024, 512}, // 定义线程   任务调度
 
     // {"lighting_animation_task", 3, 0, 512, 512}, // 定义线程   任务调度
     {0, 0},
@@ -434,7 +434,7 @@ void my_main(void)
     save_info_read();                // 从flash中读出保存的数据
     // 根据读出的数据来初始化
     WS2812FX_init(LIGHTING_ANIMATION_LED_NUMS, LIGHTING_ANIMATION_RGB_NEOPIXEL_PERMUTATIONS); // 初始化ws2811
-    WS2812FX_setBrightness(save_info.cur_brightness);                                         // 设置灯光亮度
+    WS2812FX_setBrightness(fc_effect.b);                                         // 设置灯光亮度
     // fc_data_init();
 
     // WS2812FX_init(fc_effect.led_num, fc_effect.sequence); // 初始化ws2811
@@ -447,8 +447,8 @@ void my_main(void)
     // sys_s_hi_timer_add(NULL, meteor_period_sub, 10); // 注册流星周期定时器
     // sys_s_hi_timer_add(NULL, rf433_handle, 10);      // 注册433遥控功能定时器
 
-    sys_timer_add(NULL, main_while, 10);
-    // sys_s_hi_timer_add(NULL, main_while, 10);
+    // sys_timer_add(NULL, main_while, 10);
+    sys_s_hi_timer_add(NULL, main_while, 10);
 
     // os_sem_create(&LED_TASK_SEM,0);
     // task_create(main_while, NULL, "led_task");

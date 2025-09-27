@@ -1753,6 +1753,7 @@ void lighting_animation_mode_add(void)
     if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
 
+    fc_effect.Now_state = METEORITE_LAMP_MODE; // 流星灯模式
     // if (save_info.cur_lighting_animation_mode < 8) // 测试用
     if (save_info.cur_lighting_animation_mode < 20) //
     {
@@ -1770,6 +1771,7 @@ void lighting_animation_mode_sub(void)
     if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
 
+    fc_effect.Now_state = METEORITE_LAMP_MODE;     // 流星灯模式
     if (save_info.cur_lighting_animation_mode > 1) // 最小为模式1，没有模式0
     {
         save_info.cur_lighting_animation_mode--;
@@ -1835,8 +1837,12 @@ void lighting_animation_speed_add(void)
     }
 
     printf("cur speed %u\n", save_info.cur_speed);
-    // 重新开始跑动画
-    lighting_animation_mode_change();
+
+    if (fc_effect.Now_state == METEORITE_LAMP_MODE)
+    {
+        // 重新开始跑动画
+        lighting_animation_mode_change();
+    }
 }
 
 void lighting_animation_speed_sub(void)
@@ -1895,8 +1901,12 @@ void lighting_animation_speed_sub(void)
     }
 
     printf("cur speed %u\n", save_info.cur_speed);
-    // 重新开始跑动画
-    lighting_animation_mode_change();
+
+    if (fc_effect.Now_state == METEORITE_LAMP_MODE)
+    {
+        // 重新开始跑动画
+        lighting_animation_mode_change();
+    }
 }
 
 // 添加动画时间间隔(动画时间间隔变长)
@@ -1925,8 +1935,11 @@ void lighting_animation_time_interval_add(void)
     }
 
     printf("cur time interval %u\n", save_info.cur_lighting_animation_time_interval);
-    // 重新开始跑动画
-    lighting_animation_mode_change();
+    if (fc_effect.Now_state == METEORITE_LAMP_MODE)
+    {
+        // 重新开始跑动画
+        lighting_animation_mode_change();
+    }
 }
 
 // 减少动画时间间隔(动画时间间隔变短)
@@ -1950,8 +1963,11 @@ void lighting_animation_time_interval_sub(void)
     }
 
     printf("cur time interval %u\n", save_info.cur_lighting_animation_time_interval);
-    // 重新开始跑动画
-    lighting_animation_mode_change();
+    if (fc_effect.Now_state == METEORITE_LAMP_MODE)
+    {
+        // 重新开始跑动画
+        lighting_animation_mode_change();
+    }
 }
 
 // 切换灯光动画的方向(正向、反向)
@@ -1971,8 +1987,11 @@ void lighting_animation_dir_switch(void)
         save_info.cur_options = REVERSE;
     }
 
-    // 重新开始跑动画
-    lighting_animation_mode_change();
+    if (fc_effect.Now_state == METEORITE_LAMP_MODE)
+    {
+        // 重新开始跑动画
+        lighting_animation_mode_change();
+    }
 }
 
 // 动画设置为最快速度
@@ -1983,8 +2002,11 @@ void lighting_animation_speed_max(void)
 
     save_info.cur_speed = 1000;
 
-    // 重新开始跑动画
-    lighting_animation_mode_change();
+    if (fc_effect.Now_state == METEORITE_LAMP_MODE)
+    {
+        // 重新开始跑动画
+        lighting_animation_mode_change();
+    }
 }
 
 // 动画设置为最慢速度
@@ -1995,8 +2017,11 @@ void lighting_animation_speed_min(void)
 
     save_info.cur_speed = 4000;
 
-    // 重新开始跑动画
-    lighting_animation_mode_change();
+    if (fc_effect.Now_state == METEORITE_LAMP_MODE)
+    {
+        // 重新开始跑动画
+        lighting_animation_mode_change();
+    }
 }
 
 // 动画设置为中速
@@ -2008,8 +2033,11 @@ void lighting_animation_speed_mid(void)
     // 中速在 2000 或 3000
     save_info.cur_speed = 3000;
 
-    // 重新开始跑动画
-    lighting_animation_mode_change();
+    if (fc_effect.Now_state == METEORITE_LAMP_MODE)
+    {
+        // 重新开始跑动画
+        lighting_animation_mode_change();
+    }
 }
 
 // 时间间隔设置为最快
@@ -2022,8 +2050,11 @@ void lighting_animation_time_interval_fast(void)
     save_info.cur_lighting_animation_time_interval = 4000;
 
     printf("cur time interval %u\n", save_info.cur_lighting_animation_time_interval);
-    // 重新开始跑动画
-    lighting_animation_mode_change();
+    if (fc_effect.Now_state == METEORITE_LAMP_MODE)
+    {
+        // 重新开始跑动画
+        lighting_animation_mode_change();
+    }
 }
 
 // 时间间隔设置为最慢
@@ -2036,8 +2067,11 @@ void lighting_animation_time_interval_slow(void)
     save_info.cur_lighting_animation_time_interval = 15000;
 
     printf("cur time interval %u\n", save_info.cur_lighting_animation_time_interval);
-    // 重新开始跑动画
-    lighting_animation_mode_change();
+    if (fc_effect.Now_state == METEORITE_LAMP_MODE)
+    {
+        // 重新开始跑动画
+        lighting_animation_mode_change();
+    }
 }
 
 // 时间间隔设置为适中
@@ -2051,14 +2085,19 @@ void lighting_animation_time_interval_mid(void)
 
     printf("cur time interval %u\n", save_info.cur_lighting_animation_time_interval);
 
-    // 重新开始跑动画
-    lighting_animation_mode_change();
+    if (fc_effect.Now_state == METEORITE_LAMP_MODE)
+    {
+        // 重新开始跑动画
+        lighting_animation_mode_change();
+    }
 }
 
 void lighting_animation_bright_add(void)
 {
     if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
+
+#if 0
 
     // 亮度不能超过100%
     if (save_info.cur_brightness < 255 - (255 / 10))
@@ -2074,23 +2113,44 @@ void lighting_animation_bright_add(void)
 
     WS2812FX_setBrightness(save_info.cur_brightness);
 
-    // 亮度改变，重新开始跑动画
-    lighting_animation_mode_change();
+#endif
+
+    // 亮度不能超过100%
+    if (fc_effect.b < 255 - (255 / 10))
+    {
+        fc_effect.b += 255 / 10;
+    }
+    else
+    {
+        fc_effect.b = 255;
+    }
+
+    WS2812FX_setBrightness(fc_effect.b);
+
+    if (fc_effect.Now_state == METEORITE_LAMP_MODE)
+    {
+        // 重新开始跑动画
+        lighting_animation_mode_change();
+    }
 }
 
 // 初始化（恢复出厂设置）
 void lighting_animation_init(void)
 {
-    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
-        return;
+    // if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
+    //     return;
 
+    fc_effect.Now_state = METEORITE_LAMP_MODE; // 流星灯模式
     save_info.cur_lighting_animation_mode = 1; // 灯光动画模式1
     save_info.cur_speed = 3000;
     // save_info.cur_lighting_animation_time_interval = 10.0; // 动画时间间隔 10s
     save_info.cur_lighting_animation_time_interval = 10000; // 动画时间间隔 10s
-    save_info.cur_brightness = 100;
+    // save_info.cur_brightness = 100;
     // save_info.cur_brightness = 10; // 实际观察不到亮度有变化
+
     save_info.flag_is_light_on = 1;
+    fc_effect.on_off_flag = DEVICE_ON;
+
     save_info.cur_options = NO_OPTIONS;
 
     // save_info.sequence = NEO_RGB; // RGB 顺序 R->G->B
@@ -2103,13 +2163,15 @@ void lighting_animation_config_init(void)
 {
     // save_info.flag_is_cur_rf_24g_mode_enable = 1; // 2.4G遥控器控制的灯光模式，使能
 
-
-    save_info.cur_lighting_animation_mode = 1;    // 灯光动画模式1
-    save_info.cur_speed = 3000;                   // 动画速度
-    // save_info.cur_lighting_animation_time_interval = 10.0; // 动画时间间隔 10s
+    fc_effect.Now_state = METEORITE_LAMP_MODE;              // 默认跑流星灯模式
+    save_info.cur_lighting_animation_mode = 1;              // 灯光动画模式1
+    save_info.cur_speed = 3000;                             // 动画速度
     save_info.cur_lighting_animation_time_interval = 10000; // 动画时间间隔 10s
-    save_info.cur_brightness = 100;                         // 亮度
+
+    // save_info.cur_brightness = 255;                         // 亮度
+
     save_info.flag_is_light_on = 1;
+    fc_effect.on_off_flag = DEVICE_ON;
     save_info.cur_options = NO_OPTIONS;
 }
 

@@ -112,7 +112,7 @@ void save_info_read(void)
     {
         printf("is first power on\n");
 
-        save_info.is_data_valid = 0xC5; 
+        save_info.is_data_valid = 0xC5;
         lighting_animation_config_init(); // 初始化参数
 
         save_info_write(); // 将初始化后的数据写回flash
@@ -121,13 +121,6 @@ void save_info_read(void)
     {
         printf("is not first power on\n");
     }
-
-    // printf("save_info.flag_is_light_on %u\n", (u16)save_info.flag_is_light_on);
-    // printf("cur_options %u\n", (u16)save_info.cur_options);
-    // printf("cur_brightness %u\n", (u16)save_info.cur_brightness);
-    // printf("cur_lighting_animation_mode %u\n", (u16)save_info.cur_lighting_animation_mode);
-    // printf("cur_speed %u\n", (u16)save_info.cur_speed);
-    // printf("%s %d\n", __func__, __LINE__);
 }
 
 // 写入 save_info 到flash

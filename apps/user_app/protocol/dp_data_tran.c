@@ -264,6 +264,25 @@ void zd_fb_2_app(u8 *p, u8 len)
  *      APP反馈 API
  *
  *********************************************************/
+
+// 向app发送灯的开关状态
+void app_feedback_led_on_off_state(void)
+{
+    u8 send_buff[3];
+
+    // 灯的开关状态：
+    send_buff[0] = 0x01;
+    send_buff[1] = 0x01;
+    send_buff[2] = fc_effect.on_off_flag; //
+    zd_fb_2_app(send_buff, 3);
+    // 流星灯的开关状态：
+    send_buff[0] = 0x2F;
+    send_buff[1] = 0x02;
+    // send_buff[2] = save_info.flag_is_light_on;
+    send_buff[2] = fc_effect.on_off_flag;
+    zd_fb_2_app(send_buff, 3);
+}
+
 /**
  * @brief 向app反馈灯开关状态
  *          fb_led_on_off_state   feedback_led_on_off_state
@@ -335,7 +354,7 @@ void fd_meteor_on_off(void)
 
 void fb_bright(void)
 {
-    uint8_t tp_buffer[6];
+    uint8_t tp_buffer[3];
     tp_buffer[0] = 0x04;
     tp_buffer[1] = 0x03;
     tp_buffer[2] = fc_effect.app_b;
@@ -354,6 +373,7 @@ void fb_speed(void)
     zd_fb_2_app(tp_buffer, 3);
 }
 
+// 向app反馈声控的灵敏度
 void fb_sensitive(void)
 {
 
@@ -361,7 +381,8 @@ void fb_sensitive(void)
     // tp_buffer[0] = 0x02;
     tp_buffer[0] = 0x2F;
     tp_buffer[1] = 0x05;
-    tp_buffer[2] = fc_effect.music.s;
+    // tp_buffer[2] = fc_effect.music.s;
+    tp_buffer[2] = 100 - fc_effect.music.s;
 
     zd_fb_2_app(tp_buffer, 3);
 }
@@ -575,33 +596,14 @@ void parse_zd_data(unsigned char *LedCommand)
         // ble_comm_att_send_data(ZD_HCI_handle, ATT_CHARACTERISTIC_fff1_01_VALUE_HANDLE, Send_buffer, 9, ATT_OP_AUTO_READ_CCC);
         // os_time_dly(1);
 
-#if 0 // 样机没有声控功能，不发送灵敏度
-      //-------------------发送灵敏度---------------------------
+#if 1
+        //-------------------发送灵敏度---------------------------
         Send_buffer[6] = 0x2F;
         Send_buffer[7] = 0x05;
         Send_buffer[8] = fc_effect.music.s;
         ble_comm_att_send_data(ZD_HCI_handle, ATT_CHARACTERISTIC_fff1_01_VALUE_HANDLE, Send_buffer, 9, ATT_OP_AUTO_READ_CCC);
         os_time_dly(1);
 #endif
-
-#if 0  // 电机控制
-//电机
-        //-------------------电机速度--------------------------
-        Send_buffer[6] = 0x2F;
-        Send_buffer[7] = 0x07;
-        Send_buffer[8] = fc_effect.base_ins.period;
-        ble_comm_att_send_data(ZD_HCI_handle, ATT_CHARACTERISTIC_fff1_01_VALUE_HANDLE, Send_buffer, 9, ATT_OP_AUTO_READ_CCC);
-        os_time_dly(1);
-
-
-    //-------------------电机开关--------------------------
-        Send_buffer[6] = 0x2F;
-        Send_buffer[7] = 0x08;
-        Send_buffer[8] = fc_effect.motor_on_off;
-        // app_send_user_data(ATT_CHARACTERISTIC_fff1_01_VALUE_HANDLE, Send_buffer,9, ATT_OP_AUTO_READ_CCC);
-        ble_comm_att_send_data(ZD_HCI_handle, ATT_CHARACTERISTIC_fff1_01_VALUE_HANDLE, Send_buffer, 9, ATT_OP_AUTO_READ_CCC);
-        os_time_dly(1);
-#endif // 电机控制
     }
     else
     {
@@ -609,128 +611,43 @@ void parse_zd_data(unsigned char *LedCommand)
         if (LedCommand[0] == 0x01 && LedCommand[1] == 0x01)
         // if(LedCommand[0]==0x2F && LedCommand[1]==0x02)
         {
-            // printf("recv cmd\n");
-            // printf("cmd light on/off\n");
+            // 板子上只有流星灯，所以流星灯和灯光的开关状态是一样的
+            printf("app set on off/n");
 
             extern void set_on_off_led(u8 on_off);
-            set_on_off_led(LedCommand[2]); // 根据接收到的指令来控制 开灯/关灯（函数内部会向app反馈当前开关机状态）
-            // fd_meteor_on_off();
+
+            /*
+                根据接收到的指令来控制 开灯/关灯（函数内部会向app反馈当前开关机状态）
+            */
+            set_on_off_led(LedCommand[2]);
         }
-#if 0
-       
-        //---------------------------------接收到设备时间数据，无需返回应答-----------------------------------
-        if(LedCommand[0]==0x06 && LedCommand[1]==0x02)
-        {
-
-            time_clock.hour = LedCommand[2];     //更新时间数据
-            time_clock.minute = LedCommand[3];
-            time_clock.second = LedCommand[4];
-            time_clock.week = LedCommand[5];
-
-        }
-        //-----------------------------------接收到闹钟数据-----------------------------------------
-        if(LedCommand[0]==0x05)
-        {
-
-
-            Send_buffer[6] = 0x05;
-            Send_buffer[7] = LedCommand[1]; //闹钟序号
-            Send_buffer[8] = LedCommand[2];
-            Send_buffer[9] = LedCommand[3];
-            Send_buffer[10] = LedCommand[4];
-            Send_buffer[11] = LedCommand[5];
-            ble_comm_att_send_data(ZD_HCI_handle, ATT_CHARACTERISTIC_fff1_01_VALUE_HANDLE, Send_buffer, 12, ATT_OP_AUTO_READ_CCC);
-
-
-            if(LedCommand[1]==0x00)
-            {
-                alarm_clock[0].hour = LedCommand[2];
-                alarm_clock[0].minute = LedCommand[3];
-                alarm_clock[0].on_off = LedCommand[4];
-                alarm_clock[0].mode = LedCommand[5];
-                parse_alarm_data(0);
-
-            }
-            if(LedCommand[1]==0x01)
-            {
-                alarm_clock[1].hour = LedCommand[2];
-                alarm_clock[1].minute = LedCommand[3];
-                alarm_clock[1].on_off = LedCommand[4];
-                alarm_clock[1].mode = LedCommand[5];
-                parse_alarm_data(1);
-            }
-            if(LedCommand[1]==0x02)
-            {
-                alarm_clock[2].hour = LedCommand[2];
-                alarm_clock[2].minute = LedCommand[3];
-                alarm_clock[2].on_off = LedCommand[4];
-                alarm_clock[2].mode = LedCommand[5];
-                parse_alarm_data(2);
-            }
-
-
-        }
-#endif
         //--------------------------下面所有的操作都需要在开灯状态下操作-----------------------------------
+
+        //-------------------------------- 流星开关 -----------------------------------
+        else if (LedCommand[0] == 0x2F && LedCommand[1] == 0x02)
+        {
+            // 板子上只有流星灯，所以流星灯和灯光的开关状态是一样的
+
+            // 在app流星灯界面，选择对应的模式 开/关，设置完成后，需要返回对应的信息给app
+            printf("app set Meteorite lamp on/off\n");
+
+            /*
+                根据接收到的指令来控制 开灯/关灯
+                函数内部会向app反馈当前开关机状态
+            */
+            set_on_off_led(LedCommand[2]);
+        }
 
         if (get_on_off_state()) //
         {
-
             //---------------------------------更新RGB-----------------------------------
             if (LedCommand[0] == 0x04 && LedCommand[1] == 0x01 && LedCommand[2] == 0x1e)
             {
                 // 会设置灯光为静态模式，RGB值 R、G、B
-                // save_info.flag_is_cur_rf_24g_mode_enable = 0; // 当前不执行2.4G遥控器对应的模式，改为执行app对应的模式
                 set_static_mode(LedCommand[3], LedCommand[4], LedCommand[5]);
                 fb_rgb_value(); // feedback，返回设置好的rgb值
             }
-//---------------------------------静态（模式）任务处理-----------------------------------
-#if 0
-            if (LedCommand[0] == 0x04 && LedCommand[1] == 0x02 && LedCommand[2] >= 0 && LedCommand[2] < 0x07)
-            {
-                printf("static mode handle\n");
-                switch (LedCommand[2])
-                {
-                case 0:
-                    set_static_mode((RED >> 16) & 0xff, (RED >> 8) & 0xff, (RED >> 0) & 0xff);
-                    break; // R
 
-                case 1:
-                    set_static_mode((BLUE >> 16) & 0xff, (BLUE >> 8) & 0xff, (BLUE >> 0) & 0xff);
-                    break; // B
-
-                case 2:
-                    set_static_mode((GREEN >> 16) & 0xff, (GREEN >> 8) & 0xff, (GREEN >> 0) & 0xff);
-                    break; // G
-
-                case 3:
-                    set_static_mode((CYAN >> 16) & 0xff, (CYAN >> 8) & 0xff, (CYAN >> 0) & 0xff);
-                    break; // CYAN
-
-                case 4:
-                    set_static_mode((YELLOW >> 16) & 0xff, (YELLOW >> 8) & 0xff, (YELLOW >> 0) & 0xff);
-                    break; // YELLOW
-
-                case 5:
-                    set_static_mode((PURPLE >> 16) & 0xff, (PURPLE >> 8) & 0xff, (PURPLE >> 0) & 0xff);
-                    break; // PURPLE
-
-                case 6:
-                    set_static_mode((WHITE >> 16) & 0xff, (WHITE >> 8) & 0xff, (WHITE >> 0) & 0xff);
-                    break; // WHITE
-                }
-            }
-#endif
-
-#if 0 
-            //---------------------------------动态处理-----------------------------------
-            // if (LedCommand[0] == 0x04 && LedCommand[1] == 0x02 && LedCommand[2] >= 0x07 && LedCommand[2] <= 0x24)
-            // {
-            //     // 
-            //     // printf("dynamic\n");
-            //     base_Dynamic_Effect(LedCommand[2]);
-            // }
-#endif
             //---------------------------------调节亮度0-100-----------------------------------
             if (LedCommand[0] == 0x04 && LedCommand[1] == 0x03)
             {
@@ -740,6 +657,7 @@ void parse_zd_data(unsigned char *LedCommand)
                 app_set_bright(LedCommand[2]);
                 fb_bright(); // 向app返回亮度数据
             }
+
             //---------------------------------调节速度0-100-----------------------------------
             if (LedCommand[0] == 0x04 && LedCommand[1] == 0x04)
             {
@@ -757,7 +675,12 @@ void parse_zd_data(unsigned char *LedCommand)
                 */
                 save_info.cur_speed = (u16)(4000 - (u16)((u32)(4000 - 1000) * LedCommand[2] / 100));
                 printf("save_info.cur_speed %u\n", save_info.cur_speed);
-                lighting_animation_mode_change();
+
+                if (fc_effect.Now_state == METEORITE_LAMP_MODE)
+                {
+                    // 如果当前是流星模式，才重新开始跑动画
+                    lighting_animation_mode_change();
+                }
 
                 // 向app反馈数据
                 uint8_t tp_buffer[3];
@@ -794,15 +717,15 @@ void parse_zd_data(unsigned char *LedCommand)
             //---------------------------------手机音乐律动 手机麦克风-----------------------------------
             if (LedCommand[0] == 0x06 && LedCommand[1] == 0x04)
             {
-                // if (fc_effect.music.m_type == PHONE_MIC) // 手机麦模式
-                // {
-                //     app_set_bright(LedCommand[5]);
-                //     set_static_mode(LedCommand[2], LedCommand[3], LedCommand[4]);
-                // }
+                // 接收app发送过来的数据，直接显示对应的颜色
+                if (fc_effect.music.m_type == PHONE_MIC) // 手机麦模式
+                {
+                    app_set_bright(LedCommand[5]);
+                    set_static_mode(LedCommand[2], LedCommand[3], LedCommand[4]);
+                }
             }
 
-#if 1 // 样机没有带声控的功能
-      //---------------------------------外麦声控模式-----------------------------------
+            //---------------------------------外麦声控模式-----------------------------------
             if (LedCommand[0] == 0x06 && LedCommand[1] == 0x06)
             {
                 extern void app_set_music_mode(u8 tp_m);
@@ -818,6 +741,7 @@ void parse_zd_data(unsigned char *LedCommand)
             //---------------------------------设备手机麦或者外麦-----------------------------------
             if (LedCommand[0] == 0x06 && LedCommand[1] == 0x07)
             {
+                // 设置是用手机麦还是外部麦
                 extern void set_music_type(u8 ty);
                 set_music_type(LedCommand[2]);
                 Send_buffer[6] = 0x06;
@@ -829,11 +753,10 @@ void parse_zd_data(unsigned char *LedCommand)
             //---------------------------------设置麦克风灵，电机，流星敏度-----------------------------------
             if (LedCommand[0] == 0x2F && LedCommand[1] == 0x05)
             {
-                // app_set_sensitive(100 - LedCommand[2]);
-                app_set_sensitive(LedCommand[2]);
+                app_set_sensitive(100 - LedCommand[2]);
+                // app_set_sensitive(LedCommand[2]);
                 fb_sensitive();
             }
-#endif // 样机没有带声控的功能
 
             //--------------------------  流星相关 ----------------------------------------------
 
@@ -841,19 +764,25 @@ void parse_zd_data(unsigned char *LedCommand)
             if (LedCommand[0] == 0x2F && LedCommand[1] == 0x00) //  && fc_effect.star_on_off == DEVICE_ON)
             {
                 // 在app模式界面/流星灯界面，选择对应的模式(流星模式，音乐律动模式)
-                printf("【recv:】Meteorite lamp mode ctl\n");
-                app_set_mereor_mode(LedCommand[2]);
+                printf("app set Meteorite lamp mode \n");
+                app_set_mereor_mode(LedCommand[2]); // 函数内部会根据传参设置好 fc_effect.Now_state
             }
+
             //-------------------------------- 流星速度-----------------------------------
             if (LedCommand[0] == 0x2F && LedCommand[1] == 0x01) // && fc_effect.star_on_off == DEVICE_ON)
             {
                 // 设置速度值，范围：0-100
-                printf("【recv:】Meteorite lamp speed ctl\n");
+                printf("app set Meteorite lamp speed \n");
 
                 // 将传入的0~100的速度值转换为1000~4000的数值：
                 save_info.cur_speed = (u16)(4000 - (u16)((u32)(4000 - 1000) * LedCommand[2] / 100));
                 printf("save_info.cur_speed %u\n", save_info.cur_speed);
-                lighting_animation_mode_change();
+
+                if (fc_effect.Now_state == METEORITE_LAMP_MODE)
+                {
+                    // 如果当前是流星模式，才重新跑动画
+                    lighting_animation_mode_change();
+                }
 
                 // 向app反馈流星灯速度
                 uint8_t tp_buffer[3];
@@ -862,46 +791,14 @@ void parse_zd_data(unsigned char *LedCommand)
                 tp_buffer[2] = LedCommand[2];
                 zd_fb_2_app(tp_buffer, 3);
             }
-            //-------------------------------- 流星开关 -----------------------------------
-            if (LedCommand[0] == 0x2F && LedCommand[1] == 0x02)
-            {
-                // 在app流星灯界面，选择对应的模式 开/关，设置完成后，需要返回对应的信息给app
-                printf("【recv:】Meteorite lamp on/off\n");
-                // app_set_on_off_meteor(LedCommand[2]); // 原本的设置流星开关函数
-                // fd_meteor_on_off();
 
-                // 开/关灯
-                // if (0 == save_info.flag_is_light_on)
-                // {
-                //     save_info.flag_is_light_on = 1;
-                //     lighting_animation_mode_change();
-                //     // fb_led_on_off_state();  // 与app同步开关状态
-                //     printf("soft_turn_on_the_light");
-                // }
-                // else
-                // {
-                //     // 实际上只是关灯，没有低功耗
-                //     save_info.flag_is_light_on = 0;
-                //     WS2812FX_stop();
-                //     // fb_led_on_off_state();  // 与app同步开关状态
-                //     printf("soft_turn_off_lights");
-                // } 
-
-                uint8_t tp_buffer[3];
-                tp_buffer[0] = 0x2F;
-                tp_buffer[1] = 0x02;
-                tp_buffer[2] = get_on_off_state();
-                zd_fb_2_app(tp_buffer, 3);
-            }
             // --------------------------------流星灯时间间隔-----------------------------------
             // if (LedCommand[0] == 0x2F && LedCommand[1] == 0x03 && fc_effect.star_on_off == DEVICE_ON)
             if (LedCommand[0] == 0x2F && LedCommand[1] == 0x03)
             {
-                // 设置流星灯动画间的时间间隔，范围：2-20，单位： ？
-                // printf("【recv:】Meteorite lamp time interval ctl\n");
+                // 设置流星灯动画间的时间间隔，范围：2-20
+                u16 timer_interval = 0;
                 printf("app set lamp time interval"); // app 设置动画时间间隔
-
-                u16 timer_interval = 2;
 
                 // 将app传入的2~20的数值转换为0~18的数值
                 if (LedCommand[2] >= 2 && LedCommand[2] <= 20)
@@ -927,7 +824,12 @@ void parse_zd_data(unsigned char *LedCommand)
                 }
 
                 printf("save_info.cur_lighting_animation_time_interval %u\n", save_info.cur_lighting_animation_time_interval);
-                lighting_animation_mode_change();
+
+                if (fc_effect.Now_state == METEORITE_LAMP_MODE)
+                {
+                    // 如果当前是流星模式，才重新跑动画
+                    lighting_animation_mode_change();
+                }
 
                 // 向app反馈时间间隔：
                 uint8_t tp_buffer[3];
@@ -948,9 +850,9 @@ void parse_led_strip_data(u8 *pBuf, u8 len)
     dp_extract_data_handle(pBuf);
     /* 中道孔明灯协议解析 */
     parse_zd_data(pBuf);
-    /* 为兼容全彩的协议 */
 
-    save_user_data_area3();
+    save_info_write();      // 保存 save_info 数据
+    save_user_data_area3(); // 保存参数配置到flash
 }
 
 void tuya_fb_sw_state(void)
