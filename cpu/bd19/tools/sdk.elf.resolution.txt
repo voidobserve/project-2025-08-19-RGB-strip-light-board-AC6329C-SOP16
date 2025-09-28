@@ -2099,12 +2099,12 @@ obj/Release/apps/user_app/led_strip/led_strand_effect.o
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,WS2812FX_setColors,l
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,ls_set_color,pl
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,static_mode,pl
--r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,WS2812FX_stop,l
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,WS2812FX_setSegment_colorOptions,l
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,WS2812FX_mode_static,l
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,WS2812FX_set_coloQty,l
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,WS2812FX_start,l
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,strand_jump_change,pl
+-r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,WS2812FX_stop,l
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,WS2812FX_mode_single_block_scan,l
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,strand_breath,pl
 -r=obj/Release/apps/user_app/led_strip/led_strand_effect.o,WS2812FX_mode_mutil_breath,l

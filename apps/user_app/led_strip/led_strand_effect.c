@@ -87,7 +87,7 @@ void ls_set_color(uint8_t n, uint32_t c)
 void static_mode(void)
 {
     extern uint16_t WS2812FX_mode_static(void);
-    WS2812FX_stop();
+    // WS2812FX_stop(); // 加上这个，在app色盘调节时会造成灯光闪烁
 
     // WS2812FX_set_coloQty(0, fc_effect.dream_scene.c_n); // 设置颜色数量  0：第0段   fc_effect.dream_scene.c_n  颜色数量，一个颜色包含（RGB）
     // ls_set_colors(1, &fc_effect.rgb); // 1:1个颜色    &fc_effect.rgb 这个颜色是什么色

@@ -718,7 +718,7 @@ void parse_zd_data(unsigned char *LedCommand)
             if (LedCommand[0] == 0x06 && LedCommand[1] == 0x04)
             {
                 // 接收app发送过来的数据，直接显示对应的颜色
-                if (fc_effect.music.m_type == PHONE_MIC) // 手机麦模式
+                if (fc_effect.music.m_type == PHONE_MIC) // 确认当前是不是手机麦模式
                 {
                     app_set_bright(LedCommand[5]);
                     set_static_mode(LedCommand[2], LedCommand[3], LedCommand[4]);
@@ -729,7 +729,7 @@ void parse_zd_data(unsigned char *LedCommand)
             if (LedCommand[0] == 0x06 && LedCommand[1] == 0x06)
             {
                 extern void app_set_music_mode(u8 tp_m);
-                if (fc_effect.music.m_type == EXTERIOR_MIC) // 外模模式
+                if (fc_effect.music.m_type == EXTERIOR_MIC) // 确认当前是不是外模模式
                 {
                     app_set_music_mode(LedCommand[2]);
                     Send_buffer[6] = 0x06;
@@ -750,10 +750,12 @@ void parse_zd_data(unsigned char *LedCommand)
                 ble_comm_att_send_data(ZD_HCI_handle, ATT_CHARACTERISTIC_fff1_01_VALUE_HANDLE, Send_buffer, 9, ATT_OP_AUTO_READ_CCC);
             }
 
-            //---------------------------------设置麦克风灵，电机，流星敏度-----------------------------------
+            //---------------------------------设置麦克风，电机，流星灵敏度-----------------------------------
             if (LedCommand[0] == 0x2F && LedCommand[1] == 0x05)
             {
-                app_set_sensitive(100 - LedCommand[2]);
+                // 声控灵敏度范围：0~100
+                // 单片机中是数值越小，灵敏度越高
+                app_set_sensitive(100 - LedCommand[2]); 
                 // app_set_sensitive(LedCommand[2]);
                 fb_sensitive();
             }
