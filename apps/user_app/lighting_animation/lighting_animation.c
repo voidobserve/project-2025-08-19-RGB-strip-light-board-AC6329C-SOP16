@@ -1597,6 +1597,30 @@ u16 WS2812FX_sample_17(void)
 
 #if 1
 
+/**
+ * @brief 设置为指定模式
+ *
+ * @param mode_index 模式索引，注意不能超出范围
+ */
+void lighting_animation_mode_setting(u8 mode_index)
+{
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
+    {
+        return;
+    }
+
+    if (mode_index < 1 || mode_index > 20)
+    {
+        // 模式索引超出范围，直接退出
+        printf("mode index out of range\n");
+        return;
+    }
+
+    fc_effect.Now_state = METEORITE_LAMP_MODE; // 流星灯模式
+    save_info.cur_lighting_animation_mode = mode_index;
+    lighting_animation_mode_change();
+}
+
 /*
     在 模式 1 - 7，单色流星灯动画使用到的数组，[0]为流星灯颜色，[1]为背景色（设置背景好像没有效果）
 */
@@ -1789,38 +1813,6 @@ void lighting_animation_speed_add(void)
         return;
 
     // 数值越小，对应的动画速度越快
-    // if (save_info.cur_speed > 1000)
-    // {
-    //     save_info.cur_speed -= 1000;
-    // }
-
-    // if (save_info.cur_speed < 1000)
-    // {
-    //     save_info.cur_speed = 1000;
-    // }
-
-#if 0
-    if (save_info.cur_speed > 4000)
-    {
-        save_info.cur_speed = 4000;
-        // save_info.cur_lighting_animation_time_interval = 15000; // 动画与动画之间的时间间隔 15s
-    }
-    else if (save_info.cur_speed > 3000)
-    {
-        save_info.cur_speed = 3000;
-        // save_info.cur_lighting_animation_time_interval = 10000; // 动画与动画之间的时间间隔 10s
-    }
-    else if (save_info.cur_speed > 2000)
-    {
-        save_info.cur_speed = 2000;
-        // save_info.cur_lighting_animation_time_interval = 8000; // 动画与动画之间的时间间隔 8s
-    }
-    else // else if (save_info.cur_speed > 1000)
-    {
-        save_info.cur_speed = 1000;
-        // save_info.cur_lighting_animation_time_interval = 4000; // 动画与动画之间的时间间隔 4s
-    }
-#endif
 
     // 数值越小，对应的动画速度越快
     if (save_info.cur_speed >= 4000)
@@ -1832,6 +1824,10 @@ void lighting_animation_speed_add(void)
         save_info.cur_speed = 2000;
     }
     else if (save_info.cur_speed >= 2000)
+    {
+        save_info.cur_speed = 1000;
+    }
+    else
     {
         save_info.cur_speed = 1000;
     }
@@ -1850,40 +1846,9 @@ void lighting_animation_speed_sub(void)
     if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
 
-// 数值越大，对应的动画速度越慢
-// if (save_info.cur_speed < 4000)
-// {
-//     save_info.cur_speed += 1000;
-// }
+    // 数值越大，对应的动画速度越慢
 
-// if (save_info.cur_speed > 4000)
-// {
-//     save_info.cur_speed = 4000;
-// }
-
-// 样机只有四种速度挡位：
-#if 0
-    if (save_info.cur_speed < 1000)
-    {
-        save_info.cur_speed = 1000;
-        // save_info.cur_lighting_animation_time_interval = 4000; // 动画与动画之间的时间间隔 4s
-    }
-    else if (save_info.cur_speed < 2000)
-    {
-        save_info.cur_speed = 2000;
-        // save_info.cur_lighting_animation_time_interval = 8000; // 动画与动画之间的时间间隔 8s
-    }
-    else if (save_info.cur_speed < 3000)
-    {
-        save_info.cur_speed = 3000;
-        // save_info.cur_lighting_animation_time_interval = 10000; // 动画与动画之间的时间间隔 10s
-    }
-    else // else if (save_info.cur_speed < 4000)
-    {
-        save_info.cur_speed = 4000;
-        // save_info.cur_lighting_animation_time_interval = 15000; // 动画与动画之间的时间间隔 15s
-    }
-#endif
+    // 样机只有四种速度挡位：
 
     // 数值越大，对应的动画速度越慢
     if (save_info.cur_speed <= 1000)
@@ -2097,24 +2062,6 @@ void lighting_animation_bright_add(void)
     if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
 
-#if 0
-
-    // 亮度不能超过100%
-    if (save_info.cur_brightness < 255 - (255 / 10))
-    {
-        save_info.cur_brightness += 255 / 10;
-    }
-    else
-    {
-        save_info.cur_brightness = 255;
-    }
-
-    printf("cur brightness %u\n", (u16)save_info.cur_brightness);
-
-    WS2812FX_setBrightness(save_info.cur_brightness);
-
-#endif
-
     // 亮度不能超过100%
     if (fc_effect.b < 255 - (255 / 10))
     {
@@ -2124,6 +2071,33 @@ void lighting_animation_bright_add(void)
     {
         fc_effect.b = 255;
     }
+
+    printf("fc_effect.b == %u\n", (u16)fc_effect.b);
+
+    WS2812FX_setBrightness(fc_effect.b);
+
+    if (fc_effect.Now_state == METEORITE_LAMP_MODE)
+    {
+        // 重新开始跑动画
+        lighting_animation_mode_change();
+    }
+}
+
+void lighting_animation_bright_sub(void)
+{
+    if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
+        return;
+
+    if (fc_effect.b > 10 + (255 / 10))
+    {
+        fc_effect.b -= 255 / 10;
+    }
+    else
+    {
+        fc_effect.b = 10;
+    }
+
+    printf("fc_effect.b == %u\n", (u16)fc_effect.b);
 
     WS2812FX_setBrightness(fc_effect.b);
 

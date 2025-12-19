@@ -381,8 +381,8 @@ void fb_sensitive(void)
     // tp_buffer[0] = 0x02;
     tp_buffer[0] = 0x2F;
     tp_buffer[1] = 0x05;
-    // tp_buffer[2] = fc_effect.music.s;
-    tp_buffer[2] = 100 - fc_effect.music.s;
+    tp_buffer[2] = fc_effect.music.s;
+    // tp_buffer[2] = 100 - fc_effect.music.s;
 
     zd_fb_2_app(tp_buffer, 3);
 }
@@ -449,6 +449,27 @@ void fb_motor_switch(void)
     tp_buffer[1] = 0x08;
     tp_buffer[2] = fc_effect.motor_on_off;
     zd_fb_2_app(tp_buffer, 6);
+}
+
+void app_feedback_meteor_lights_speed(void)
+{
+    u8 feedback_speed = 100 - (u32)(save_info.cur_speed - 1000) * 100 / 3000; // 将 1000~4000 转换成 0~100 的数值;
+    printf("feedback_speed:%u\n", (u16)feedback_speed);
+
+    // 向app反馈流星灯速度（app的速度值是0~100，这里需要做转换）
+    u8 tp_buffer[3]; // 存放要向app发送的数据
+    tp_buffer[0] = 0x2F;
+    tp_buffer[1] = 0x01;
+    // tp_buffer[2] = (u32)(save_info.cur_speed - 1000) * 100 / 3000; // 将 1000~4000 转换成 0~100 的数值
+    tp_buffer[2] = feedback_speed;
+    zd_fb_2_app(tp_buffer, 3);
+}
+
+void app_feedback_meteor_lights_brightness(void)
+{
+    // 向app反馈亮度（app的亮度是 0~100，这里需要做转换）
+    fc_effect.app_b = (u32)fc_effect.b * 100 / 255;
+    fb_bright(); // 向app返回亮度数据
 }
 
 /* 解析中道数据，主要是静态模式，和动态效果的“基本”效果 */
@@ -755,8 +776,9 @@ void parse_zd_data(unsigned char *LedCommand)
             {
                 // 声控灵敏度范围：0~100
                 // 单片机中是数值越小，灵敏度越高
-                app_set_sensitive(100 - LedCommand[2]); 
-                // app_set_sensitive(LedCommand[2]);
+                // app_set_sensitive(100 - LedCommand[2]);
+                extern void app_set_sensitive(u8 tp_s); 
+                app_set_sensitive(LedCommand[2]);
                 fb_sensitive();
             }
 
@@ -853,8 +875,9 @@ void parse_led_strip_data(u8 *pBuf, u8 len)
     /* 中道孔明灯协议解析 */
     parse_zd_data(pBuf);
 
-    save_info_write();      // 保存 save_info 数据
-    save_user_data_area3(); // 保存参数配置到flash
+    // save_info_write();      // 保存 save_info 数据
+    // save_user_data_area3(); // 保存参数配置到flash
+    os_taskq_post("msg_task", 1, MSG_USER_SAVE_INFO);
 }
 
 void tuya_fb_sw_state(void)

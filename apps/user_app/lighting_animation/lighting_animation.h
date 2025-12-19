@@ -27,6 +27,7 @@ u16 WS2812FX_sample_17(void);
 
 u16 WS2812FX_sample_single_color_meteor_light(void);
 
+void lighting_animation_mode_setting(u8 mode_index);
 void lighting_animation_mode_change(void);
 
 void lighting_animation_mode_add(void);
@@ -50,6 +51,7 @@ void lighting_animation_speed_mid(void);  // 动画设置为中速
 
 
 void lighting_animation_bright_add(void); // 亮度加
+void lighting_animation_bright_sub(void); // 亮度减
 
 // 初始化（恢复出厂设置）
 void lighting_animation_init(void);

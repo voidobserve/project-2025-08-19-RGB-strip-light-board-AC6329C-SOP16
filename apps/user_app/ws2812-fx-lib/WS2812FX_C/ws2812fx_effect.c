@@ -2890,7 +2890,6 @@ uint16_t fc_music_twinkle(void)
     uint32_t color1;
     if (get_sound_result())
     {
-
         color1 = WS2812FX_color_wheel(_seg_rt->aux_param);
         _seg_rt->aux_param += 20;
         Adafruit_NeoPixel_fill(color1, _seg->start, _seg_len);

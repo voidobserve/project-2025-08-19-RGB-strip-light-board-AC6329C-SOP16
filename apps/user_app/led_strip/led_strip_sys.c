@@ -104,13 +104,13 @@ void soft_turn_on_the_light(void) // 软开灯处理
 
     save_info.flag_is_light_on = 1;
     fc_effect.on_off_flag = DEVICE_ON;
-    
+
     // printf("fc_effect.Now_state = %u\n", fc_effect.Now_state); /* 把这里注释掉，好像有可能会导致复位 */
 
     set_fc_effect(); // 根据 fc_effect.Now_state 的状态，执行对应的模式
 
     app_feedback_led_on_off_state();
-    printf("soft_turn_on_the_light end\n");
+    printf("soft_turn_on_the_light    on\n");
 }
 
 void soft_turn_off_lights(void) // 软关灯处理
@@ -119,10 +119,10 @@ void soft_turn_off_lights(void) // 软关灯处理
     save_info.flag_is_light_on = 0;
     fc_effect.on_off_flag = DEVICE_OFF;
 
-    WS2812FX_stop();
+    WS2812FX_stop(); //
 
     app_feedback_led_on_off_state();
-    printf("soft_turn_off_lights end\n");
+    printf("soft_turn_off_lights    off \n");
 }
 
 /*********************************************************
@@ -1264,12 +1264,3 @@ void ir_timer_handler(void)
 {
     ir_auto_change_mode();
 }
-
-// 全彩效果初始化
-// void full_color_init(void)
-// {
-
-//     WS2812FX_init(fc_effect.led_num, fc_effect.sequence); // 初始化ws2811
-//     WS2812FX_setBrightness(fc_effect.b);
-//     set_on_off_led(fc_effect.on_off_flag);
-// }

@@ -69,7 +69,8 @@
         "${workspaceFolder}/apps/common/audio",
         "${workspaceFolder}/apps/common/device/usb",
         "${workspaceFolder}/apps/common/device/usb/device",
-        "${workspaceFolder}/apps/common/device/usb/host"
+        "${workspaceFolder}/apps/common/device/usb/host",
+        "${workspaceFolder}/**"
       ],
       "intelliSenseMode": "clang-x86"
     }

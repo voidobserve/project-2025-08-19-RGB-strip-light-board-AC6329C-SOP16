@@ -177,13 +177,15 @@ void countdown_handler(int index)
                 {
                     soft_turn_on_the_light();
                     close_alarm(index);
-                    save_user_data_area3();
+                    // save_user_data_area3();
+                    os_taskq_post("msg_task", 1, MSG_USER_SAVE_INFO);
                 }
                 else
                 {
                     soft_turn_off_lights();
                     close_alarm(index);
-                    save_user_data_area3();
+                    // save_user_data_area3();
+                    os_taskq_post("msg_task", 1, MSG_USER_SAVE_INFO);
                 }
 
 
@@ -203,13 +205,15 @@ void countdown_handler(int index)
 
                             soft_turn_on_the_light();
                             close_alarm(index);
-                            save_user_data_area3();
+                            // save_user_data_area3();
+                            os_taskq_post("msg_task", 1, MSG_USER_SAVE_INFO);
                         }
                         else
                         {
                             soft_turn_off_lights();
                             close_alarm(index);
-                            save_user_data_area3();
+                            // save_user_data_area3();
+                            os_taskq_post("msg_task", 1, MSG_USER_SAVE_INFO);
                         }
 
                     }

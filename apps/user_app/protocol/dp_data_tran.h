@@ -132,6 +132,9 @@ extern void printf_buf(u8 *buf, u32 len);
 
 void app_feedback_led_on_off_state(void); // 向app反馈led开关状态
 
+void app_feedback_meteor_lights_speed(void);
+void app_feedback_meteor_lights_brightness(void);
+
 #endif
 
 

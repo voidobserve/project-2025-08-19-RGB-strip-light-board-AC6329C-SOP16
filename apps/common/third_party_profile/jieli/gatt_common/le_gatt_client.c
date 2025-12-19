@@ -1046,8 +1046,9 @@ static bool __resolve_adv_report(adv_report_t *report_pt, u16 len)
 
         if (length >= report_pt->length || (length + i) >= report_pt->length) {
             /*过滤非标准包格式*/
-            printf("!!!error_adv_packet:");
-            put_buf(report_pt->data, report_pt->length);
+            // printf("!!!error_adv_packet:");
+            // put_buf(report_pt->data, report_pt->length);
+            printf("recved error adv packet\n");
             break;
         }
 
@@ -1058,8 +1059,11 @@ static bool __resolve_adv_report(adv_report_t *report_pt, u16 len)
         // printf("===============^");
 
 #if TCFG_RF24GKEY_ENABLE
-        extern void rf24g_scan(u8 *pBuf);
-        rf24g_scan(adv_data_pt);
+        // extern void rf24g_scan(u8 *pBuf);
+        // rf24g_scan(adv_data_pt);
+
+        extern void rf24g_scan(u8 *pBuf, u8 len);
+        rf24g_scan(adv_data_pt, length - 1);
 #endif 
         switch (ad_type) {
         case HCI_EIR_DATATYPE_FLAGS:

@@ -116,6 +116,13 @@ typedef enum
     IR_TIMER_120MIN = 120*60*1000,
 }AUTO_TIME_T;
 
+enum
+{
+    MSG_SEQUENCER_NONE = 0x00, 
+
+    MSG_USER_SAVE_INFO, // 将数据写入flash
+};
+
 
 // 静态效果设置
 void set_static_mode(u8 r, u8 g, u8 b);

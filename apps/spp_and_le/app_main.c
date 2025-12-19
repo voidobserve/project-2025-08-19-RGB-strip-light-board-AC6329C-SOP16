@@ -80,9 +80,9 @@ const struct task_info task_info_table[] = {
 
     // {"led_task", 2, 0, 512, 512}, // 灯光
 
-    {"test_task", 3, 0, 1024, 512}, // 定义线程   任务调度
+    {"main_task", 3, 0, 512, 512}, // 定义线程   任务调度
+    {"msg_task", 3, 0, 256, 256}, // 用户消息处理线程
 
-    // {"lighting_animation_task", 3, 0, 512, 512}, // 定义线程   任务调度
     {0, 0},
 };
 
@@ -368,27 +368,14 @@ __initcall(user_timer_init);
 
 #endif
 extern void count_down_run(void);
-extern void time_clock_handler(void);
+// extern void time_clock_handler(void);
 extern void rf433_handle(void);
 extern void meteor_period_sub(void);
 
-void main_while(void)
+void WS2812_circle_task(void)
 {
-
-    // while(1)
-    // {
-
-    // =================================
-    //           默认内容，不用修改
-    // =================================
-    sound_handle(); // 声控模式处理函数
     run_tick_per_10ms();
     WS2812FX_service();
-
-    // printf("10ms\n");
-
-    // os_time_dly(1);
-    // }
 }
 
 // extern fc_effect_t fc_effect; // 幻彩灯串效果数据
@@ -396,23 +383,64 @@ extern const u8 size_type[4];
 extern uint16_t SM_mode_comet_1(void);
 
 // u32 color_buff[] = {RED, GREEN, BLUE};
-void test_task(void)
+
+
+/*
+    处理用户消息的线程 user_msg_handle_task
+
+    给该线程发送消息，例如：
+    os_taskq_post("msg_task", 1, MSG_SEQUENCER_ONE_WIRE_SEND_INFO);
+*/
+void user_msg_handle_task(void)
 {
-    // os_time_dly(100);
-    // fc_effect.on_off_flag == DEVICE_ON;
-    // fc_effect.cur_mode = 2;
-    // fc_effect.star_speed = 1000;
-    // // fc_effect.star_speed = 2000;
-    // fc_effect.cur_options = NO_OPTIONS;
+    int msg[32] = {0};
 
-    // fc_effect.b = 100;
-    // WS2812FX_setBrightness(fc_effect.b);
+    while (1)
+    {  
+        int ret = os_taskq_pend("msg_task", msg, 1);
+        // printf("recv msg\n");
+        // printf("ret %d\n", ret);
+        if (OS_TASKQ != ret) // 类型不对
+        {
+            continue;
+        }
 
+        if (msg[0] != Q_USER) // 不是用户消息
+        {
+            continue;
+        }
+
+        // 打印接收到的消息
+        // for (u8 i =0; i < ARRAY_SIZE(msg); i++)
+        // {
+        //     printf("msg [%u]: %d\n", (u16)i, msg[i]);
+        // }
+
+        switch (msg[1])
+        {  
+
+        case MSG_USER_SAVE_INFO:
+        {
+            save_user_data_enable();
+        }
+        break;
+        } 
+    } // while (1)
+}
+
+void main_task(void)
+{
     lighting_animation_mode_change(); // 根据 save_info 的数据来执行对应的灯光动画
 
     while (1)
     {
+        sound_handle(); // 声控模式处理函数
+
         rf24_key_handle();
+
+
+        save_user_data_time_count_down();
+        save_user_data_handle();
         os_time_dly(1);
     }
 }
@@ -426,32 +454,14 @@ void my_main(void)
 #if TCFG_RF433GKEY_ENABLE
     // rf433_gpio_init();
 #endif
-
-    // read_flash_device_status_init(); // 读取数据，进行初始化
-    // full_color_init();
-
-    read_flash_device_status_init(); // 从flash中读出保存的数据
-    save_info_read();                // 从flash中读出保存的数据
+ 
+ 
+    user_data_read();
     // 根据读出的数据来初始化
     WS2812FX_init(LIGHTING_ANIMATION_LED_NUMS, LIGHTING_ANIMATION_RGB_NEOPIXEL_PERMUTATIONS); // 初始化ws2811
-    WS2812FX_setBrightness(fc_effect.b);                                         // 设置灯光亮度
-    // fc_data_init();
+    WS2812FX_setBrightness(fc_effect.b);                                                      // 设置灯光亮度
 
-    // WS2812FX_init(fc_effect.led_num, fc_effect.sequence); // 初始化ws2811
-    // WS2812FX_setBrightness(fc_effect.b);
-    // set_on_off_led(fc_effect.on_off_flag);
-
-    // sys_s_hi_timer_add(NULL, count_down_run, 10); //注册定时关机定时器
-    // sys_s_hi_timer_add(NULL, time_clock_handler, 10); //注册定时做的时间计时定时器
-    // sys_s_hi_timer_add(NULL, ir_timer_handler, 10); //注册红外定时器
-    // sys_s_hi_timer_add(NULL, meteor_period_sub, 10); // 注册流星周期定时器
-    // sys_s_hi_timer_add(NULL, rf433_handle, 10);      // 注册433遥控功能定时器
-
-    // sys_timer_add(NULL, main_while, 10);
-    sys_s_hi_timer_add(NULL, main_while, 10);
-
-    // os_sem_create(&LED_TASK_SEM,0);
-    // task_create(main_while, NULL, "led_task");
-
-    task_create(test_task, NULL, "test_task");
+    sys_s_hi_timer_add(NULL, WS2812_circle_task, 10);
+    task_create(user_msg_handle_task, NULL, "msg_task"); // 要放在 main_task 之前
+    task_create(main_task, NULL, "main_task");
 }

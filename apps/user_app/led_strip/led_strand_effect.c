@@ -1215,7 +1215,8 @@ void ls_meteor_stat_effect(void)
             double_meteor();
         }
     }
-    save_user_data_area3(); // 保存参数配置到flash
+    // save_user_data_area3(); // 保存参数配置到flash
+    os_taskq_post("msg_task", 1, MSG_USER_SAVE_INFO);
 }
 
 /**
