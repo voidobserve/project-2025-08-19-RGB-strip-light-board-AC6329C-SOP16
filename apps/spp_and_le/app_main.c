@@ -27,7 +27,7 @@
 /* #define LOG_DUMP_ENABLE */
 #define LOG_CLI_ENABLE
 #include "debug.h"
-#include "rf433_app.h"
+#include "rf433_key.h"
 #include "led_strip_drive.h"
 #include "hardware.h"
 
@@ -81,7 +81,7 @@ const struct task_info task_info_table[] = {
     // {"led_task", 2, 0, 512, 512}, // 灯光
 
     {"main_task", 3, 0, 512, 512}, // 定义线程   任务调度
-    {"msg_task", 3, 0, 256, 256}, // 用户消息处理线程
+    {"msg_task", 3, 0, 256, 256},  // 用户消息处理线程
 
     {0, 0},
 };
@@ -318,7 +318,8 @@ static const u16 timer_div[] = {
     /*1110*/ 32 * 256,
     /*1111*/ 128 * 256,
 };
-#define APP_TIMER_CLK (CONFIG_BT_NORMAL_HZ / 2) // clk_get("timer")
+
+#define APP_TIMER_CLK (24000000) // clk_get("timer")
 #define MAX_TIME_CNT 0x7fff
 #define MIN_TIME_CNT 0x100
 #define TIMER_UNIT 1
@@ -338,9 +339,9 @@ ___interrupt
     extern void one_wire_send(void);
     one_wire_send(); // steomotor
 
-#if TCFG_RF433GKEY_ENABLE
-    extern void timer125us_hook(void);
-    timer125us_hook();
+#if RF_433_KEY_ENABLE
+    extern void rf_433_key_decode_isr(void);
+    rf_433_key_decode_isr();
 #endif
 }
 
@@ -352,7 +353,7 @@ void user_timer_init(void)
     //	printf("********* user_timer_init **********\n");
     for (index = 0; index < (sizeof(timer_div) / sizeof(timer_div[0])); index++)
     {
-        prd_cnt = TIMER_UNIT * (APP_TIMER_CLK / 8000) / timer_div[index]; // 8000==125us
+        prd_cnt = TIMER_UNIT * (APP_TIMER_CLK / 8000) / timer_div[index];
         if (prd_cnt > MIN_TIME_CNT && prd_cnt < MAX_TIME_CNT)
         {
             break;
@@ -361,8 +362,8 @@ void user_timer_init(void)
 
     TIMER_CNT = 0;
     TIMER_PRD = prd_cnt;
-    request_irq(TIMER_VETOR, 0, user_timer_isr, 0);
-    TIMER_CON = (index << 4) | BIT(0) | BIT(3);
+    request_irq(TIMER_VETOR, 3, user_timer_isr, 0);
+    TIMER_CON = (0b0001 << 10) | (index << 4) | (0x01 << 0); // 选择晶振作为时钟源，分频系数，定时器计数模式
 }
 __initcall(user_timer_init);
 
@@ -384,7 +385,6 @@ extern uint16_t SM_mode_comet_1(void);
 
 // u32 color_buff[] = {RED, GREEN, BLUE};
 
-
 /*
     处理用户消息的线程 user_msg_handle_task
 
@@ -396,7 +396,7 @@ void user_msg_handle_task(void)
     int msg[32] = {0};
 
     while (1)
-    {  
+    {
         int ret = os_taskq_pend("msg_task", msg, 1);
         // printf("recv msg\n");
         // printf("ret %d\n", ret);
@@ -417,27 +417,28 @@ void user_msg_handle_task(void)
         // }
 
         switch (msg[1])
-        {  
+        {
 
         case MSG_USER_SAVE_INFO:
         {
             save_user_data_enable();
         }
         break;
-        } 
+        }
     } // while (1)
 }
 
 void main_task(void)
 {
-    lighting_animation_mode_change(); // 根据 save_info 的数据来执行对应的灯光动画
+    // lighting_animation_mode_change(); // 根据 save_info 的数据来执行对应的灯光动画
+    set_fc_effect();
 
     while (1)
     {
         sound_handle(); // 声控模式处理函数
 
-        rf24_key_handle();
-
+        // rf24_key_handle();
+        rf_433_key_event_handle();
 
         save_user_data_time_count_down();
         save_user_data_handle();
@@ -447,15 +448,14 @@ void main_task(void)
 
 void my_main(void)
 {
-
     mic_gpio_init();  // mic脚IO口初始化
     led_state_init(); // 初始化LED接口
     led_pwr_on();
-#if TCFG_RF433GKEY_ENABLE
-    // rf433_gpio_init();
+
+#if RF_433_KEY_ENABLE
+    rf_433_key_config();
 #endif
- 
- 
+
     user_data_read();
     // 根据读出的数据来初始化
     WS2812FX_init(LIGHTING_ANIMATION_LED_NUMS, LIGHTING_ANIMATION_RGB_NEOPIXEL_PERMUTATIONS); // 初始化ws2811

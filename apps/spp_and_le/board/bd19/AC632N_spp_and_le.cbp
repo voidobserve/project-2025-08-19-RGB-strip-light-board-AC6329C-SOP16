@@ -11,6 +11,7 @@
 				<Option type="1" />
 				<Option compiler="q32s_lto_compiler" />
 				<Compiler>
+					<Add option="-flto" />
 					<Add option="-Os" />
 					<Add option="-Wcast-align" />
 					<Add option="-Wundef" />
@@ -18,7 +19,6 @@
 					<Add option="-g" />
 					<Add option="-integrated-as" />
 					<Add option="-O0" />
-					<Add option="-flto" />
 					<Add option="-fallow-pointer-null" />
 					<Add option="-Wincompatible-pointer-types" />
 					<Add option="-fprefer-gnu-section" />
@@ -140,8 +140,11 @@
 					<Add directory="../../../user_app/protocol" />
 					<Add directory="../../../user_app/led_strip" />
 					<Add directory="../../../user_app/rf433_key" />
+					<Add directory="../../../user_app/save_flash" />
+					<Add directory="../../../user_app/lighting_animation" />
 				</Compiler>
 				<Linker>
+					<Add option="-flto" />
 					<Add option="--plugin-opt=-inline-threshold=5" />
 					<Add option="--plugin-opt=save-temps" />
 					<Add option="--plugin-opt=-inline-normal-into-special-section=true" />
@@ -888,10 +891,18 @@
 		<Unit filename="../../../common/update/update.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../../../user_app/ad_key/ad_key_app.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../user_app/ad_key/ad_key_app.h" />
 		<Unit filename="../../../user_app/hardware/hardware.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../../user_app/hardware/hardware.h" />
+		<Unit filename="../../../user_app/ir_key/ir_key_app.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../user_app/ir_key/ir_key_app.h" />
 		<Unit filename="../../../user_app/led_strip/led_strand_effect.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -907,6 +918,7 @@
 		<Unit filename="../../../user_app/led_strip/led_strip_voice.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../../../user_app/led_strip/led_strip_voice.h" />
 		<Unit filename="../../../user_app/led_strip/paint_tool.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -927,10 +939,11 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../../user_app/rf24g_key/rf24g_app.h" />
-		<Unit filename="../../../user_app/rf433_key/rf433_app.c">
+		<Unit filename="../../../user_app/rf433_key/rf433_app.h" />
+		<Unit filename="../../../user_app/rf433_key/rf433_key.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../../../user_app/rf433_key/rf433_app.h" />
+		<Unit filename="../../../user_app/rf433_key/rf433_key.h" />
 		<Unit filename="../../../user_app/save_flash/save_flash.c">
 			<Option compilerVar="CC" />
 		</Unit>

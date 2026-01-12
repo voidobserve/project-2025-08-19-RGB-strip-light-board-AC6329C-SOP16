@@ -130,6 +130,8 @@ unsigned long string_hex_Byte(char* str, unsigned char Byte_num);
 unsigned short dp_extract_data_handle(unsigned char *buff);
 extern void printf_buf(u8 *buf, u32 len);
 
+void fb_sensitive(void);
+
 void app_feedback_led_on_off_state(void); // 向app反馈led开关状态
 
 void app_feedback_meteor_lights_speed(void);

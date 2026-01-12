@@ -39,13 +39,7 @@ typedef struct
  
     u8 cur_options;               // 当前选项
     volatile u8 flag_is_light_on; // 标志位，灯光是否开启
-
-    /*
-        标志位，当前是否要使能2.4G遥控器的功能；
-        app控制和2.4G控制会有冲突，需要加上这个标志位来区分
-        开机后，判断该标志位，执行对应的模式
-    */
-    u8 flag_is_cur_rf_24g_mode_enable;
+ 
 
     u8 is_data_valid; // 0xC5表示数据有效，其他值表示无效
 } save_info_t;

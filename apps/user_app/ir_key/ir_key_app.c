@@ -3,7 +3,7 @@
 #include "ir_key_app.h"
 #include "task.h"
 #include "event.h"
-#include "my_effect.h"
+// #include "my_effect.h"
 #include "board_ac632n_demo_cfg.h"
 #include "ir_key_app.h"
 #include "led_strand_effect.h"

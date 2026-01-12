@@ -62017,7 +62017,7 @@
 	"board_ac6329f_demo_cfg.h"
 	"board_ac6323a_fmy_cfg.h"
 
-1755756639 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\board\bd19\board_ac632n_demo_cfg.h
+1768187526 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\board\bd19\board_ac632n_demo_cfg.h
 	"board_ac632n_demo_global_build_cfg.h"
 	"usb_std_class_def.h"
 
@@ -62373,7 +62373,7 @@
 
 1719187047 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\include_lib\system\device\ioctl_cmds.h
 
-1722419783 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\include_lib\system\device\key_driver.h
+1768185186 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\include_lib\system\device\key_driver.h
 	"typedef.h"
 
 1719187047 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\include_lib\system\device\iokey.h
@@ -62997,7 +62997,7 @@
 	"asm/irflt.h"
 	"app_config.h"
 
-1755759408 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\common\device\key\key_driver.c
+1768187418 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\common\device\key\key_driver.c
 	"device/key_driver.h"
 	"system/event.h"
 	"system/init.h"
@@ -63014,6 +63014,7 @@
 	"tone_player.h"
 	"irSensor/ir_manage.h"
 	"debug.h"
+	"rf433_key.h"
 	"rf24g_app.h"
 	"asm/ctmu.h"
 
@@ -65056,7 +65057,7 @@
 
 1719196543 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\hardware\hardware.h
 
-1758952760 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strand_effect.h
+1768202571 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strand_effect.h
 	"cpu.h"
 	"led_strip_sys.h"
 	"WS2812FX.H"
@@ -65089,7 +65090,7 @@
 1719186947 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\one_wire\one_wire.h
 	"system/includes.h"
 
-1765424765 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strand_effect.c
+1768202694 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strand_effect.c
 	"system/includes.h"
 	"led_strand_effect.h"
 	"WS2812FX.H"
@@ -65106,7 +65107,7 @@
 	<stdint.h>
 	"ws2812_bsp.h"
 
-1765439809 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\lighting_animation\lighting_animation.h
+1768202274 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\lighting_animation\lighting_animation.h
 	"includes.h"
 	"Adafruit_NeoPixel.H"
 
@@ -65117,7 +65118,7 @@
 	"asm/mcpwm.h"
 	"led_strand_effect.h"
 
-1765519335 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strip_sys.c
+1768202144 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strip_sys.c
 	"led_strip_sys.h"
 	"Adafruit_NeoPixel.H"
 	"led_strand_effect.h"
@@ -65125,11 +65126,11 @@
 	"../../../apps/user_app/save_flash/save_flash.h"
 	"../../../apps/user_app/protocol/dp_data_tran.h"
 
-1765425077 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\save_flash\save_flash.h
+1768201904 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\save_flash\save_flash.h
 	"led_strand_effect.h"
 	"led_strip_drive.h"
 
-1765438395 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\protocol\dp_data_tran.h
+1768205573 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\protocol\dp_data_tran.h
 
 1765521403 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\led_strip_voice.c
 	"led_strip_voice.h"
@@ -65147,7 +65148,7 @@
 1719208267 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\led_strip\paint_tool.h
 	"led_strip_sys.h"
 
-1766130898 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\lighting_animation\lighting_animation.c
+1768202218 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\lighting_animation\lighting_animation.c
 	"lighting_animation.h"
 	"Adafruit_NeoPixel.H"
 	"led_strand_effect.h"
@@ -65160,7 +65161,7 @@
 	"one_wire.h"
 	"led_strand_effect.h"
 
-1766130810 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\protocol\dp_data_tran.c
+1768205708 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\protocol\dp_data_tran.c
 	"cpu.h"
 	"led_strip_sys.h"
 	"paint_tool.h"
@@ -65221,7 +65222,7 @@
 	<stdlib.h>
 	<string.h>
 
-1765518935 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\app_main.c
+1768202991 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\app_main.c
 	"system/includes.h"
 	"app_config.h"
 	"app_action.h"
@@ -65233,7 +65234,7 @@
 	"asm/charge.h"
 	"jl_kws/jl_kws_api.h"
 	"debug.h"
-	"rf433_app.h"
+	"rf433_key.h"
 	"led_strip_drive.h"
 	"hardware.h"
 	"../../apps/user_app/led_strip/led_strand_effect.h"
@@ -66630,7 +66631,7 @@
 	"asm/power/p33.h"
 	"debug.h"
 
-1719186921 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\board\bd19\board_ac632n_demo.c
+1768187530 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\spp_and_le\board\bd19\board_ac632n_demo.c
 	"app_config.h"
 	"system/includes.h"
 	"device/key_driver.h"
@@ -66643,6 +66644,7 @@
 	"usb/otg.h"
 	"norflash.h"
 	"debug.h"
+	"rf433_key.h"
 	"uart_update.h"
 
 1759026459 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\ws2812-fx-lib\ws2812fx_c\ws2812fx_effect.c
@@ -66676,7 +66678,7 @@
 	"le_client_demo.h"
 	"gatt_common/le_gatt_common.h"
 
-1766133298 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\rf24g_key\rf24g_app.c
+1768202278 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\rf24g_key\rf24g_app.c
 	"system/includes.h"
 	"task.h"
 	"event.h"
@@ -66688,4 +66690,37 @@
 	"../../../apps/user_app/lighting_animation/lighting_animation.h"
 	"../../../apps/user_app/save_flash/save_flash.h"
 	"dp_data_tran.h"
+
+1768189099 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\rf433_key\rf433_key.h
+	"includes.h"
+
+1768185764 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\ir_key\ir_key_app.c
+	"system/includes.h"
+	"led_strip_sys.h"
+	"ir_key_app.h"
+	"task.h"
+	"event.h"
+	"board_ac632n_demo_cfg.h"
+	"ir_key_app.h"
+	"led_strand_effect.h"
+
+1756543220 d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\ir_key\ir_key_app.h
+	"board_ac632n_demo_cfg.h"
+	"led_strip_sys.h"
+
+1768185795 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\ad_key\ad_key_app.c
+	"board_ac632n_demo_cfg.h"
+	"event.h"
+	"key_driver.h"
+	"led_strip_sys.h"
+	"led_strand_effect.h"
+	"tuya_ble_type.h"
+	"system/includes.h"
+
+1768205649 source:d:\a_workst\aworkst\99-以往项目\x--欣沃达\2025-08-19-欣沃达-rgb灯长条板-ac6329c-sop16\01-code\project-2025-08-19-rgb-strip-light-board-ac6329c-sop16\apps\user_app\rf433_key\rf433_key.c
+	"rf433_key.h"
+	"led_strip_sys.h"
+	"save_flash.h"
+	"led_strand_effect.h"
+	"lighting_animation.h"
 

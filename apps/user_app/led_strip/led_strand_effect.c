@@ -100,9 +100,9 @@ void static_mode(void)
         0,                               // 颜色，WS2812FX_setColors设置
         100,                             // 速度
         0);                              // 选项，这里像素点大小：1
-  
+
     WS2812FX_set_coloQty(0, fc_effect.dream_scene.c_n); // 设置颜色数量  0：第0段   fc_effect.dream_scene.c_n  颜色数量，一个颜色包含（RGB）
-    ls_set_colors(1, &fc_effect.rgb); // 1:1个颜色    &fc_effect.rgb 这个颜色是什么色
+    ls_set_colors(1, &fc_effect.rgb);                   // 1:1个颜色    &fc_effect.rgb 这个颜色是什么色
 
     WS2812FX_start();
 }
@@ -1241,7 +1241,7 @@ void ls_music_effect(void)
     extern uint16_t fc_music_twinkle(void);
 
     void *music_effect_addr = &fc_music_gradual; // 避免出现地址空，导致不断复位
-    app_set_bright(100);                         // 设置为最大亮度
+    // app_set_bright(100);                         // 设置为最大亮度
     // #if (LED_STRIP_TYPE == TYPE_Fiber_optic_lights)
     switch (fc_effect.music.m)
     {
@@ -1266,7 +1266,7 @@ void ls_music_effect(void)
         0,                               // 起始位置
         LIGHTING_ANIMATION_LED_NUMS - 1, // 结束位置
         music_effect_addr,               // 效果
-        WHITE,                           // 颜色，WS2812FX_setColors设置
+        WHITE,                           // 颜色，WS2812FX_setColors设置（在声控模式下，这里设置的颜色无效）
         100,                             // 速度
         SIZE_MEDIUM | FADE_XSLOW         // 选项，这里像素点大小：3,反向/反向
     );
@@ -1305,67 +1305,48 @@ static void ls_static_effect(void)
  */
 void set_fc_effect(void)
 {
-    if (fc_effect.on_off_flag == DEVICE_ON)
+    if (fc_effect.on_off_flag == DEVICE_OFF)
     {
-        switch (fc_effect.Now_state)
-        {
-        // 幻彩场景
-        case IS_light_scene:
-            ls_scene_effect();
-            break;
+        return;
+    }
 
-        // 配对模式
-        case ACT_TY_PAIR:
-            // ls_ty_pair_effect();
-            break;
-
+    switch (fc_effect.Now_state)
+    {
+    // 幻彩场景
+    case IS_light_scene:
+        ls_scene_effect();
+        break;
+    // ==============================================
+    // 配对模式
+    case ACT_TY_PAIR:
+        // ls_ty_pair_effect();
+        break;
+        // ==============================================
         // 自定义效果模式
-        case ACT_CUSTOM:
-            ls_custom_effect();
-            break;
-
+    case ACT_CUSTOM:
+        ls_custom_effect();
+        break;
+        // ==============================================
         // 音乐模式
-        case IS_light_music:
-            ls_music_effect();
-            break;
-
+    case IS_light_music:
+        ls_music_effect();
+        break;
+        // ==============================================
         // 涂抹模式
-        case IS_smear_adjust:
-            // ls_smear_adjust_effect();
-            break;
-
+    case IS_smear_adjust:
+        // ls_smear_adjust_effect();
+        break;
+        // ==============================================
         // 静态模式
-        case IS_STATIC:
-            // ls_static_effect();
-
-            // printf("== static mode ==\n");
-
-            extern void static_mode(void);
-            static_mode();
-
-            // extern uint16_t WS2812FX_mode_static(void);
-
-            // WS2812FX_setSegment_colorOptions(                   // 设置一段颜色的效果
-            //     0,                                              // 第0段
-            //     0,                                              // 起始位置
-            //     0,                                              // 结束位置
-            //     &WS2812FX_mode_static,                          // 效果
-            //     0,                                              // 颜色，WS2812FX_setColors设置
-            //     100,                                            // 速度
-            //     0);                                             // 选项，这里像素点大小：1
-            // WS2812FX_set_coloQty(0, fc_effect.dream_scene.c_n); // 设置颜色数量  0：第0段   fc_effect.dream_scene.c_n  颜色数量，一个颜色包含（RGB）
-            // ls_set_colors(1, &fc_effect.rgb);                   // 1:1个颜色    &fc_effect.rgb 这个颜色是什么色
-
-            // WS2812FX_start();
-            break;
-
-        case METEORITE_LAMP_MODE: // 流星灯模式
-
-            lighting_animation_mode_change();
-
-            break;
-        default:
-            break;
-        }
+    case IS_STATIC:
+        extern void static_mode(void);
+        static_mode();
+        break;
+        // ==============================================
+    case METEORITE_LAMP_MODE: // 流星灯模式
+        lighting_animation_mode_change();
+        break;
+    default:
+        break;
     }
 }

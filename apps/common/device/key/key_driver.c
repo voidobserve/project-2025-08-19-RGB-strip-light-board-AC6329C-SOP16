@@ -28,6 +28,8 @@
 // #define LOG_CLI_ENABLE
 #include "debug.h"
 
+#include "rf433_key.h"
+
 #define KEY_EVENT_CLICK_ONLY_SUPPORT 0 // 是否支持某些按键只响应单击事件
 
 #if TCFG_SPI_LCD_ENABLE
@@ -371,6 +373,21 @@ static void key_driver_scan(void *_scan_para)
 
 _notify:
 
+#if RF_433_KEY_ENABLE
+    if (KEY_DRIVER_TYPE_RF_433_KEY == scan_para->key_type)
+    {
+        rf_433_key_structure.rf_433_key_latest_key_val = key_value;
+        // printf("rf 433 cur key value %u\n", (u16)cur_key_value);
+        rf_433_key_structure.rf_433_key_driver_event = key_event;
+
+        scan_para->click_cnt = 0; // 单击次数清0
+        scan_para->notify_value = NO_KEY;
+
+        // printf("key event %u\n", key_event);
+        goto _scan_end; // 提前退出
+    }
+#endif
+
 #if TCFG_RF24GKEY_ENABLE
     if (KEY_DRIVER_TYPE_RF24GKEY == scan_para->key_type)
     {
@@ -465,6 +482,13 @@ int key_driver_init(void)
     sys_s_hi_timer_add((void *)&rf24g_scan_para, key_driver_scan, rf24g_scan_para.scan_time); // 注册按键扫描定时器
     // printf("2.4Gkey drive");
 #endif
+
+#if RF_433_KEY_ENABLE // 在 rf_433_key.h 中配置
+
+    // extern rf_433_key_struct_t rf_433_key_structure;
+    sys_hi_timer_add((void *)&rf_433_key_structure.rf_433_key_para, key_driver_scan, rf_433_key_structure.rf_433_key_para.scan_time); // 注册按键扫描定时器
+
+#endif // #if RF_433_KEY_ENABLE
 
 #if TCFG_IOKEY_ENABLE
     extern const struct iokey_platform_data iokey_data;

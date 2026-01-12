@@ -134,11 +134,11 @@ typedef struct
 typedef struct
 {
     volatile unsigned char on_off_flag; // 灯的开关状态
-    unsigned char led_num;     // 灯点数
-    unsigned char sequence;    // RGB通道顺序
-    unsigned char b;           // 本地亮度
-    unsigned char app_b;       // 反馈给APP亮度
-    unsigned char app_speed;   // 反馈给APP速度
+    unsigned char led_num;              // 灯点数
+    unsigned char sequence;             // RGB通道顺序
+    unsigned char b;                    // 本地亮度
+    unsigned char app_b;                // 反馈给APP亮度
+    unsigned char app_speed;            // 反馈给APP速度
     // unsigned char ls_b;        // 遥控调亮度 (未使用)
     // unsigned char ls_speed;    // 遥控调速度 (未使用)
 
@@ -148,21 +148,22 @@ typedef struct
     unsigned char mode_cycle;    // 1:模式完成一个循环。0：正在跑，和meteor_period搭配用
     u16 period_cnt;              // ms,运行时的计数器
     Now_state_e Now_state;       // 当前运行模式
-    smear_adjust_t smear_adjust; // 涂抹功能
-    dream_scene_t dream_scene;   // 幻彩情景
+    // smear_adjust_t smear_adjust; // 涂抹功能
+    dream_scene_t dream_scene; // 幻彩情景
 
     music_t music; // 音乐效果
 
-    unsigned char auto_f;
+    // unsigned char auto_f;
     base_ins_t base_ins; // 电机
     unsigned char motor_on_off;
+
     unsigned char star_on_off;      // 流星开关
     unsigned char star_index;       // 记录流星灯模式索引
     unsigned short star_speed;      // 流星灯速度
     unsigned char app_star_speed;   // app调节的流星灯速度
     unsigned char star_speed_index; // 流星灯速度索引
 
-} fc_effect_t; // 这个结构体类型已经占用了超过200字节空间，只能用flash的一个id来写入，要保存其他数据，得换flash其他的id
+} fc_effect_t;
 
 countdown_t zd_countdown[ALARM_NUMBER];
 
@@ -173,5 +174,6 @@ extern volatile fc_effect_t fc_effect; // 幻彩灯串效果数据
 void base_Dynamic_Effect(u8 tp_num);
 
 void ls_music_effect(void);
+void set_fc_effect(void);
 
 #endif

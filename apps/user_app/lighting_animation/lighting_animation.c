@@ -1637,6 +1637,8 @@ void lighting_animation_mode_change(void)
     if (save_info.flag_is_light_on == 0) // 如果灯光没有开启，直接返回
         return;
 
+    fc_effect.Now_state = METEORITE_LAMP_MODE;    // 流星灯模式
+
     mode_ptr lighting_mode_ptr = NULL;
 
     printf("cur mode %u\n", (u16)save_info.cur_lighting_animation_mode);
@@ -2135,15 +2137,10 @@ void lighting_animation_init(void)
 // 第一次上电的时候，初始化变量：
 void lighting_animation_config_init(void)
 {
-    // save_info.flag_is_cur_rf_24g_mode_enable = 1; // 2.4G遥控器控制的灯光模式，使能
-
     fc_effect.Now_state = METEORITE_LAMP_MODE;              // 默认跑流星灯模式
     save_info.cur_lighting_animation_mode = 1;              // 灯光动画模式1
     save_info.cur_speed = 3000;                             // 动画速度
     save_info.cur_lighting_animation_time_interval = 10000; // 动画时间间隔 10s
-
-    // save_info.cur_brightness = 255;                         // 亮度
-
     save_info.flag_is_light_on = 1;
     fc_effect.on_off_flag = DEVICE_ON;
     save_info.cur_options = NO_OPTIONS;

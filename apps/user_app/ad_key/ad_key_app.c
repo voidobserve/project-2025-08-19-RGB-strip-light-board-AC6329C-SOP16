@@ -2,7 +2,7 @@
 #include "event.h"
 #include "key_driver.h"
 #include "led_strip_sys.h"
-#include "ir_key_app.h"
+// #include "ir_key_app.h"
 #include "led_strand_effect.h"
 #include "tuya_ble_type.h"
 #include "system/includes.h"

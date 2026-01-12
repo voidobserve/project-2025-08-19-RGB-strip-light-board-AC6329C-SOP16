@@ -25,9 +25,7 @@ void fc_data_init(void)
 {
     // 灯具
     fc_effect.on_off_flag = DEVICE_ON; // 灯为开启状态
-    // fc_effect.led_num = 14;        //灯带的总灯珠数量   森木流星灯的效果有些bug，未知道哪里出问题呢，10颗流星需要配置12
-    fc_effect.led_num = 12; // 灯带的总灯珠数量
-    // fc_effect.Now_state = ACT_CUSTOM; // 当前运行状态 静态 （修改这里会影响流星灯尾焰长度）
+    fc_effect.led_num = 12;            // 灯带的总灯珠数量
 
     fc_effect.rgb.r = 255;
     fc_effect.rgb.g = 255;
@@ -37,52 +35,27 @@ void fc_data_init(void)
     fc_effect.rgb.w = 0;
 
 #endif
-    fc_effect.dream_scene.c_n = 1; // 颜色数量为1
+    fc_effect.dream_scene.c_n = 1; // 动态模式下，使用到的颜色数量为1
     fc_effect.b = 255;             // 本地亮度
     fc_effect.app_b = 100;
-    // fc_effect.ls_b = (MAX_BRIGHT_RANK - 1);
     fc_effect.app_speed = 80;
     fc_effect.dream_scene.speed = 100;
-    // fc_effect.ls_speed = 3;
-
-    // fc_effect.sequence = NEO_BGR;
     fc_effect.sequence = NEO_RGB; // RGB 顺序 R->G->B
-    fc_effect.auto_f = IS_PAUSE;
-    fc_effect.music.s = 85; // 声控模式的灵敏度
-
-    // //闹钟
-    //     zd_countdown[0].set_on_off = DEVICE_OFF;
-    //     zd_countdown[1].set_on_off = DEVICE_OFF;
-    //     zd_countdown[2].set_on_off = DEVICE_OFF;
+    fc_effect.music.s = 85;       // 声控模式的灵敏度
 
     // 流星
     fc_effect.star_on_off = DEVICE_ON;
     fc_effect.star_index = 1;
-    // fc_effect.star_speed = 90; // 变化速度
     fc_effect.star_speed = 3000; // 变化速度
     fc_effect.app_star_speed = 80;
-    // fc_effect.meteor_period = 10;                          // 默认8秒  周期值
-    // fc_effect.period_cnt = fc_effect.meteor_period * 1000; // ms,运行时的计数器
-    // fc_effect.mode_cycle = 0;                              // 模式完成一个循环的标志
+
     fc_effect.star_speed_index = 0;
 
-    // //电机
-    //     fc_effect.base_ins.mode = 4;   //360转
-    //     fc_effect.base_ins.period = 8;  //速度8s
-    //     fc_effect.base_ins.dir = 0 ;  // 0: 正转  1：
-    //     fc_effect.base_ins.music_mode = 0;
-    //     fc_effect.motor_on_off = DEVICE_ON;
-
     // ================================================================ //
-    // fc_effect.cur_mode = 1;
     fc_effect.star_speed = 3000; // 流星灯速度
     fc_effect.b = 255;
-    // // fc_effect.b = 10; // 实际观察不到亮度有变化
     fc_effect.on_off_flag == DEVICE_ON;
-    // fc_effect.cur_options = NO_OPTIONS;
     fc_effect.sequence = NEO_RGB; // RGB 顺序 R->G->B
-
-    // lighting_animation_config_init(); // 初始化参数
 
     fc_effect.Now_state = METEORITE_LAMP_MODE; // 默认启动流星灯模式
 }
@@ -567,8 +540,8 @@ void app_set_mereor_mode(u8 tp_m)
     {
         fc_effect.Now_state = METEORITE_LAMP_MODE;    // 流星灯模式
         save_info.cur_lighting_animation_mode = tp_m; // 存放对应的流星灯模式索引
-        lighting_animation_mode_change();
-        // set_fc_effect();
+        // lighting_animation_mode_change();
+        set_fc_effect();
     }
     else if (tp_m >= 11 && tp_m <= 13) // 11~13，对应app中的音乐律动1~3
     {
@@ -927,14 +900,6 @@ void power_motor_Init(void)
 
 ON_OFF_FLAG get_on_off_state(void)
 {
-    // return fc_effect.on_off_flag;
-
-    // if (save_info.flag_is_cur_rf_24g_mode_enable)
-    // {
-    //     // 如果当前模式是2.4G遥控器模式，则返回2.4G遥控器模式开关状态
-    //     return save_info.flag_is_light_on;
-    // }
-
     return fc_effect.on_off_flag;
 }
 
@@ -1130,6 +1095,7 @@ void ls_change_breath_mode(void)
     set_fc_effect();
 }
 
+#if 0
 /***************************************************************************************************************************/
 /***************************************************************************************************************************/
 /***************************************************************************************************************************/
@@ -1264,3 +1230,4 @@ void ir_timer_handler(void)
 {
     ir_auto_change_mode();
 }
+#endif

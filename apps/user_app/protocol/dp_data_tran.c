@@ -719,8 +719,6 @@ void parse_zd_data(unsigned char *LedCommand)
             {
                 // 更改RGB线序
                 extern void app_set_RGBsequence(u8 s);
-
-                // save_info.flag_is_cur_rf_24g_mode_enable = 0; // 当前不执行2.4G遥控器对应的模式，改为执行app对应的模式
                 app_set_RGBsequence(LedCommand[2]);
                 fb_RGBsequence();
             }
@@ -775,8 +773,6 @@ void parse_zd_data(unsigned char *LedCommand)
             if (LedCommand[0] == 0x2F && LedCommand[1] == 0x05)
             {
                 // 声控灵敏度范围：0~100
-                // 单片机中是数值越小，灵敏度越高
-                // app_set_sensitive(100 - LedCommand[2]);
                 extern void app_set_sensitive(u8 tp_s); 
                 app_set_sensitive(LedCommand[2]);
                 fb_sensitive();

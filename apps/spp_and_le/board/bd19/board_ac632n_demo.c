@@ -21,6 +21,7 @@
 /* #define LOG_DUMP_ENABLE */
 #define LOG_CLI_ENABLE
 #include "debug.h"
+#include "rf433_key.h"
 
 #define AT_UART_PORT_ID        3  // wakeup_param 里面的port id
 
@@ -316,7 +317,7 @@ static void board_devices_init(void)
     pwm_led_init(&pwm_led_data);
 #endif
 
-#if (TCFG_IOKEY_ENABLE || TCFG_ADKEY_ENABLE || TCFG_IRKEY_ENABLE || TCFG_TOUCH_KEY_ENABLE)
+#if (TCFG_IOKEY_ENABLE || TCFG_ADKEY_ENABLE || TCFG_IRKEY_ENABLE || TCFG_TOUCH_KEY_ENABLE || RF_433_KEY_ENABLE)
 	key_driver_init();
 #endif
 
