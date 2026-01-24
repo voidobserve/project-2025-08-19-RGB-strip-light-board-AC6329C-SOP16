@@ -1516,311 +1516,312 @@ END GROUP
                 0x01e00120                _start
                 0x01e001d0                __BT_UPDATA_JUMP
  *(.text)
- .text          0x01e0025c     0xc736 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+ .text          0x01e0025c     0xc738 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
                 0x01e02b12                update_result_get
                 0x01e06414                __errno
-                0x01e084e6                lib_btstack_version
-                0x01e084ea                lib_media_version
-                0x01e08a90                exception_analyze
- .text          0x01e0c992        0x8 C:\JL\pi32\q32s-lib\libc.a(lib_a-abs.o)
-                0x01e0c992                abs
- .text          0x01e0c99a       0x1a C:\JL\pi32\q32s-lib\libc.a(lib_a-memchr.o)
-                0x01e0c99a                memchr
- .text          0x01e0c9b4      0x30e C:\JL\pi32\q32s-lib\libcompiler-rt.a(adddf3.o)
-                0x01e0c9b4                __adddf3
- .text          0x01e0ccc2       0x26 C:\JL\pi32\q32s-lib\libcompiler-rt.a(ashldi3.o)
-                0x01e0ccc2                __ashldi3
- .text          0x01e0cce8      0x32e C:\JL\pi32\q32s-lib\libcompiler-rt.a(divdf3.o)
-                0x01e0cce8                __divdf3
- .text          0x01e0d016       0x3a C:\JL\pi32\q32s-lib\libcompiler-rt.a(floatsidf.o)
-                0x01e0d016                __floatsidf
- .text          0x01e0d050       0x28 C:\JL\pi32\q32s-lib\libcompiler-rt.a(lshrdi3.o)
-                0x01e0d050                __lshrdi3
- .text          0x01e0d078      0x29c C:\JL\pi32\q32s-lib\libcompiler-rt.a(muldf3.o)
-                0x01e0d078                __muldf3
- .text          0x01e0d314       0x36 C:\JL\pi32\q32s-lib\libcompiler-rt.a(muldi3.o)
-                0x01e0d314                __muldi3
- .text          0x01e0d34a       0x10 C:\JL\pi32\q32s-lib\libcompiler-rt.a(udivdi3.o)
-                0x01e0d34a                __udivdi3
- .text          0x01e0d35a      0x1f8 C:\JL\pi32\q32s-lib\libcompiler-rt.a(udivmoddi4.o)
-                0x01e0d35a                __udivmoddi4
- .text          0x01e0d552       0x14 C:\JL\pi32\q32s-lib\libcompiler-rt.a(umoddi3.o)
-                0x01e0d552                __umoddi3
- .text          0x01e0d566      0x16a C:\JL\pi32\q32s-lib\libcompiler-rt.a(addsf3.o)
-                0x01e0d566                __addsf3
- .text          0x01e0d6d0       0x4c C:\JL\pi32\q32s-lib\libcompiler-rt.a(fixsfsi.o)
-                0x01e0d6d0                __fixsfsi
- .text          0x01e0d71c       0x30 C:\JL\pi32\q32s-lib\libcompiler-rt.a(fixunsdfsi.o)
-                0x01e0d71c                __fixunsdfsi
- .text          0x01e0d74c       0x60 C:\JL\pi32\q32s-lib\libcompiler-rt.a(floatsisf.o)
-                0x01e0d74c                __floatsisf
- .text          0x01e0d7ac       0x2c C:\JL\pi32\q32s-lib\libcompiler-rt.a(floatunsidf.o)
-                0x01e0d7ac                __floatunsidf
- .text          0x01e0d7d8       0x54 C:\JL\pi32\q32s-lib\libcompiler-rt.a(floatunsisf.o)
-                0x01e0d7d8                __floatunsisf
- .text          0x01e0d82c        0x8 C:\JL\pi32\q32s-lib\libcompiler-rt.a(subsf3.o)
-                0x01e0d82c                __subsf3
-                0x01e0d834                btstack_code_start = .
-                0x01e0d834                . = ALIGN (0x4)
-                0x01e0d834                a2dp_source_media_codec_begin = .
+                0x01e084e8                lib_btstack_version
+                0x01e084ec                lib_media_version
+                0x01e08a92                exception_analyze
+ .text          0x01e0c994        0x8 C:\JL\pi32\q32s-lib\libc.a(lib_a-abs.o)
+                0x01e0c994                abs
+ .text          0x01e0c99c       0x1a C:\JL\pi32\q32s-lib\libc.a(lib_a-memchr.o)
+                0x01e0c99c                memchr
+ .text          0x01e0c9b6      0x30e C:\JL\pi32\q32s-lib\libcompiler-rt.a(adddf3.o)
+                0x01e0c9b6                __adddf3
+ .text          0x01e0ccc4       0x26 C:\JL\pi32\q32s-lib\libcompiler-rt.a(ashldi3.o)
+                0x01e0ccc4                __ashldi3
+ .text          0x01e0ccea      0x32e C:\JL\pi32\q32s-lib\libcompiler-rt.a(divdf3.o)
+                0x01e0ccea                __divdf3
+ .text          0x01e0d018       0x3a C:\JL\pi32\q32s-lib\libcompiler-rt.a(floatsidf.o)
+                0x01e0d018                __floatsidf
+ .text          0x01e0d052       0x28 C:\JL\pi32\q32s-lib\libcompiler-rt.a(lshrdi3.o)
+                0x01e0d052                __lshrdi3
+ .text          0x01e0d07a      0x29c C:\JL\pi32\q32s-lib\libcompiler-rt.a(muldf3.o)
+                0x01e0d07a                __muldf3
+ .text          0x01e0d316       0x36 C:\JL\pi32\q32s-lib\libcompiler-rt.a(muldi3.o)
+                0x01e0d316                __muldi3
+ .text          0x01e0d34c       0x10 C:\JL\pi32\q32s-lib\libcompiler-rt.a(udivdi3.o)
+                0x01e0d34c                __udivdi3
+ .text          0x01e0d35c      0x1f8 C:\JL\pi32\q32s-lib\libcompiler-rt.a(udivmoddi4.o)
+                0x01e0d35c                __udivmoddi4
+ .text          0x01e0d554       0x14 C:\JL\pi32\q32s-lib\libcompiler-rt.a(umoddi3.o)
+                0x01e0d554                __umoddi3
+ .text          0x01e0d568      0x16a C:\JL\pi32\q32s-lib\libcompiler-rt.a(addsf3.o)
+                0x01e0d568                __addsf3
+ .text          0x01e0d6d2       0x4c C:\JL\pi32\q32s-lib\libcompiler-rt.a(fixsfsi.o)
+                0x01e0d6d2                __fixsfsi
+ .text          0x01e0d71e       0x30 C:\JL\pi32\q32s-lib\libcompiler-rt.a(fixunsdfsi.o)
+                0x01e0d71e                __fixunsdfsi
+ .text          0x01e0d74e       0x60 C:\JL\pi32\q32s-lib\libcompiler-rt.a(floatsisf.o)
+                0x01e0d74e                __floatsisf
+ .text          0x01e0d7ae       0x2c C:\JL\pi32\q32s-lib\libcompiler-rt.a(floatunsidf.o)
+                0x01e0d7ae                __floatunsidf
+ .text          0x01e0d7da       0x54 C:\JL\pi32\q32s-lib\libcompiler-rt.a(floatunsisf.o)
+                0x01e0d7da                __floatunsisf
+ .text          0x01e0d82e        0x8 C:\JL\pi32\q32s-lib\libcompiler-rt.a(subsf3.o)
+                0x01e0d82e                __subsf3
+                0x01e0d836                btstack_code_start = .
+                0x01e0d838                . = ALIGN (0x4)
+ *fill*         0x01e0d836        0x2 
+                0x01e0d838                a2dp_source_media_codec_begin = .
  *(.a2dp_source_media_codec)
-                0x01e0d834                a2dp_source_media_codec_end = .
-                0x01e0d834                a2dp_sink_media_probe_begin = .
+                0x01e0d838                a2dp_source_media_codec_end = .
+                0x01e0d838                a2dp_sink_media_probe_begin = .
  *(.a2dp_sink_media_probe)
-                0x01e0d834                a2dp_sink_media_probe_end = .
-                0x01e0d834                a2dp_sink_media_codec_begin = .
+                0x01e0d838                a2dp_sink_media_probe_end = .
+                0x01e0d838                a2dp_sink_media_codec_begin = .
  *(.a2dp_sink_media_codec)
-                0x01e0d834                a2dp_sink_media_codec_end = .
-                0x01e0d834                a2dp_event_handler_begin = .
+                0x01e0d838                a2dp_sink_media_codec_end = .
+                0x01e0d838                a2dp_event_handler_begin = .
  *(.a2dp_event_handler)
  .a2dp_event_handler
-                0x01e0d834       0x1c ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e0d834                a2dp_sink_event_handler
-                0x01e0d850                a2dp_event_handler_end = .
-                0x01e0d850                sdp_record_item_begin = .
+                0x01e0d838       0x1c ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e0d838                a2dp_sink_event_handler
+                0x01e0d854                a2dp_event_handler_end = .
+                0x01e0d854                sdp_record_item_begin = .
  *(.sdp_record_item)
-                0x01e0d850                sdp_record_item_end = .
-                0x01e0d850                bt_sleep_begin = .
+                0x01e0d854                sdp_record_item_end = .
+                0x01e0d854                bt_sleep_begin = .
  *(.bt_sleep)
- .bt_sleep      0x01e0d850       0x60 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e0d850                bt_suspend_user_cmd_loop_resumeuser_cmd_loop_release
-                0x01e0d85c                bt_suspend_a2dp_resumea2dp_release
-                0x01e0d868                bt_suspend_avctp_resumeavctp_release
-                0x01e0d874                bt_suspend_hfp_resumehfp_release
-                0x01e0d880                bt_suspend_hid_resumehid_release
-                0x01e0d88c                bt_suspend_spp_resumespp_release
-                0x01e0d898                bt_suspend_iap_resumeiap_release
-                0x01e0d8a4                bt_suspend_sdp_resumesdp_release
-                0x01e0d8b0                bt_sleep_end = .
+ .bt_sleep      0x01e0d854       0x60 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e0d854                bt_suspend_user_cmd_loop_resumeuser_cmd_loop_release
+                0x01e0d860                bt_suspend_a2dp_resumea2dp_release
+                0x01e0d86c                bt_suspend_avctp_resumeavctp_release
+                0x01e0d878                bt_suspend_hfp_resumehfp_release
+                0x01e0d884                bt_suspend_hid_resumehid_release
+                0x01e0d890                bt_suspend_spp_resumespp_release
+                0x01e0d89c                bt_suspend_iap_resumeiap_release
+                0x01e0d8a8                bt_suspend_sdp_resumesdp_release
+                0x01e0d8b4                bt_sleep_end = .
  *(.bt_stack_const)
  .bt_stack_const
-                0x01e0d8b0       0x88 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e0d8b4       0x88 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  *(.bt_stack_code)
  .bt_stack_code
-                0x01e0d938     0x277a ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e0d93c     0x277a ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  *(.ble_db_const)
  *(.ble_db_code)
  *(.ble_sm_const)
  *(.ble_sm_code)
- .ble_sm_code   0x01e100b2       0x3c ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+ .ble_sm_code   0x01e100b6       0x3c ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  *(.ble_att_const)
  .ble_att_const
-                0x01e100ee       0x17 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e100f2       0x17 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  *(.ble_att_code)
- *fill*         0x01e10105        0x1 
- .ble_att_code  0x01e10106      0x74e ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+ *fill*         0x01e10109        0x1 
+ .ble_att_code  0x01e1010a      0x74e ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  *(.ble_gatt_const)
  *(.ble_gatt_code)
  .ble_gatt_code
-                0x01e10854     0x1402 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e11c56                BTSTACK_LE_HOST_MESH_CODE_START = .
+                0x01e10858     0x1402 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e11c5a                BTSTACK_LE_HOST_MESH_CODE_START = .
  *(.ble_mesh_code)
  *(.ble_mesh_tinycrypt_code)
  *(.ble_mesh_const)
  *(.ble_mesh_tinycrypt_const)
                 0x00000000                BTSTACK_LE_HOST_MESH_CODE_SIZE = ABSOLUTE ((. - BTSTACK_LE_HOST_MESH_CODE_START))
-                0x01e11c56                _fmna_const_begin = .
+                0x01e11c5a                _fmna_const_begin = .
  *(.fmna_stack_const)
  *(.fmna_plaform_const)
  *(.fmna_crypto_const)
-                0x01e11c56                _fmna_const_end = .
-                0x01e11c58                . = ALIGN (0x4)
- *fill*         0x01e11c56        0x2 
-                0x01e11c58                _fmna_code_begin = .
+                0x01e11c5a                _fmna_const_end = .
+                0x01e11c5c                . = ALIGN (0x4)
+ *fill*         0x01e11c5a        0x2 
+                0x01e11c5c                _fmna_code_begin = .
  *(.fmna_stack_code)
  *(.fmna_plaform_code)
  *(.fmna_crypto_code)
-                0x01e11c58                _fmna_code_end = .
+                0x01e11c5c                _fmna_code_end = .
                 0x00000000                btstack_fmna_const_size = (_fmna_const_end - _fmna_const_begin)
                 0x00000000                btstack_fmna_code_size = (_fmna_code_end - _fmna_code_begin)
-                0x01e11c58                . = ALIGN (0x4)
-                0x01e11c58                btstack_code_end = .
-                0x01e11c58                . = ALIGN (0x4)
-                0x00004424                BTSTACK_CODE_TOTAL_SIZE = (btstack_code_end - btstack_code_start)
-                0x01e11c58                . = ALIGN (0x4)
-                0x01e11c58                system_text_start = .
-                0x01e11c58                _device_node_begin = .
-                0x01e11c58                PROVIDE (device_node_begin, .)
+                0x01e11c5c                . = ALIGN (0x4)
+                0x01e11c5c                btstack_code_end = .
+                0x01e11c5c                . = ALIGN (0x4)
+                0x00004426                BTSTACK_CODE_TOTAL_SIZE = (btstack_code_end - btstack_code_start)
+                0x01e11c5c                . = ALIGN (0x4)
+                0x01e11c5c                system_text_start = .
+                0x01e11c5c                _device_node_begin = .
+                0x01e11c5c                PROVIDE (device_node_begin, .)
  *(.device)
- .device        0x01e11c58        0x0 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e11c58                device_table
-                0x01e11c58                _device_node_end = .
-                0x01e11c58                PROVIDE (device_node_end, .)
-                0x01e11c58                config_target_begin = .
+ .device        0x01e11c5c        0x0 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e11c5c                device_table
+                0x01e11c5c                _device_node_end = .
+                0x01e11c5c                PROVIDE (device_node_end, .)
+                0x01e11c5c                config_target_begin = .
                 [!provide]                PROVIDE (config_target_begin, .)
  *(.config_target)
-                0x01e11c58                config_target_end = .
+                0x01e11c5c                config_target_end = .
                 [!provide]                PROVIDE (config_target_end, .)
-                0x01e11c58                system_code_begin = .
+                0x01e11c5c                system_code_begin = .
  *(.system.*.text)
  .system.printf.text
-                0x01e11c58      0x8ee ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e11c5c      0x8ee ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  .system.lbuf.text
-                0x01e12546      0x318 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e1254a      0x318 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  .system.cpu.text
-                0x01e1285e     0x1226 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e12cc8                vFillingTaskStack
-                0x01e12cf8                maskrom_init
-                0x01e13878                breakpoint_init
+                0x01e12862     0x1226 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e12ccc                vFillingTaskStack
+                0x01e12cfc                maskrom_init
+                0x01e1387c                breakpoint_init
  .system.cbuf.text
-                0x01e13a84      0x10e ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e13a88      0x10e ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  .system.event.text
-                0x01e13b92      0x390 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e13b96      0x390 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  .system.timer.text
-                0x01e13f22      0x702 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e13f26      0x702 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  .system.task.text
-                0x01e14624       0x4a ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e14628       0x4a ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  .system.fs.text
-                0x01e1466e      0xc28 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e14672      0xc28 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  .system.cfg_tool.text
-                0x01e15296      0x6c8 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e1529a      0x6c8 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  .system.app_core.text
-                0x01e1595e      0x26c ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e15962      0x26c ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  .system.device.text
-                0x01e15bca       0xba ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e15bce       0xba ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  .system.ascii.text
-                0x01e15c84       0x36 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e15c88       0x36 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  .system.init.text
-                0x01e15cba      0x17a ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e15cba                boot_info_init
-                0x01e15ce4                main
-                0x01e15e34                system_code_end = .
-                0x01e15e34                . = ALIGN (0x4)
+                0x01e15cbe      0x17a ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e15cbe                boot_info_init
+                0x01e15ce8                main
+                0x01e15e38                system_code_end = .
+                0x01e15e38                . = ALIGN (0x4)
                 0x000041dc                system_code_size = (system_code_end - system_code_begin)
-                0x01e15e34                vfs_ops_begin = .
+                0x01e15e38                vfs_ops_begin = .
  *(.vfs_operations)
  .vfs_operations
-                0x01e15e34       0x74 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e15e34                sdfile_vfs_ops
-                0x01e15ea8                vfs_ops_end = .
-                0x01e15ea8                _lib_version_begin = .
+                0x01e15e38       0x74 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e15e38                sdfile_vfs_ops
+                0x01e15eac                vfs_ops_end = .
+                0x01e15eac                _lib_version_begin = .
                 [!provide]                PROVIDE (lib_version_begin, .)
  *(.lib_version)
- .lib_version   0x01e15ea8        0x4 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e15ea8                __version_sdfile
-                0x01e15eac                _lib_version_end = .
+ .lib_version   0x01e15eac        0x4 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e15eac                __version_sdfile
+                0x01e15eb0                _lib_version_end = .
                 [!provide]                PROVIDE (lib_version_end, .)
-                0x01e15eac                _initcall_begin = .
-                0x01e15eac                PROVIDE (initcall_begin, .)
+                0x01e15eb0                _initcall_begin = .
+                0x01e15eb0                PROVIDE (initcall_begin, .)
  *(.initcall)
- .initcall      0x01e15eac        0xc ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e15eac                __initcall_trim_timer_add
-                0x01e15eb0                __initcall_app_update_init
-                0x01e15eb4                __initcall_user_timer_init
-                0x01e15eb8                _initcall_end = .
-                0x01e15eb8                PROVIDE (initcall_end, .)
-                0x01e15eb8                _early_initcall_begin = .
-                0x01e15eb8                PROVIDE (early_initcall_begin, .)
+ .initcall      0x01e15eb0        0xc ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e15eb0                __initcall_trim_timer_add
+                0x01e15eb4                __initcall_app_update_init
+                0x01e15eb8                __initcall_user_timer_init
+                0x01e15ebc                _initcall_end = .
+                0x01e15ebc                PROVIDE (initcall_end, .)
+                0x01e15ebc                _early_initcall_begin = .
+                0x01e15ebc                PROVIDE (early_initcall_begin, .)
  *(.early.initcall)
  .early.initcall
-                0x01e15eb8        0x8 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e15eb8                __initcall_sys_event_init
-                0x01e15ebc                __initcall_sdfile_init
-                0x01e15ec0                _early_initcall_end = .
-                0x01e15ec0                PROVIDE (early_initcall_end, .)
-                0x01e15ec0                _late_initcall_begin = .
-                0x01e15ec0                PROVIDE (late_initcall_begin, .)
+                0x01e15ebc        0x8 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e15ebc                __initcall_sys_event_init
+                0x01e15ec0                __initcall_sdfile_init
+                0x01e15ec4                _early_initcall_end = .
+                0x01e15ec4                PROVIDE (early_initcall_end, .)
+                0x01e15ec4                _late_initcall_begin = .
+                0x01e15ec4                PROVIDE (late_initcall_begin, .)
  *(.late.initcall)
  .late.initcall
-                0x01e15ec0        0x8 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e15ec0                __initcall_check_otp_data
-                0x01e15ec4                __initcall_sdk_meky_check
-                0x01e15ec8                _late_initcall_end = .
-                0x01e15ec8                PROVIDE (late_initcall_end, .)
-                0x01e15ec8                _platform_initcall_begin = .
-                0x01e15ec8                PROVIDE (platform_initcall_begin, .)
+                0x01e15ec4        0x8 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e15ec4                __initcall_check_otp_data
+                0x01e15ec8                __initcall_sdk_meky_check
+                0x01e15ecc                _late_initcall_end = .
+                0x01e15ecc                PROVIDE (late_initcall_end, .)
+                0x01e15ecc                _platform_initcall_begin = .
+                0x01e15ecc                PROVIDE (platform_initcall_begin, .)
  *(.platform.initcall)
  .platform.initcall
-                0x01e15ec8        0x4 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e15ec8                __initcall_syscfg_tools_init
-                0x01e15ecc                _platform_initcall_end = .
-                0x01e15ecc                PROVIDE (platform_initcall_end, .)
-                0x01e15ecc                _module_initcall_begin = .
-                0x01e15ecc                PROVIDE (module_initcall_begin, .)
+                0x01e15ecc        0x4 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e15ecc                __initcall_syscfg_tools_init
+                0x01e15ed0                _platform_initcall_end = .
+                0x01e15ed0                PROVIDE (platform_initcall_end, .)
+                0x01e15ed0                _module_initcall_begin = .
+                0x01e15ed0                PROVIDE (module_initcall_begin, .)
  *(.module.initcall)
-                0x01e15ecc                _module_initcall_end = .
-                0x01e15ecc                PROVIDE (module_initcall_end, .)
-                0x01e15ecc                _sys_event_handler_begin = .
-                0x01e15ecc                PROVIDE (sys_event_handler_begin, .)
+                0x01e15ed0                _module_initcall_end = .
+                0x01e15ed0                PROVIDE (module_initcall_end, .)
+                0x01e15ed0                _sys_event_handler_begin = .
+                0x01e15ed0                PROVIDE (sys_event_handler_begin, .)
  *(.sys_event.4.handler)
  *(.sys_event.3.handler)
  *(.sys_event.2.handler)
  *(.sys_event.1.handler)
  *(.sys_event.0.handler)
-                0x01e15ecc                _sys_event_handler_end = .
-                0x01e15ecc                PROVIDE (sys_event_handler_end, .)
-                0x01e15ecc                _syscfg_arg_begin = .
+                0x01e15ed0                _sys_event_handler_end = .
+                0x01e15ed0                PROVIDE (sys_event_handler_end, .)
+                0x01e15ed0                _syscfg_arg_begin = .
                 [!provide]                PROVIDE (syscfg_arg_begin, .)
  *(.syscfg.arg)
-                0x01e15ecc                _syscfg_arg_end = .
+                0x01e15ed0                _syscfg_arg_end = .
                 [!provide]                PROVIDE (syscfg_arg_end, .)
-                0x01e15ecc                _syscfg_handler_begin = .
+                0x01e15ed0                _syscfg_handler_begin = .
                 [!provide]                PROVIDE (syscfg_handler_begin, .)
  *(.syscfg.handler)
-                0x01e15ecc                _syscfg_handler_end = .
+                0x01e15ed0                _syscfg_handler_end = .
                 [!provide]                PROVIDE (syscfg_handler_end, .)
-                0x01e15ecc                _syscfg_ops_begin = .
-                0x01e15ecc                PROVIDE (syscfg_ops_begin, .)
+                0x01e15ed0                _syscfg_ops_begin = .
+                0x01e15ed0                PROVIDE (syscfg_ops_begin, .)
  *(.syscfg.2.ops)
- .syscfg.2.ops  0x01e15ecc       0x1c ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e15ecc                cfg_btif
+ .syscfg.2.ops  0x01e15ed0       0x1c ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e15ed0                cfg_btif
  *(.syscfg.1.ops)
- .syscfg.1.ops  0x01e15ee8       0x1c ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e15ee8                cfg_vm
+ .syscfg.1.ops  0x01e15eec       0x1c ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e15eec                cfg_vm
  *(.syscfg.0.ops)
- .syscfg.0.ops  0x01e15f04       0x1c ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e15f04                cfg_bin
-                0x01e15f20                _syscfg_ops_end = .
-                0x01e15f20                PROVIDE (syscfg_ops_end, .)
-                0x01e15f20                _server_info_begin = .
+ .syscfg.0.ops  0x01e15f08       0x1c ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e15f08                cfg_bin
+                0x01e15f24                _syscfg_ops_end = .
+                0x01e15f24                PROVIDE (syscfg_ops_end, .)
+                0x01e15f24                _server_info_begin = .
                 [!provide]                PROVIDE (server_info_begin, .)
  *(.server_info)
-                0x01e15f20                _server_info_end = .
+                0x01e15f24                _server_info_end = .
                 [!provide]                PROVIDE (server_info_end, .)
-                0x01e15f20                _bus_device_begin = .
+                0x01e15f24                _bus_device_begin = .
                 [!provide]                PROVIDE (bus_device_begin, .)
  *(.bus_device)
-                0x01e15f20                _bus_device_end = .
+                0x01e15f24                _bus_device_end = .
                 [!provide]                PROVIDE (bus_device_end, .)
-                0x01e15f20                _sys_power_hal_ops_begin = .
+                0x01e15f24                _sys_power_hal_ops_begin = .
                 [!provide]                PROVIDE (sys_power_hal_ops_begin, .)
  *(.sys_power_hal_ops)
-                0x01e15f20                _sys_power_hal_ops_end = .
+                0x01e15f24                _sys_power_hal_ops_end = .
                 [!provide]                PROVIDE (sys_power_hal_ops_end, .)
-                0x01e15f20                . = ALIGN (0x4)
-                0x01e15f20                lp_target_begin = .
+                0x01e15f24                . = ALIGN (0x4)
+                0x01e15f24                lp_target_begin = .
                 [!provide]                PROVIDE (lp_target_begin, .)
  *(.lp_target)
- .lp_target     0x01e15f20       0x90 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e15f20                pwm_demo_lp_target
-                0x01e15f2c                audio_tone_lp_target
-                0x01e15f38                tone_dec_lp_target
-                0x01e15f44                bt_test_lp_target
-                0x01e15f50                plll_trim_lp_target
-                0x01e15f5c                ota_lp_target
-                0x01e15f68                multi_state_lp_target
-                0x01e15f74                __wakeup_is_idle_target
-                0x01e15f80                usb_dev_lp_target
-                0x01e15f8c                usr_systimer_lp_target
-                0x01e15f98                btstack_lowpower_target
-                0x01e15fa4                ble_slave_multlp_target
-                0x01e15fb0                lp_target_end = .
+ .lp_target     0x01e15f24       0x90 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e15f24                pwm_demo_lp_target
+                0x01e15f30                audio_tone_lp_target
+                0x01e15f3c                tone_dec_lp_target
+                0x01e15f48                bt_test_lp_target
+                0x01e15f54                plll_trim_lp_target
+                0x01e15f60                ota_lp_target
+                0x01e15f6c                multi_state_lp_target
+                0x01e15f78                __wakeup_is_idle_target
+                0x01e15f84                usb_dev_lp_target
+                0x01e15f90                usr_systimer_lp_target
+                0x01e15f9c                btstack_lowpower_target
+                0x01e15fa8                ble_slave_multlp_target
+                0x01e15fb4                lp_target_end = .
                 [!provide]                PROVIDE (lp_target_end, .)
-                0x01e15fb0                . = ALIGN (0x4)
-                0x01e15fb0                deepsleep_target_begin = .
+                0x01e15fb4                . = ALIGN (0x4)
+                0x01e15fb4                deepsleep_target_begin = .
                 [!provide]                PROVIDE (deepsleep_target_begin, .)
  *(.deepsleep_target)
  .deepsleep_target
-                0x01e15fb0       0x48 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e15fb0                uart
-                0x01e15fbc                clock_sfc
-                0x01e15fc8                tmr
-                0x01e15fd4                vm_sfc
-                0x01e15fe0                os
-                0x01e15fec                bt
-                0x01e15ff8                deepsleep_target_end = .
+                0x01e15fb4       0x48 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e15fb4                uart
+                0x01e15fc0                clock_sfc
+                0x01e15fcc                tmr
+                0x01e15fd8                vm_sfc
+                0x01e15fe4                os
+                0x01e15ff0                bt
+                0x01e15ffc                deepsleep_target_end = .
                 [!provide]                PROVIDE (deepsleep_target_end, .)
-                0x01e15ff8                crypto_begin = .
+                0x01e15ffc                crypto_begin = .
  *(.crypto_ecdh_code)
  *(.crypto_ecdh_const)
  *(.crypto_bigint_code)
@@ -1837,38 +1838,38 @@ END GROUP
  *(.hash_sample_const)
  *(.aes_cmac_sample_code)
  *(.aes_cmac_sample_const)
-                0x01e15ff8                crypto_end = .
+                0x01e15ffc                crypto_end = .
                 0x00000000                crypto_size = (. - crypto_begin)
  *(.mem_code)
  *(.mem_const)
  *(.os_port_code)
  *(.os_port_const)
  *(.math_fast_funtion_code)
-                0x01e15ff8                __movable_function_start = .
+                0x01e15ffc                __movable_function_start = .
  *(movable.text.*)
  *(movable.stub.*)
  *(movable.region.*)
-                0x01e15ff8                __movable_function_end = .
+                0x01e15ffc                __movable_function_end = .
                 0x00000000                __movable_function_size = (__movable_function_end - __movable_function_start)
-                0x01e15ff8                system_text_end = .
+                0x01e15ffc                system_text_end = .
                 0x000043a0                system_code_total_size = (system_text_end - system_text_start)
-                0x01e15ff8                . = ALIGN (0x4)
-                0x01e15ff8                update_target_begin = .
+                0x01e15ffc                . = ALIGN (0x4)
+                0x01e15ffc                update_target_begin = .
                 [!provide]                PROVIDE (update_target_begin, .)
  *(.update_target)
  .update_target
-                0x01e15ff8        0x8 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                0x01e15ff8                ble_update_target
-                0x01e16000                update_target_end = .
+                0x01e15ffc        0x8 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e15ffc                ble_update_target
+                0x01e16004                update_target_end = .
                 [!provide]                PROVIDE (update_target_end, .)
-                0x01e16000                . = ALIGN (0x4)
+                0x01e16004                . = ALIGN (0x4)
  *(.LOG_TAG_CONST*)
  *(.rodata*)
  .rodata.str1.1
-                0x01e16000     0x3c73 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x01e16004     0x3c73 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
                                0x3cf0 (size before relaxing)
- .rodata.cst4   0x01e19c73       0x10 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
- *fill*         0x01e19c83       0x1d 
+ .rodata.cst4   0x01e19c77       0x10 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+ *fill*         0x01e19c87       0x19 
  .rodata        0x01e19ca0      0xb7c ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  .rodata.cst8   0x01e1a81c       0x20 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
  .rodata.cst16  0x01e1a83c       0x20 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
@@ -2763,9 +2764,9 @@ LOAD C:\JL\pi32\q32s-lib\libm.a
 LOAD C:\JL\pi32\q32s-lib\libcompiler-rt.a
 OUTPUT(..\..\..\..\cpu\bd19\tools\sdk.elf elf32-q32s)
 
-.debug_str      0x00000000    0x44c39
- .debug_str     0x00000000    0x44c39 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
-                              0x487e7 (size before relaxing)
+.debug_str      0x00000000    0x44cf1
+ .debug_str     0x00000000    0x44cf1 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                              0x4889f (size before relaxing)
 
 .debug_loc      0x00000000    0x161bc
  .debug_loc     0x00000000    0x161bc ..\..\..\..\cpu\bd19\tools\sdk.elf.o
@@ -2775,10 +2776,10 @@ OUTPUT(..\..\..\..\cpu\bd19\tools\sdk.elf elf32-q32s)
  .debug_abbrev  0x00000fa2       0x26 ../../../../cpu/bd19/liba/cpu.a(startup.S.o)
  .debug_abbrev  0x00000fc8       0x28 ../../../../cpu/bd19/liba/system.a(port_asm_mmu.S.o)
 
-.debug_info     0x00000000    0x9a33e
- .debug_info    0x00000000    0x9a094 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
- .debug_info    0x0009a094      0x15d ../../../../cpu/bd19/liba/cpu.a(startup.S.o)
- .debug_info    0x0009a1f1      0x14d ../../../../cpu/bd19/liba/system.a(port_asm_mmu.S.o)
+.debug_info     0x00000000    0x9a3b9
+ .debug_info    0x00000000    0x9a10f ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+ .debug_info    0x0009a10f      0x15d ../../../../cpu/bd19/liba/cpu.a(startup.S.o)
+ .debug_info    0x0009a26c      0x14d ../../../../cpu/bd19/liba/system.a(port_asm_mmu.S.o)
 
 .debug_ranges   0x00000000     0x36b0
  .debug_ranges  0x00000000     0x3688 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
@@ -2794,19 +2795,19 @@ OUTPUT(..\..\..\..\cpu\bd19\tools\sdk.elf elf32-q32s)
                 0x00000000    0x1b6cc ..\..\..\..\cpu\bd19\tools\sdk.elf.o
 
 .debug_pubtypes
-                0x00000000    0x129ff
+                0x00000000    0x12a16
  .debug_pubtypes
-                0x00000000    0x129ff ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+                0x00000000    0x12a16 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
 
 .debug_frame    0x00000000     0x74c8
  .debug_frame   0x00000000     0x74c8 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
 
-.debug_line     0x00000000    0x3eb95
- .debug_line    0x00000000    0x3e976 ..\..\..\..\cpu\bd19\tools\sdk.elf.o
- .debug_line    0x0003e976      0x104 ../../../../cpu/bd19/liba/cpu.a(startup.S.o)
- .debug_line    0x0003ea7a       0xc3 ../../../../cpu/bd19/liba/system.a(port_asm_mmu.S.o)
- .debug_line    0x0003eb3d       0x2c ../../../../cpu/bd19/liba/btctrler.a(version.z.o)
- .debug_line    0x0003eb69       0x2c ../../../../cpu/bd19/liba/update.a(version.z.o)
+.debug_line     0x00000000    0x3edfb
+ .debug_line    0x00000000    0x3ebdc ..\..\..\..\cpu\bd19\tools\sdk.elf.o
+ .debug_line    0x0003ebdc      0x104 ../../../../cpu/bd19/liba/cpu.a(startup.S.o)
+ .debug_line    0x0003ece0       0xc3 ../../../../cpu/bd19/liba/system.a(port_asm_mmu.S.o)
+ .debug_line    0x0003eda3       0x2c ../../../../cpu/bd19/liba/btctrler.a(version.z.o)
+ .debug_line    0x0003edcf       0x2c ../../../../cpu/bd19/liba/update.a(version.z.o)
 
 .debug_aranges  0x00000000       0x48
  .debug_aranges

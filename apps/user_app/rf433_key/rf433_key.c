@@ -13,7 +13,7 @@ volatile u8 flag_is_received_rf_433_data = 0; // 标志位，是否接收到了4
 
 void rf_433_key_config(void)
 {
-	gpio_set_pull_up(RF_433_KEY_SCAN_PIN, 1);	// 上拉
+	gpio_set_pull_up(RF_433_KEY_SCAN_PIN, 0);	// 不上拉
 	gpio_set_pull_down(RF_433_KEY_SCAN_PIN, 0); // 不下拉
 
 	gpio_set_die(RF_433_KEY_SCAN_PIN, 1);		// 普通输入模式
